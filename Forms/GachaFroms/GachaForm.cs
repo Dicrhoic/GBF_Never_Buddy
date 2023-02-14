@@ -43,6 +43,7 @@ namespace GBF_Never_Buddy
         {
 
             gachaHandler.UpdateCrystalsUsed(costLabel, DrawType.Multi);
+            gachaHandler.drawNumber++; 
             GachaResultAdder Adder = new(gachaHandler);
             Adder.ShowDialog();
         }

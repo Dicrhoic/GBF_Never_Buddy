@@ -1,5 +1,6 @@
 using GBF_Never_Buddy.Classes.DatabaseHandlers;
 using GBF_Never_Buddy.Classes.SQLClasses;
+using GBF_Never_Buddy.Forms;
 using GBF_Never_Buddy.GachaForms;
 using System.Diagnostics;
 using System.IO;
@@ -15,9 +16,6 @@ namespace GBF_Never_Buddy
         {
             InitializeComponent();
             netHelper = new();
-            netHelper.CreateAllCharFile();
-
-
         }
 
         private void InitializeContent(object sender, EventArgs e)
@@ -99,6 +97,18 @@ namespace GBF_Never_Buddy
         {
             GachaLogForm logData = new();
             logData.ShowDialog();
+        }
+
+        private void LoadGBForm(object sender, EventArgs e)
+        {
+            var openForm = Application.OpenForms["GBLog"];
+            if (openForm == null) 
+            {
+                GBLog gB = new();
+                gB.Show();
+            }
+
+   
         }
     }
 }

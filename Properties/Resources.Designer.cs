@@ -63,6 +63,26 @@ namespace GBF_Never_Buddy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _40px_Icon_Blue_Chest {
+            get {
+                object obj = ResourceManager.GetObject("40px-Icon_Blue_Chest", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Coronation_Ring_square {
+            get {
+                object obj = ResourceManager.GetObject("Coronation_Ring_square", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Crystal {
             get {
                 object obj = ResourceManager.GetObject("Crystal", resourceCulture);
@@ -73,9 +93,79 @@ namespace GBF_Never_Buddy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Gold_Brick {
+            get {
+                object obj = ResourceManager.GetObject("Gold_Brick", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Gold_Moon {
             get {
                 object obj = ResourceManager.GetObject("Gold_Moon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Intricacy_Ring_square {
+            get {
+                object obj = ResourceManager.GetObject("Intricacy_Ring_square", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Legendary_Merit {
+            get {
+                object obj = ResourceManager.GetObject("Legendary_Merit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lineage_Ring_square {
+            get {
+                object obj = ResourceManager.GetObject("Lineage_Ring_square", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Primeval_Horn_square {
+            get {
+                object obj = ResourceManager.GetObject("Primeval_Horn_square", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Silver_Centrum {
+            get {
+                object obj = ResourceManager.GetObject("Silver_Centrum", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Soul_Balm {
+            get {
+                object obj = ResourceManager.GetObject("Soul_Balm", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -106,6 +196,26 @@ namespace GBF_Never_Buddy.Properties {
         internal static System.Drawing.Bitmap text_stone10 {
             get {
                 object obj = ResourceManager.GetObject("text_stone10", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Ultima_Unit_square {
+            get {
+                object obj = ResourceManager.GetObject("Ultima_Unit_square", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Verdant_Azurite_square {
+            get {
+                object obj = ResourceManager.GetObject("Verdant_Azurite_square", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

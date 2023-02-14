@@ -6,6 +6,14 @@
         Multi = 3000
     }
 
+    public enum Mode
+    {
+        Normal,
+        Spark,
+        Free,
+        Roulette
+    }
+
     public class GachaHandler
     {
 
@@ -16,6 +24,8 @@
         public List<GameDataClasses.Summon>? summons;
         public int drawNumber = 0;
         public int lastCrystalAmount = 0;
+
+        public Mode mode {get; set;} 
 
         public int drawID { get; set; }
 
@@ -30,11 +40,6 @@
             crystalsSpent = crystalsSpent + crystals;
             string text = preText + $" {crystalsSpent}";
             textHolder.Text = text;
-        }
-
-        public void UpdateDrawDB()
-        {
-
         }
 
         public void UpdateLists(List<GameDataClasses.Summon> sumList, List<GameDataClasses.Character> charList)

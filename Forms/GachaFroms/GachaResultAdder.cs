@@ -54,9 +54,12 @@ namespace GBF_Never_Buddy
         }
 
         private void LoadDataSource()
-        {
-
-            if (characterList.Count == 0 && summonsList == null)
+        {   
+            if (characterList == null && summonsList == null)
+            {
+                return;
+            }
+            if (characterList.Count == 0 && summonsList.Count == 0)
             {
                 Debug.WriteLine("Something went wrong db is null");
             }
@@ -277,6 +280,25 @@ namespace GBF_Never_Buddy
             return strip;
         }
 
+        private void AllocateData()
+        {
+            switch(gachaHandler.mode)
+            {
+                case Mode.Spark:
+                    break;
+                case Mode.Normal: 
+
+                    break;
+                case Mode.Free: 
+
+                    break;  
+            }
+        }
+
+        private void AddSparkResults()
+        {
+
+        }
 
 
         private void AddResults(object sender, EventArgs e)

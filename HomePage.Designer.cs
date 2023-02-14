@@ -39,6 +39,7 @@
             this.allToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.fromXMLFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.gachaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yoloLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sparkLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.freebieLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +53,7 @@
             this.goldBrickTallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.logsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dailyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -143,6 +144,13 @@
             this.gachaToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.gachaToolStripMenuItem.Text = "Gacha";
             // 
+            // logsToolStripMenuItem
+            // 
+            this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
+            this.logsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logsToolStripMenuItem.Text = "Logs";
+            this.logsToolStripMenuItem.Click += new System.EventHandler(this.OpenLogs);
+            // 
             // yoloLogToolStripMenuItem
             // 
             this.yoloLogToolStripMenuItem.Name = "yoloLogToolStripMenuItem";
@@ -160,6 +168,7 @@
             // freebieLogToolStripMenuItem
             // 
             this.freebieLogToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dailyToolStripMenuItem,
             this.finalDayToolStripMenuItem});
             this.freebieLogToolStripMenuItem.Name = "freebieLogToolStripMenuItem";
             this.freebieLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
@@ -168,7 +177,7 @@
             // finalDayToolStripMenuItem
             // 
             this.finalDayToolStripMenuItem.Name = "finalDayToolStripMenuItem";
-            this.finalDayToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.finalDayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.finalDayToolStripMenuItem.Text = "Final Day";
             this.finalDayToolStripMenuItem.Click += new System.EventHandler(this.LoadRouletteDay);
             // 
@@ -222,6 +231,7 @@
             this.goldBrickTallyToolStripMenuItem.Name = "goldBrickTallyToolStripMenuItem";
             this.goldBrickTallyToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
             this.goldBrickTallyToolStripMenuItem.Text = "Gold Brick Tally";
+            this.goldBrickTallyToolStripMenuItem.Click += new System.EventHandler(this.LoadGBForm);
             // 
             // mainPanel
             // 
@@ -236,12 +246,11 @@
             this.backgroundWorker1.WorkerReportsProgress = true;
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.UpdateProgress);
             // 
-            // logsToolStripMenuItem
+            // dailyToolStripMenuItem
             // 
-            this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            this.logsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.logsToolStripMenuItem.Text = "Logs";
-            this.logsToolStripMenuItem.Click += new System.EventHandler(this.OpenLogs);
+            this.dailyToolStripMenuItem.Name = "dailyToolStripMenuItem";
+            this.dailyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dailyToolStripMenuItem.Text = "Daily";
             // 
             // HomePage
             // 
@@ -287,5 +296,6 @@
         private ToolStripMenuItem fromXMLFileToolStripMenuItem1;
         private ToolStripMenuItem finalDayToolStripMenuItem;
         private ToolStripMenuItem logsToolStripMenuItem;
+        private ToolStripMenuItem dailyToolStripMenuItem;
     }
 }

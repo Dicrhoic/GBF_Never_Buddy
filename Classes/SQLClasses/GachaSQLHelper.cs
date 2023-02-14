@@ -81,6 +81,24 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
             return gachas;
         }
 
+        public List<GameDataClasses.GachaTable> FreeGachas()
+        {
+            List<GachaTable> gachas = new();
+            string queryString =
+            $"SELECT * FROM DrawData WHERE Freebie='Y';";
+            try
+            {
+                gachas = GachaTableData(queryString);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error: {ex.Message}");
+
+            }
+            return gachas;
+        }
+
+
         private List<GachaTable> GachaTableData(string queryString)
         {
             List<GachaTable> data = new();

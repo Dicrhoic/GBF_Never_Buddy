@@ -1,23 +1,31 @@
 ﻿using GBF_Never_Buddy.Classes.SQLClasses;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static GBF_Never_Buddy.Classes.GameDataClasses;
 
-namespace GBF_Never_Buddy.GachaForms
+namespace GBF_Never_Buddy.Forms.GachaFroms
 {
-    public partial class GachaLogForm : Form
+    public partial class FreebieLogForm : Form
     {
         ItemComparer comparer;
         GachaSQLHelper gachaSQL = new GachaSQLHelper();
         List<GachaTable> gachaTables;
         int drawID = -1;
-        public GachaLogForm()
+
+        public FreebieLogForm()
         {
             InitializeComponent();
             comparer = new ItemComparer();
             listView1.ListViewItemSorter = comparer;
-            gachaTables = gachaSQL.GachaList();
+            gachaTables = gachaSQL.FreeGachas();
             listView1.ListViewItemSorter = comparer;
             listView1.ColumnClick += SortListView;
             InitialiseListView();
@@ -89,7 +97,7 @@ namespace GBF_Never_Buddy.GachaForms
                         pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
                         pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
                         pictureBox.Load(summon.image);
-                        pictureBox.Dock = DockStyle.Fill;                    
+                        pictureBox.Dock = DockStyle.Fill;
                         pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
                         panel.Controls.Add(pictureBox);
                     }
@@ -104,8 +112,8 @@ namespace GBF_Never_Buddy.GachaForms
         }
 
         private void LoadDetailsSide(object? sender, ListViewItemSelectionChangedEventArgs e)
-        {   
-            if(sender == null)
+        {
+            if (sender == null)
             {
                 return;
             }
@@ -129,7 +137,7 @@ namespace GBF_Never_Buddy.GachaForms
                     strings[index] = amount.ToString();
                 }
                 index++;
-              
+
             }
             return strings;
         }
@@ -158,10 +166,10 @@ namespace GBF_Never_Buddy.GachaForms
         }
 
         private void SortListView(object? sender, ColumnClickEventArgs e)
-        {   
-            if(sender == null)
-            { 
-                return; 
+        {
+            if (sender == null)
+            {
+                return;
             }
             Debug.WriteLine($"{e.Column} clicked");
             int columnIndex = e.Column;
@@ -195,6 +203,11 @@ namespace GBF_Never_Buddy.GachaForms
             Debug.WriteLine("Click");
             string url = link;
             System.Diagnostics.Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+
+        }
+
+        private void LoadNewDraw(object sender, EventArgs e)
+        {
 
         }
     }
