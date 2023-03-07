@@ -1,4 +1,6 @@
-﻿using GBF_Never_Buddy.Classes.SQLClasses;
+﻿using GBF_Never_Buddy.Classes.GachaClasses;
+using GBF_Never_Buddy.Classes.SQLClasses;
+using GBF_Never_Buddy.GachaForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +18,7 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
     public partial class FreebieLogForm : Form
     {
         ItemComparer comparer;
+        GachaHandler gachaHandler = new();
         GachaSQLHelper gachaSQL = new GachaSQLHelper();
         List<GachaTable> gachaTables;
         int drawID = -1;
@@ -161,7 +164,6 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
                 name.Add(item);
             }
             listView1.Columns.Add("Date", -2, HorizontalAlignment.Left);
-            listView1.Columns.Add("Crystals Used", -2, HorizontalAlignment.Left);
             listView1.Items.AddRange(name.ToArray());
         }
 
@@ -203,12 +205,19 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
             Debug.WriteLine("Click");
             string url = link;
             System.Diagnostics.Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-
         }
 
         private void LoadNewDraw(object sender, EventArgs e)
         {
+            gachaHandler.mode = Mode.Free;
+            
+        }
 
+        private void LoadRoulette(object sender, EventArgs e)
+        {
+            gachaHandler.mode = Mode.Roulette;
+            RouletteLog rouletteForm = new RouletteLog(gachaHandler);
+            rouletteForm.Show();
         }
     }
 }

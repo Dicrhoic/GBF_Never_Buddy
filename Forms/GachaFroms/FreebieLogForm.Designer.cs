@@ -32,6 +32,10 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.newDrawToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rouletteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dailyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,7 +65,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newDrawToolStripMenuItem});
+            this.newDrawToolStripMenuItem,
+            this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1360, 24);
@@ -70,10 +75,40 @@
             // 
             // newDrawToolStripMenuItem
             // 
+            this.newDrawToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rouletteToolStripMenuItem,
+            this.dailyToolStripMenuItem});
             this.newDrawToolStripMenuItem.Name = "newDrawToolStripMenuItem";
             this.newDrawToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.newDrawToolStripMenuItem.Text = "New Draw";
-            this.newDrawToolStripMenuItem.Click += new System.EventHandler(this.LoadNewDraw);
+            // 
+            // rouletteToolStripMenuItem
+            // 
+            this.rouletteToolStripMenuItem.Name = "rouletteToolStripMenuItem";
+            this.rouletteToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.rouletteToolStripMenuItem.Text = "Roulette Final Day";
+            this.rouletteToolStripMenuItem.Click += new System.EventHandler(this.LoadRoulette);
+            // 
+            // dailyToolStripMenuItem
+            // 
+            this.dailyToolStripMenuItem.Name = "dailyToolStripMenuItem";
+            this.dailyToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.dailyToolStripMenuItem.Text = "Daily";
+            this.dailyToolStripMenuItem.Click += new System.EventHandler(this.LoadNewDraw);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dataToolStripMenuItem});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // dataToolStripMenuItem
+            // 
+            this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
+            this.dataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dataToolStripMenuItem.Text = "Data";
             // 
             // FreebieLogForm
             // 
@@ -99,5 +134,9 @@
         private ListView listView1;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem newDrawToolStripMenuItem;
+        private ToolStripMenuItem rouletteToolStripMenuItem;
+        private ToolStripMenuItem dailyToolStripMenuItem;
+        private ToolStripMenuItem editToolStripMenuItem;
+        private ToolStripMenuItem dataToolStripMenuItem;
     }
 }

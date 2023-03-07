@@ -17,7 +17,7 @@ namespace GBF_Never_Buddy.GachaForms
             int id = gachaHelper.Count();
             int crystals = gachaHandler.crystalsSpent;
             gacha = new GameDataClasses.GachaTable(id, id, crystals, date);
-            gachaHelper.InsertDataSpark(gacha);
+            gachaHelper.InsertDrawDataSpark(gacha);
             gachaHandler.drawID = id;
         }
 
@@ -42,6 +42,7 @@ namespace GBF_Never_Buddy.GachaForms
 
         private void LoadDrawForm(object sender, EventArgs e)
         {
+            gachaHandler.mode = Mode.Spark;
             GachaResultAdder Adder = new(gachaHandler);
             Adder.ShowDialog();
         }

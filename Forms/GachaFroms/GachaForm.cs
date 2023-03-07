@@ -3,26 +3,46 @@ using GBF_Never_Buddy.Classes.GachaClasses;
 using GBF_Never_Buddy.Classes.SQLClasses;
 using GBF_Never_Buddy.GachaForms;
 using System.Diagnostics;
+using static GBF_Never_Buddy.Classes.RaidClasses;
 
 namespace GBF_Never_Buddy
 {
     public partial class GachaForm : Form
     {
-        GachaHandler gachaHandler = new();
+        GachaHandler gachaHandler;
         GameDataClasses.GachaTable gacha;
         GachaSQLHelper gachaHelper = new();
 
-        public GachaForm()
+        public GachaForm(GachaHandler gachaHandler)
         {
-            InitializeComponent();
-            string date = DateTime.Now.ToString("yyyy-MM-dd");
+            InitializeComponent();  
+            this.gachaHandler = gachaHandler;
             int drawId = gachaHelper.DrawCount();
+            string date = DateTime.Now.ToString("yyyy-MM-dd");
             int id = gachaHelper.Count();
             int crystals = gachaHandler.crystalsSpent;
+            if(gachaHandler.mode == Mode.Free)
+            {
+                crystals = 0;
+            }
             gacha = new GameDataClasses.GachaTable(id, id, crystals, date);
-            gachaHelper.InsertData(gacha);
+            switch (gachaHandler.mode)
+            {
+                case Mode.Free:
+                    gachaHelper.InsertDataFree(gacha);           
+                    break;
+                case Mode.Normal:
+                    gachaHelper.InsertData(gacha);
+                    break;
+            }
+
+          
+          
             gachaHandler.drawID = id;
+
+
         }
+
 
         public void ChangeTableRows()
         {
@@ -50,6 +70,7 @@ namespace GBF_Never_Buddy
 
         private void OpenResults(object sender, EventArgs e)
         {
+           
             ResultsForm results = new(gachaHandler);
             results.Show();
         }

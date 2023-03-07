@@ -38,12 +38,12 @@
             this.updateSummonsDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.fromXMLFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.addDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gachaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yoloLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sparkLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.freebieLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.finalDayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.collectionTrackerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eternalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recruitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +53,7 @@
             this.goldBrickTallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.dailyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,9 +82,11 @@
             // 
             this.createAllSSRCharacterListToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.updateDatabaseToolStripMenuItem,
-            this.updateSummonsDBToolStripMenuItem});
+            this.updateSummonsDBToolStripMenuItem,
+            this.addDataToolStripMenuItem,
+            this.editDataToolStripMenuItem});
             this.createAllSSRCharacterListToolStripMenuItem.Name = "createAllSSRCharacterListToolStripMenuItem";
-            this.createAllSSRCharacterListToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.createAllSSRCharacterListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.createAllSSRCharacterListToolStripMenuItem.Text = "Database";
             // 
             // updateDatabaseToolStripMenuItem
@@ -133,6 +135,13 @@
             this.fromXMLFileToolStripMenuItem1.Text = "From XML File";
             this.fromXMLFileToolStripMenuItem1.Click += new System.EventHandler(this.LoadXMLDataSummons);
             // 
+            // addDataToolStripMenuItem
+            // 
+            this.addDataToolStripMenuItem.Name = "addDataToolStripMenuItem";
+            this.addDataToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.addDataToolStripMenuItem.Text = "Add Data";
+            this.addDataToolStripMenuItem.Click += new System.EventHandler(this.AddData);
+            // 
             // gachaToolStripMenuItem
             // 
             this.gachaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -147,39 +156,30 @@
             // logsToolStripMenuItem
             // 
             this.logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            this.logsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logsToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.logsToolStripMenuItem.Text = "Logs";
             this.logsToolStripMenuItem.Click += new System.EventHandler(this.OpenLogs);
             // 
             // yoloLogToolStripMenuItem
             // 
             this.yoloLogToolStripMenuItem.Name = "yoloLogToolStripMenuItem";
-            this.yoloLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.yoloLogToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.yoloLogToolStripMenuItem.Text = "Yolo";
             this.yoloLogToolStripMenuItem.Click += new System.EventHandler(this.LoadYoloLog);
             // 
             // sparkLogToolStripMenuItem
             // 
             this.sparkLogToolStripMenuItem.Name = "sparkLogToolStripMenuItem";
-            this.sparkLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sparkLogToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.sparkLogToolStripMenuItem.Text = "Spark";
             this.sparkLogToolStripMenuItem.Click += new System.EventHandler(this.LoadSparkForm);
             // 
             // freebieLogToolStripMenuItem
             // 
-            this.freebieLogToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dailyToolStripMenuItem,
-            this.finalDayToolStripMenuItem});
             this.freebieLogToolStripMenuItem.Name = "freebieLogToolStripMenuItem";
-            this.freebieLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.freebieLogToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.freebieLogToolStripMenuItem.Text = "Freebie Log";
-            // 
-            // finalDayToolStripMenuItem
-            // 
-            this.finalDayToolStripMenuItem.Name = "finalDayToolStripMenuItem";
-            this.finalDayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.finalDayToolStripMenuItem.Text = "Final Day";
-            this.finalDayToolStripMenuItem.Click += new System.EventHandler(this.LoadRouletteDay);
+            this.freebieLogToolStripMenuItem.Click += new System.EventHandler(this.LoadFreeLog);
             // 
             // collectionTrackerToolStripMenuItem
             // 
@@ -246,11 +246,12 @@
             this.backgroundWorker1.WorkerReportsProgress = true;
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.UpdateProgress);
             // 
-            // dailyToolStripMenuItem
+            // editDataToolStripMenuItem
             // 
-            this.dailyToolStripMenuItem.Name = "dailyToolStripMenuItem";
-            this.dailyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.dailyToolStripMenuItem.Text = "Daily";
+            this.editDataToolStripMenuItem.Name = "editDataToolStripMenuItem";
+            this.editDataToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.editDataToolStripMenuItem.Text = "Edit Data";
+            this.editDataToolStripMenuItem.Click += new System.EventHandler(this.OpenEditor);
             // 
             // HomePage
             // 
@@ -294,8 +295,8 @@
         private ToolStripMenuItem updateSummonsDBToolStripMenuItem;
         private ToolStripMenuItem allToolStripMenuItem1;
         private ToolStripMenuItem fromXMLFileToolStripMenuItem1;
-        private ToolStripMenuItem finalDayToolStripMenuItem;
         private ToolStripMenuItem logsToolStripMenuItem;
-        private ToolStripMenuItem dailyToolStripMenuItem;
+        private ToolStripMenuItem addDataToolStripMenuItem;
+        private ToolStripMenuItem editDataToolStripMenuItem;
     }
 }

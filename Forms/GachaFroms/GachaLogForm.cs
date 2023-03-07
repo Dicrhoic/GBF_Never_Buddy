@@ -3,6 +3,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Windows.Forms;
 using static GBF_Never_Buddy.Classes.GameDataClasses;
+using static GBF_Never_Buddy.Classes.RaidClasses;
 
 namespace GBF_Never_Buddy.GachaForms
 {
@@ -12,6 +13,7 @@ namespace GBF_Never_Buddy.GachaForms
         GachaSQLHelper gachaSQL = new GachaSQLHelper();
         List<GachaTable> gachaTables;
         int drawID = -1;
+        bool dataLoaded = false;
         public GachaLogForm()
         {
             InitializeComponent();
@@ -26,23 +28,43 @@ namespace GBF_Never_Buddy.GachaForms
             resultsTable.Visible = false;
         }
 
-        private void LoadGachaData(object? sender, EventArgs e)
+        private async void LoadGachaData(object? sender, EventArgs e)
         {
             DisplayPanel();
         }
 
-        private async void DisplayPanel()
+        private List<GachaDetails> DrawList()
         {
+            List<GachaDetails> gachaDetails = gachaSQL.GachaDetails(drawID);
+            return gachaDetails;
+        }
+
+        private async Task<bool> DrawListLoaded(List<GachaDetails> data)
+        {
+            List<GachaDetails> gachaDetails = DrawList();
+            data.AddRange(gachaDetails);
+            Debug.WriteLine(data.Count);
+            await Task.Delay(1000); 
+            if(data.Count > 0)
+            {
+                return true;
+            }
+            return false;   
+        }
+
+        private void DisplayPanel()
+        {   
+            
+            Debug.WriteLine("Function called");
             resultsTable.Controls.Clear();
             resultsTable.Visible = true;
             resultsTable.AutoScroll = true;
-            await Task.Delay(10);
             List<GachaDetails> gachaDetails = gachaSQL.GachaDetails(drawID);
-            Debug.WriteLine($"Gacha count: {gachaDetails.Count}, DrawID: {drawID}");
+            Debug.WriteLine(gachaDetails.Count);
             foreach (GachaDetails details in gachaDetails)
             {
                 RichTextBox textBox = new RichTextBox();
-                string text = $"Draw Numnber: {details.drawNumber}\nCrystals Used: {details.crystalsUsed}";
+                string text = $"Draw Number: {details.drawNumber}\nCrystals Used: {details.crystalsUsed}";
                 textBox.Text = text;
                 textBox.Dock = DockStyle.Top;
                 textBox.Height = 40;
@@ -89,7 +111,7 @@ namespace GBF_Never_Buddy.GachaForms
                         pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
                         pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
                         pictureBox.Load(summon.image);
-                        pictureBox.Dock = DockStyle.Fill;                    
+                        pictureBox.Dock = DockStyle.Fill;
                         pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
                         panel.Controls.Add(pictureBox);
                     }
@@ -101,6 +123,9 @@ namespace GBF_Never_Buddy.GachaForms
                     $" Characters: {details.characters} Sum: {details.summons}" +
                     $" Crystals: {details.crystalsUsed} Draw Num: {details.drawNumber}");
             }
+
+
+
         }
 
         private void LoadDetailsSide(object? sender, ListViewItemSelectionChangedEventArgs e)

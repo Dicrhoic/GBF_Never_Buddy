@@ -14,7 +14,7 @@ namespace GBF_Never_Buddy.Classes.DatabaseHandlers
         {
 
             string path = Application.StartupPath + "Database\\localDB.db";
-            Debug.WriteLine($"path is {path}");
+            //Debug.WriteLine($"path is {path}");
             return $"Data Source={path};";
             //return $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={path};Integrated Security=True";
         }

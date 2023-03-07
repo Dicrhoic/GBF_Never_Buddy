@@ -26,6 +26,12 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                 $" ({id}, N'{data.name}', N'{data.element}', N'{data.series}', N'{data.image}', N'{data.link}')";
             return query;
         }
+
+        public void AddSummonData(Summon summon, int id)
+        {
+            string query = UpdateTableQueryString(summon, id);
+            RunSQLQuery(query); 
+        }
         public void UpdateDBFromXML()
         {
             string? path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -179,16 +185,16 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
             "SELECT * FROM SSRSummons;";
             try
             {
-                using (SqlConnection connection = new SqlConnection(
+                using (SqliteConnection connection = new SqliteConnection(
                         GetConnectionString()))
                 {
 
                     Debug.WriteLine(connection.Database);
                     Debug.WriteLine(queryString);
-                    SqlCommand command = new SqlCommand(
+                    SqliteCommand command = new SqliteCommand(
                     queryString, connection);
                     connection.Open();
-                    SqlDataReader reader;
+                    SqliteDataReader reader;
                     reader = command.ExecuteReader();
                     string output = "";
                     while (reader.Read())
@@ -292,8 +298,6 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                         GetConnectionString()))
                 {
 
-                    Debug.WriteLine(connection.Database);
-                    Debug.WriteLine(queryString);
                     SqliteCommand command = new SqliteCommand(
                     queryString, connection);
                     connection.Open();
@@ -302,7 +306,6 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                     while (reader.Read())
                     {
                         UpdateDBNameList((IDataRecord)reader, charNames);
-                        Debug.WriteLine($"Ran {index} times");
                         index++;
                     }
                     Debug.WriteLine(charNames.Count());
@@ -382,8 +385,6 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                         GetConnectionString()))
                 {
 
-                    Debug.WriteLine(connection.Database);
-                    Debug.WriteLine(queryString);
                     SqliteCommand command = new SqliteCommand(
                     queryString, connection);
                     connection.Open();
@@ -392,7 +393,6 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                     while (reader.Read())
                     {
                         AddDataToList((IDataRecord)reader, summons);
-                        Debug.WriteLine($"Ran {index} times");
                         index++;
                     }
                     connection.Close();

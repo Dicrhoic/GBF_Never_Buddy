@@ -1,6 +1,8 @@
 using GBF_Never_Buddy.Classes.DatabaseHandlers;
+using GBF_Never_Buddy.Classes.GachaClasses;
 using GBF_Never_Buddy.Classes.SQLClasses;
 using GBF_Never_Buddy.Forms;
+using GBF_Never_Buddy.Forms.GachaFroms;
 using GBF_Never_Buddy.GachaForms;
 using System.Diagnostics;
 using System.IO;
@@ -48,7 +50,9 @@ namespace GBF_Never_Buddy
 
         private void LoadYoloLog(object sender, EventArgs e)
         {
-            GachaForm gachaForm = new GachaForm();
+            GachaHandler gachaHandler = new();
+            gachaHandler.mode = Mode.Normal;
+            GachaForm gachaForm = new GachaForm(gachaHandler);
             gachaForm.Show();
         }
 
@@ -89,8 +93,7 @@ namespace GBF_Never_Buddy
 
         private void LoadRouletteDay(object sender, EventArgs e)
         {
-            RouletteLog rouletteForm = new RouletteLog();
-            rouletteForm.Show();
+            
         }
 
         private void OpenLogs(object sender, EventArgs e)
@@ -109,6 +112,36 @@ namespace GBF_Never_Buddy
             }
 
    
+        }
+
+        private void LoadFreeLog(object sender, EventArgs e)
+        {
+            var openForm = Application.OpenForms["FreebieLogForm"];
+            if (openForm == null)
+            {
+                FreebieLogForm form = new();
+                form.Show();
+            }
+        }
+
+        private void AddData(object sender, EventArgs e)
+        {
+            var openForm = Application.OpenForms["DataAdderForm"];
+            if (openForm == null)
+            {
+                DataAdderForm form = new();
+                form.Show();
+            }
+        }
+
+        private void OpenEditor(object sender, EventArgs e)
+        {
+            var openForm = Application.OpenForms["DataEditorForm"];
+            if (openForm == null)
+            {
+                DataEditorForm form = new();
+                form.Show();
+            }
         }
     }
 }

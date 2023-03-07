@@ -7,16 +7,17 @@ namespace GBF_Never_Buddy.GachaForms
     public partial class RouletteLog : Form
     {
         RouletteCounter counter;
-
-        public RouletteLog()
+        GachaHandler gachaHandler;
+        public RouletteLog(GachaHandler handler)
         {
             InitializeComponent();
             DateTime dateTime = DateTime.Now;
+            gachaHandler = handler;
             label1.Text = dateTime.ToString("d/M/yyyy");
             counter = new RouletteCounter();
         }
 
-        GachaHandler gachaHandler = new();
+      
 
         public void ChangeTableRows()
         {

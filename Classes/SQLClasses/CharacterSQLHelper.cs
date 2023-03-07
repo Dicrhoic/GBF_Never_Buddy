@@ -22,9 +22,55 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
 
         private string UpdateCharTableQueryString(GameDataClasses.Character character, int id)
         {
-            string query = $"INSERT INTO [GachaCharacterList] ([Id], [Name], [Element], [Series], [Image], [Link]) VALUES" +
+            string query = $"INSERT INTO [GachaCharacters] ([Id], [Name], [Element], [Series], [Image], [Link]) VALUES" +
                 $" ({id}, N'{character.name}', N'{character.element}', N'{character.series}', N'{character.image}', N'{character.link}')";
             return query;
+        }
+
+        private string InsertQuery()
+        {
+            string query = $"INSERT INTO [GachaCharacters] ([Id], [Name], [Element], [Series], [Image], [Link]) " +
+                $"VALUES (@id, @name, @element, @series, @image, @link)";
+            return query;
+        }
+
+        public void AddCharacterData(GameDataClasses.Character character, int id)
+        {
+            MBHelper mB = new MBHelper();
+            string query = InsertQuery();
+            try
+            {
+                using (SqliteConnection connection = new SqliteConnection(
+                        GetConnectionString()))
+                {
+
+                    Debug.WriteLine(connection.Database);
+                    Debug.WriteLine(query);
+                    SqliteCommand command = new SqliteCommand(
+                    query, connection);
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@name", character.name);
+                    command.Parameters.AddWithValue("@element", character.element);
+                    command.Parameters.AddWithValue("@series", character.series);
+                    command.Parameters.AddWithValue("@link", character.link);
+                    command.Parameters.AddWithValue("@image", character.image);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    string message = $"Succesfully added {character.name}\n{character.series}\n" +
+                        $"{character.element} to database.";
+                    string caption = $"Added to database";
+                    mB.SuccessMB(message, caption);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error: {ex.Message}");           
+                string caption = $"Error Adding to DB";
+                mB.ErrorMB(ex.Message, caption);
+            }
+
         }
 
         public void UpdateCharDBFromXML()
@@ -183,16 +229,14 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
             "SELECT * FROM GachaCharacters;";
             try
             {
-                using (SqlConnection connection = new SqlConnection(
+                using (SqliteConnection connection = new SqliteConnection(
                         GetConnectionString()))
                 {
 
-                    Debug.WriteLine(connection.Database);
-                    Debug.WriteLine(queryString);
-                    SqlCommand command = new SqlCommand(
+                    SqliteCommand command = new SqliteCommand(
                     queryString, connection);
                     connection.Open();
-                    SqlDataReader reader;
+                    SqliteDataReader reader;
                     reader = command.ExecuteReader();
                     string output = "";
                     while (reader.Read())
@@ -277,8 +321,6 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                         GetConnectionString()))
                 {
 
-                    Debug.WriteLine(connection.Database);
-                    Debug.WriteLine(queryString);
                     SqliteCommand command = new SqliteCommand(
                     queryString, connection);
                     connection.Open();
@@ -287,7 +329,6 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                     while (reader.Read())
                     {
                         AddCharacterToList((IDataRecord)reader, characters);
-                        Debug.WriteLine($"Ran {index} times");
                         index++;
                     }
                     connection.Close();

@@ -1,4 +1,4 @@
-﻿using GBF_Never_Buddy.Classes;
+﻿ using GBF_Never_Buddy.Classes;
 using GBF_Never_Buddy.Classes.GachaClasses;
 using GBF_Never_Buddy.Classes.SQLClasses;
 using GBF_Never_Buddy.GachaForms;
@@ -12,7 +12,7 @@ namespace GBF_Never_Buddy
     {
         CharacterSQLHelper characterSQLHelper = new();
         SummonSQLHelper summonSQLHelper = new();
-        GachaHandler? gachaHandler = null;
+        GachaHandler gachaHandler;
         GachaSQLHelper gacha = new();
         List<GameDataClasses.Character>? characterList;
         List<GameDataClasses.Summon>? summonsList;
@@ -28,10 +28,19 @@ namespace GBF_Never_Buddy
         {
             InitializeComponent();
             gachaHandler = handler;
-            id = gachaHandler.drawID;
+            InitialiseHandler();
+        }
+
+        private void InitialiseHandler()
+        {
+            id = gachaHandler.drawID - 1;
             drawNumber = gachaHandler.drawNumber;
             crystalsUsed = gachaHandler.crystalsSpent;
-            Debug.WriteLine($"ID: {id}");
+            if(gachaHandler.mode == Mode.Free || gachaHandler.mode == Mode.Roulette)
+            {
+                crystalsUsed = 0;
+            }
+            Debug.WriteLine($"ID: {id}, '\t' mode: {gachaHandler.mode}");
             Debug.WriteLine($"Crystals Spent: {gachaHandler.crystalsSpent}. Draw Number {gachaHandler.drawNumber}");
         }
 
@@ -297,11 +306,99 @@ namespace GBF_Never_Buddy
 
         private void AddSparkResults()
         {
+            Form form = Application.OpenForms["SparkForm"];
+            if (form != null)
+            {
+                GachaForm parent = (GachaForm)form;
+                Panel panel = resultsPanel;
+                //Debug.WriteLine($"Panel Width: {panel.Width}");
+                var table = form.Controls["resultsTable"];
+                int width = table.Width;
+                //Debug.WriteLine($"Table Width: {width}");
+                panel.Width = width;
+                panel.AutoSize = true;
+                //Debug.WriteLine($"Panel Width: {panel.Width}");
+                table.Controls.Add(panel);
+                parent.ChangeTableRows();
+                UpdateList();
+                string chars = "";
+                for (int i = 0; i < obtainedCharList.Count; i++)
+                {
+                    Debug.WriteLine($"{obtainedCharList[i].Item2.name}");
+                    if (i == obtainedCharList.Count - 1)
+                    {
+                        chars += $"{obtainedCharList[i].Item2.name}";
+                    }
+                    if (i < obtainedCharList.Count - 1)
+                    {
+                        chars += $"{obtainedCharList[i].Item2.name},";
+                    }
+                }
+                string sums = "";
+                for (int i = 0; i < obtainedSummonsList.Count; i++)
+                {
+                    Debug.WriteLine($"{obtainedSummonsList[i].Item2.name}");
+                    if (i == obtainedSummonsList.Count - 1)
+                    {
+                        sums += $"{obtainedSummonsList[i].Item2.name}";
+                    }
+                    if (i < obtainedSummonsList.Count - 1)
+                    {
+                        sums += $"{obtainedSummonsList[i].Item2.name}, ";
+                    }
+                }
+                id++;
+                GachaDetails results = new GachaDetails(id, id, chars, sums, drawNumber, crystalsUsed);
+                try
+                {
+                    gacha.InsertResults(results);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+                Debug.WriteLine(chars);
+                this.Close();
 
+            }
         }
 
+        private void AddRouletteResults()
+        {
+            Form form = Application.OpenForms["RouletteLog"];
+            if (form != null)
+            {
+                RouletteLog parent = (RouletteLog)form;
+                var tabControl = form.Controls["dataTabs"];
+                TabControl tab = (TabControl)tabControl;
+                Panel panel = resultsPanel;
+                int width = 0;
+                if (tab.SelectedIndex == 0)
+                {
+                    var table = tab.Controls["gachapinTab"].Controls["resultsTableGP"];
+                    width = table.Width;
+                    panel.Width = width;
+                    panel.AutoSize = true;
+                    //Debug.WriteLine($"Panel Width: {panel.Width}");
+                    table.Controls.Add(panel);
+                }
+                if (tab.SelectedIndex == 1)
+                {
+                    var table = tab.Controls["MukkuTab"].Controls["resultsTable"];
+                    width = table.Width;
+                    panel.Width = width;
+                    panel.AutoSize = true;
+                    //Debug.WriteLine($"Panel Width: {panel.Width}");
+                    table.Controls.Add(panel);
+                }
 
-        private void AddResults(object sender, EventArgs e)
+                parent.ChangeTableRows();
+                UpdateList();
+                this.Close();
+            }
+        }
+
+        private void AddResultsNormal()
         {
             Form form = Application.OpenForms["GachaForm"];
             if (form != null)
@@ -358,36 +455,25 @@ namespace GBF_Never_Buddy
                 this.Close();
 
             }
-            form = Application.OpenForms["RouletteLog"];
-            if (form != null)
-            {
-                RouletteLog parent = (RouletteLog)form;
-                var tabControl = form.Controls["dataTabs"];
-                TabControl tab = (TabControl)tabControl;
-                Panel panel = resultsPanel;
-                int width = 0;
-                if (tab.SelectedIndex == 0)
-                {
-                    var table = tab.Controls["gachapinTab"].Controls["resultsTableGP"];
-                    width = table.Width;
-                    panel.Width = width;
-                    panel.AutoSize = true;
-                    //Debug.WriteLine($"Panel Width: {panel.Width}");
-                    table.Controls.Add(panel);
-                }
-                if (tab.SelectedIndex == 1)
-                {
-                    var table = tab.Controls["MukkuTab"].Controls["resultsTable"];
-                    width = table.Width;
-                    panel.Width = width;
-                    panel.AutoSize = true;
-                    //Debug.WriteLine($"Panel Width: {panel.Width}");
-                    table.Controls.Add(panel);
-                }
+        }
 
-                parent.ChangeTableRows();
-                UpdateList();
-                this.Close();
+
+        private void AddResults(object sender, EventArgs e)
+        {
+           switch(gachaHandler.mode)
+            {
+                case Mode.Normal:
+                    AddResultsNormal();
+                    break;
+                case Mode.Spark:
+                    AddSparkResults();
+                    break;
+                case Mode.Free:
+                    AddResultsNormal();
+                    break;
+                case Mode.Roulette:
+                    AddRouletteResults();   
+                    break;
             }
         }
 
