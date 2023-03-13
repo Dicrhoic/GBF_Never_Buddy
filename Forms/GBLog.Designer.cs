@@ -28,146 +28,145 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.subRB = new System.Windows.Forms.RadioButton();
-            this.addRB = new System.Windows.Forms.RadioButton();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.raidImage = new System.Windows.Forms.PictureBox();
-            this.panel1.SuspendLayout();
-            this.panel5.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.raidImage)).BeginInit();
-            this.SuspendLayout();
+            panel1 = new Panel();
+            panel5 = new Panel();
+            label1 = new Label();
+            subRB = new RadioButton();
+            addRB = new RadioButton();
+            comboBox1 = new ComboBox();
+            panel2 = new Panel();
+            panel4 = new Panel();
+            panel3 = new Panel();
+            raidImage = new PictureBox();
+            panel1.SuspendLayout();
+            panel5.SuspendLayout();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)raidImage).BeginInit();
+            SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.panel5);
-            this.panel1.Controls.Add(this.comboBox1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(760, 55);
-            this.panel1.TabIndex = 0;
+            panel1.Controls.Add(panel5);
+            panel1.Controls.Add(comboBox1);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(760, 55);
+            panel1.TabIndex = 0;
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.label1);
-            this.panel5.Controls.Add(this.subRB);
-            this.panel5.Controls.Add(this.addRB);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel5.Location = new System.Drawing.Point(0, 0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(760, 26);
-            this.panel5.TabIndex = 1;
+            panel5.Controls.Add(label1);
+            panel5.Controls.Add(subRB);
+            panel5.Controls.Add(addRB);
+            panel5.Dock = DockStyle.Top;
+            panel5.Location = new Point(0, 0);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(760, 26);
+            panel5.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label1.Location = new System.Drawing.Point(722, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 15);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "label1";
+            label1.AutoSize = true;
+            label1.Dock = DockStyle.Right;
+            label1.Location = new Point(722, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(38, 15);
+            label1.TabIndex = 2;
+            label1.Text = "label1";
             // 
             // subRB
             // 
-            this.subRB.AutoSize = true;
-            this.subRB.Dock = System.Windows.Forms.DockStyle.Left;
-            this.subRB.Location = new System.Drawing.Point(33, 0);
-            this.subRB.Name = "subRB";
-            this.subRB.Size = new System.Drawing.Size(30, 26);
-            this.subRB.TabIndex = 1;
-            this.subRB.TabStop = true;
-            this.subRB.Text = "-";
-            this.subRB.UseVisualStyleBackColor = true;
+            subRB.AutoSize = true;
+            subRB.Dock = DockStyle.Left;
+            subRB.Location = new Point(33, 0);
+            subRB.Name = "subRB";
+            subRB.Size = new Size(30, 26);
+            subRB.TabIndex = 1;
+            subRB.TabStop = true;
+            subRB.Text = "-";
+            subRB.UseVisualStyleBackColor = true;
             // 
             // addRB
             // 
-            this.addRB.AutoSize = true;
-            this.addRB.Checked = true;
-            this.addRB.Dock = System.Windows.Forms.DockStyle.Left;
-            this.addRB.Location = new System.Drawing.Point(0, 0);
-            this.addRB.Name = "addRB";
-            this.addRB.Size = new System.Drawing.Size(33, 26);
-            this.addRB.TabIndex = 0;
-            this.addRB.TabStop = true;
-            this.addRB.Text = "+";
-            this.addRB.UseVisualStyleBackColor = true;
+            addRB.AutoSize = true;
+            addRB.Checked = true;
+            addRB.Dock = DockStyle.Left;
+            addRB.Location = new Point(0, 0);
+            addRB.Name = "addRB";
+            addRB.Size = new Size(33, 26);
+            addRB.TabIndex = 0;
+            addRB.TabStop = true;
+            addRB.Text = "+";
+            addRB.UseVisualStyleBackColor = true;
             // 
             // comboBox1
             // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(0, 32);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(760, 23);
-            this.comboBox1.TabIndex = 0;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.UpdateOption);
+            comboBox1.Dock = DockStyle.Bottom;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(0, 32);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(760, 23);
+            comboBox1.TabIndex = 0;
+            comboBox1.SelectedIndexChanged += UpdateOption;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.panel4);
-            this.panel2.Controls.Add(this.panel3);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 55);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(760, 395);
-            this.panel2.TabIndex = 1;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            panel2.Controls.Add(panel4);
+            panel2.Controls.Add(panel3);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(0, 55);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(760, 395);
+            panel2.TabIndex = 1;
+            panel2.Paint += panel2_Paint;
             // 
             // panel4
             // 
-            this.panel4.AutoScroll = true;
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(0, 137);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(760, 258);
-            this.panel4.TabIndex = 1;
+            panel4.AutoScroll = true;
+            panel4.Dock = DockStyle.Fill;
+            panel4.Location = new Point(0, 137);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(760, 258);
+            panel4.TabIndex = 1;
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.raidImage);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(760, 137);
-            this.panel3.TabIndex = 0;
+            panel3.Controls.Add(raidImage);
+            panel3.Dock = DockStyle.Top;
+            panel3.Location = new Point(0, 0);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(760, 137);
+            panel3.TabIndex = 0;
             // 
             // raidImage
             // 
-            this.raidImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.raidImage.Location = new System.Drawing.Point(0, 0);
-            this.raidImage.Name = "raidImage";
-            this.raidImage.Size = new System.Drawing.Size(760, 137);
-            this.raidImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.raidImage.TabIndex = 0;
-            this.raidImage.TabStop = false;
+            raidImage.Dock = DockStyle.Fill;
+            raidImage.Location = new Point(0, 0);
+            raidImage.Name = "raidImage";
+            raidImage.Size = new Size(760, 137);
+            raidImage.SizeMode = PictureBoxSizeMode.CenterImage;
+            raidImage.TabIndex = 0;
+            raidImage.TabStop = false;
             // 
             // GBLog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(760, 450);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
-            this.Name = "GBLog";
-            this.Text = "GBLog";
-            this.panel1.ResumeLayout(false);
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.raidImage)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(760, 450);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
+            Name = "GBLog";
+            Text = "GBLog";
+            panel1.ResumeLayout(false);
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)raidImage).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion

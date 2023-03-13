@@ -17,6 +17,36 @@ namespace GBF_Never_Buddy.Classes
             public int mvpChestContents;
             public int blueChestContents;
             public int attempts;
+            public int hGB;
+            public int gbB;
+            public int blueChest;
+
+
+            public void UpdateBlueChest(int increment)
+            {
+                blueChest += increment;
+            }
+
+            public void UpdatehGB(int increment)
+            {
+                hGB += increment;
+            }
+
+            public void UpdategbB(int increment)
+            {
+                gbB += increment;
+            }
+
+
+            public void UpdateAttempts(int increment)
+            {
+                int output = attempts + increment;
+                if (output >= 0)
+                {
+                    attempts += increment;
+                }
+
+            }
         }
 
         public class BahaHL : RaidData
@@ -45,8 +75,9 @@ namespace GBF_Never_Buddy.Classes
                 AddDataForChest();
                 LoadTableFormat();
                 RaidDropData = new(name, id);
-
-
+                attempts = raidHelper.AttemptsDB(id);
+                Debug.WriteLine($"Class Called attempts: {attempts}");
+                
             }
 
             private void LoadTableFormat()
@@ -93,6 +124,8 @@ namespace GBF_Never_Buddy.Classes
                 CreateShareChestContents();
             }
 
+         
+
             public void SetAttempts(int count)
             {
                 this.attempts = count;
@@ -122,7 +155,7 @@ namespace GBF_Never_Buddy.Classes
                     label2.Name = $"{itemData.name}_Ratelabel";
                     button.Name = name;
                     Tuple<Label, Label> tuple = new Tuple<Label, Label>(label, label2);
-                    Tuple<ChestContents, Tuple<Label, Label>> linkedData = new Tuple<ChestContents, Tuple<Label, Label>>(itemData, tuple);
+                    Tuple<ChestContents, Tuple<Label, Label>> linkedData = new Tuple<ChestContents, Tuple<Label, Label>>(itemData, tuple);                    
                     button.Click += (s, e) => { ItemClickedOnFunction(linkedData, raidHelper); };
                     panel.Controls.Add(button);
                     panel.Height = 195;
@@ -131,6 +164,7 @@ namespace GBF_Never_Buddy.Classes
                     panel.Controls.Add(label2);
                     host.Controls.Add(panel);
                     dataTagsHost.Add(tuple);
+                    LoadRaidData(linkedData);
                     count++;
                 }
                 
@@ -162,6 +196,7 @@ namespace GBF_Never_Buddy.Classes
                     panel.Controls.Add(label2);
                     blue.Controls.Add(panel);
                     dataTagsChest.Add(tuple);
+                    LoadRaidData(linkedData);
                     Debug.WriteLine("Added item");
                 }
                 host.Dock = DockStyle.Top;
@@ -227,10 +262,50 @@ namespace GBF_Never_Buddy.Classes
                 ChestContents chest = linkedData.Item1;
                 int index = linkedData.Item1.index;
                 string dataStr = RaidDropData.DropString(RaidDropData.id);
-                
+                string rateStr = RaidDropData.RateString(RaidDropData.id);
+
+                helper.id = RaidDropData.id;
+                helper.Attempts = attempts;
                 helper.CurrentChest(chest);
-                helper.UpdateValue(linkedData, index, dataStr);
-                Debug.WriteLine($"data:{dataStr}, index:{index}");
+                helper.UpdateValue(linkedData, index, dataStr, rateStr, RaidDropData);
+            }
+
+            private void LoadRaidData(Tuple<ChestContents, Tuple<Label, Label>> linkedData)
+            {
+
+                    ChestContents chest1 = linkedData.Item1;
+                    int index = linkedData.Item1.index;
+                    string dataStr = RaidDropData.DropString(RaidDropData.id);
+                    string rateStr = RaidDropData.RateString(RaidDropData.id);
+                    raidHelper.DisplayData(linkedData, index, dataStr, rateStr);
+                
+            }
+
+        }
+
+
+
+        public class XenoIfritMilitis : RaidData
+        {
+            public List<Tuple<ChestContents, int>> hostChests;
+            public List<Tuple<Label, Label>> dataTagsHost = new();
+            TableLayoutPanel host = new TableLayoutPanel();
+            RaidClasses raidHelper;
+            RaidClasses.RaidDropData RaidDropData;
+
+            public XenoIfritMilitis(RaidClasses raidClasses, int id)
+            {
+                raidHelper = raidClasses;
+                hostChestContents = 3;
+                mvpChestContents = 2;
+                blueChestContents = 4;
+                name = "Wings of Terror (Impossible)";
+                hostChests = new List<Tuple<ChestContents, int>>();
+                //LoadTableFormat();
+                RaidDropData = new(name, id);
+                attempts = raidHelper.AttemptsDB(id);
+                Debug.WriteLine($"Class Called attempts: {attempts}");
+
             }
 
         }

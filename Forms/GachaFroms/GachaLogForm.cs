@@ -33,25 +33,6 @@ namespace GBF_Never_Buddy.GachaForms
             DisplayPanel();
         }
 
-        private List<GachaDetails> DrawList()
-        {
-            List<GachaDetails> gachaDetails = gachaSQL.GachaDetails(drawID);
-            return gachaDetails;
-        }
-
-        private async Task<bool> DrawListLoaded(List<GachaDetails> data)
-        {
-            List<GachaDetails> gachaDetails = DrawList();
-            data.AddRange(gachaDetails);
-            Debug.WriteLine(data.Count);
-            await Task.Delay(1000); 
-            if(data.Count > 0)
-            {
-                return true;
-            }
-            return false;   
-        }
-
         private void DisplayPanel()
         {   
             

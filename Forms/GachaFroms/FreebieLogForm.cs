@@ -42,12 +42,11 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
             DisplayPanel();
         }
 
-        private async void DisplayPanel()
+        private void DisplayPanel()
         {
             resultsTable.Controls.Clear();
             resultsTable.Visible = true;
             resultsTable.AutoScroll = true;
-            await Task.Delay(10);
             List<GachaDetails> gachaDetails = gachaSQL.GachaDetails(drawID);
             Debug.WriteLine($"Gacha count: {gachaDetails.Count}, DrawID: {drawID}");
             foreach (GachaDetails details in gachaDetails)
@@ -122,7 +121,7 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
             }
             ListView parent = (ListView)sender;
             int index = e.ItemIndex;
-            drawID = Int32.Parse(parent.Items[index].SubItems[3].Text);
+            drawID = Int32.Parse(parent.Items[index].SubItems[2].Text);
         }
 
         private string[] CrystalCount(List<GachaTable> details)
@@ -153,12 +152,10 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
             string[] idArry = gachaTables.Select(x => x.id.ToString()).ToArray();
             string[] arry2 = gachaTables.Select(x => x.drawId.ToString()).ToArray();
             string[] arry1 = gachaTables.Select(x => x.date).ToArray();
-            string[] crystlas = CrystalCount(gachaTables);
             List<ListViewItem> name = new List<ListViewItem>();
             for (int i = 0; i < arry1.Length; i++)
             {
                 ListViewItem item = new ListViewItem(arry1[i], i);
-                item.SubItems.Add(crystlas[i]);
                 item.SubItems.Add(idArry[i]);
                 item.SubItems.Add(arry2[i]);
                 name.Add(item);
@@ -210,6 +207,8 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
         private void LoadNewDraw(object sender, EventArgs e)
         {
             gachaHandler.mode = Mode.Free;
+            GachaForm gachaForm = new(gachaHandler);
+            gachaForm.ShowDialog(); 
             
         }
 
