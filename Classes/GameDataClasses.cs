@@ -22,7 +22,26 @@ namespace GBF_Never_Buddy.Classes
                 this.link = link;
             }
         }
+        public class WeaponList
+        {
+            public string weaponName;
 
+            public string weaponLink;
+
+            public string weaponElement;
+
+            public string weaponImage;
+
+            public WeaponList(string weaponName, string weaponLink, string element, string weaponImage)
+            {
+                this.weaponName = weaponName;
+                this.weaponLink = weaponLink;
+                this.weaponElement = element;
+                this.weaponImage = weaponImage;
+            }
+        }
+
+    
         public class Summon
         {
             public string name;

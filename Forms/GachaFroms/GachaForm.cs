@@ -1,6 +1,7 @@
 ﻿using GBF_Never_Buddy.Classes;
 using GBF_Never_Buddy.Classes.GachaClasses;
 using GBF_Never_Buddy.Classes.SQLClasses;
+using GBF_Never_Buddy.Forms.GachaFroms;
 using GBF_Never_Buddy.GachaForms;
 using System.Diagnostics;
 using static GBF_Never_Buddy.Classes.RaidClasses;
@@ -15,13 +16,13 @@ namespace GBF_Never_Buddy
 
         public GachaForm(GachaHandler gachaHandler)
         {
-            InitializeComponent();  
+            InitializeComponent();
             this.gachaHandler = gachaHandler;
             int drawId = gachaHelper.DrawCount();
             string date = DateTime.Now.ToString("yyyy-MM-dd");
             int id = gachaHelper.Count();
             int crystals = gachaHandler.crystalsSpent;
-            if(gachaHandler.mode == Mode.Free)
+            if (gachaHandler.mode == Mode.Free)
             {
                 crystals = 0;
             }
@@ -29,15 +30,15 @@ namespace GBF_Never_Buddy
             switch (gachaHandler.mode)
             {
                 case Mode.Free:
-                    gachaHelper.InsertDataFree(gacha);           
+                    gachaHelper.InsertDataFree(gacha);
                     break;
                 case Mode.Normal:
                     gachaHelper.InsertData(gacha);
                     break;
             }
 
-          
-          
+
+
             gachaHandler.drawID = id;
 
 
@@ -63,16 +64,27 @@ namespace GBF_Never_Buddy
         {
 
             gachaHandler.UpdateCrystalsUsed(costLabel, DrawType.Multi);
-            gachaHandler.drawNumber++; 
+            gachaHandler.drawNumber++;
             GachaResultAdder Adder = new(gachaHandler);
             Adder.ShowDialog();
         }
 
         private void OpenResults(object sender, EventArgs e)
         {
-           
+
             ResultsForm results = new(gachaHandler);
             results.Show();
+        }
+
+        private void GachaForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            var origin = Application.OpenForms["FreebieLogForm"];
+            if (origin != null)
+            {
+                FreebieLogForm parent = (FreebieLogForm)origin;
+                parent.Refresh();
+                //parent.LoadList();
+            }
         }
     }
 }

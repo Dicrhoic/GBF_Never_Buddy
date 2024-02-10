@@ -1,9 +1,11 @@
 using GBF_Never_Buddy.Classes.DatabaseHandlers;
 using GBF_Never_Buddy.Classes.GachaClasses;
 using GBF_Never_Buddy.Classes.SQLClasses;
+using GBF_Never_Buddy.Classes.XMLWriterClasses;
 using GBF_Never_Buddy.Forms;
 using GBF_Never_Buddy.Forms.GachaFroms;
 using GBF_Never_Buddy.GachaForms;
+using GBF_Never_Buddy.Screens;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -93,7 +95,7 @@ namespace GBF_Never_Buddy
 
         private void LoadRouletteDay(object sender, EventArgs e)
         {
-            
+
         }
 
         private void OpenLogs(object sender, EventArgs e)
@@ -105,13 +107,13 @@ namespace GBF_Never_Buddy
         private void LoadGBForm(object sender, EventArgs e)
         {
             var openForm = Application.OpenForms["GBLog"];
-            if (openForm == null) 
+            if (openForm == null)
             {
                 GBLog gB = new();
                 gB.Show();
             }
 
-   
+
         }
 
         private void LoadFreeLog(object sender, EventArgs e)
@@ -142,6 +144,28 @@ namespace GBF_Never_Buddy
                 DataEditorForm form = new();
                 form.Show();
             }
+        }
+
+        private async void LoadUpdateOptions(object sender, EventArgs e)
+        {
+            /*
+            CharacterWriter characterWriter = new CharacterWriter();
+            characterWriter.ValidateXMLFile();
+            CharacterSQLClass characterSQLClass = new CharacterSQLClass();
+            characterSQLClass.UpdateDBFromXML();
+            */
+
+            /*
+            SummonWriter summonWriter = new SummonWriter();
+            summonWriter.ValidateSummonFile();
+            summonWriter.CreateSummonsList();
+            */
+
+            SummonSQLClass summonSQLClass = new SummonSQLClass();
+            summonSQLClass.UpdateDBFromXML();
+            //UpdateOptions updateOptions = new UpdateOptions(this);
+            //mainPanel.Controls.Clear(); 
+            //mainPanel.Controls.Add(updateOptions); 
         }
     }
 }

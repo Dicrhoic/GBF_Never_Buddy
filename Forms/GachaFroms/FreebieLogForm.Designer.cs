@@ -28,104 +28,98 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.resultsTable = new System.Windows.Forms.TableLayoutPanel();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.newDrawToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rouletteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dailyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
-            this.SuspendLayout();
+            resultsTable = new TableLayoutPanel();
+            listView1 = new ListView();
+            menuStrip1 = new MenuStrip();
+            newDrawToolStripMenuItem = new ToolStripMenuItem();
+            rouletteToolStripMenuItem = new ToolStripMenuItem();
+            dailyToolStripMenuItem = new ToolStripMenuItem();
+            editToolStripMenuItem = new ToolStripMenuItem();
+            dataToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // resultsTable
             // 
-            this.resultsTable.AutoScroll = true;
-            this.resultsTable.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.resultsTable.ColumnCount = 1;
-            this.resultsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.resultsTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resultsTable.Location = new System.Drawing.Point(646, 24);
-            this.resultsTable.Name = "resultsTable";
-            this.resultsTable.RowCount = 1;
-            this.resultsTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.resultsTable.Size = new System.Drawing.Size(714, 517);
-            this.resultsTable.TabIndex = 6;
+            resultsTable.AutoScroll = true;
+            resultsTable.BackColor = SystemColors.ControlLight;
+            resultsTable.ColumnCount = 1;
+            resultsTable.ColumnStyles.Add(new ColumnStyle());
+            resultsTable.Dock = DockStyle.Fill;
+            resultsTable.Location = new Point(148, 24);
+            resultsTable.Name = "resultsTable";
+            resultsTable.RowCount = 1;
+            resultsTable.RowStyles.Add(new RowStyle());
+            resultsTable.Size = new Size(1212, 517);
+            resultsTable.TabIndex = 6;
             // 
             // listView1
             // 
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.listView1.Location = new System.Drawing.Point(0, 24);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(646, 517);
-            this.listView1.TabIndex = 5;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            listView1.Dock = DockStyle.Left;
+            listView1.Location = new Point(0, 24);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(148, 517);
+            listView1.TabIndex = 5;
+            listView1.UseCompatibleStateImageBehavior = false;
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newDrawToolStripMenuItem,
-            this.editToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1360, 24);
-            this.menuStrip1.TabIndex = 7;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.Items.AddRange(new ToolStripItem[] { newDrawToolStripMenuItem, editToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(1360, 24);
+            menuStrip1.TabIndex = 7;
+            menuStrip1.Text = "menuStrip1";
             // 
             // newDrawToolStripMenuItem
             // 
-            this.newDrawToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rouletteToolStripMenuItem,
-            this.dailyToolStripMenuItem});
-            this.newDrawToolStripMenuItem.Name = "newDrawToolStripMenuItem";
-            this.newDrawToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
-            this.newDrawToolStripMenuItem.Text = "New Draw";
+            newDrawToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { rouletteToolStripMenuItem, dailyToolStripMenuItem });
+            newDrawToolStripMenuItem.Name = "newDrawToolStripMenuItem";
+            newDrawToolStripMenuItem.Size = new Size(73, 20);
+            newDrawToolStripMenuItem.Text = "New Draw";
             // 
             // rouletteToolStripMenuItem
             // 
-            this.rouletteToolStripMenuItem.Name = "rouletteToolStripMenuItem";
-            this.rouletteToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.rouletteToolStripMenuItem.Text = "Roulette Final Day";
-            this.rouletteToolStripMenuItem.Click += new System.EventHandler(this.LoadRoulette);
+            rouletteToolStripMenuItem.Name = "rouletteToolStripMenuItem";
+            rouletteToolStripMenuItem.Size = new Size(169, 22);
+            rouletteToolStripMenuItem.Text = "Roulette Final Day";
+            rouletteToolStripMenuItem.Click += LoadRoulette;
             // 
             // dailyToolStripMenuItem
             // 
-            this.dailyToolStripMenuItem.Name = "dailyToolStripMenuItem";
-            this.dailyToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.dailyToolStripMenuItem.Text = "Daily";
-            this.dailyToolStripMenuItem.Click += new System.EventHandler(this.LoadNewDraw);
+            dailyToolStripMenuItem.Name = "dailyToolStripMenuItem";
+            dailyToolStripMenuItem.Size = new Size(169, 22);
+            dailyToolStripMenuItem.Text = "Daily";
+            dailyToolStripMenuItem.Click += LoadNewDraw;
             // 
             // editToolStripMenuItem
             // 
-            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dataToolStripMenuItem});
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
-            this.editToolStripMenuItem.Text = "Edit";
+            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { dataToolStripMenuItem });
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new Size(39, 20);
+            editToolStripMenuItem.Text = "Edit";
             // 
             // dataToolStripMenuItem
             // 
-            this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
-            this.dataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.dataToolStripMenuItem.Text = "Data";
+            dataToolStripMenuItem.Name = "dataToolStripMenuItem";
+            dataToolStripMenuItem.Size = new Size(98, 22);
+            dataToolStripMenuItem.Text = "Data";
             // 
             // FreebieLogForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1360, 541);
-            this.Controls.Add(this.resultsTable);
-            this.Controls.Add(this.listView1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "FreebieLogForm";
-            this.Text = "FreebieLogForm";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1360, 541);
+            Controls.Add(resultsTable);
+            Controls.Add(listView1);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
+            Name = "FreebieLogForm";
+            Text = "FreebieLogForm";
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

@@ -22,10 +22,21 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
         GachaSQLHelper gachaSQL = new GachaSQLHelper();
         List<GachaTable> gachaTables;
         int drawID = -1;
-
+        List<string> exceptionSummonsStrings = new List<string>();
+       
         public FreebieLogForm()
         {
             InitializeComponent();
+            LoadList();
+            exceptionSummonsStrings.Add("Poseidon, the Tide Father");
+        }
+
+        public void LoadList()
+        {
+            if(gachaTables != null) {
+                gachaTables.Clear();
+            }
+           
             comparer = new ItemComparer();
             listView1.ListViewItemSorter = comparer;
             gachaTables = gachaSQL.FreeGachas();
@@ -52,60 +63,104 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
             foreach (GachaDetails details in gachaDetails)
             {
                 RichTextBox textBox = new RichTextBox();
-                string text = $"Draw Numnber: {details.drawNumber}\nCrystals Used: {details.crystalsUsed}";
+                string text = $"Draw Number: {details.drawNumber}\n";
                 textBox.Text = text;
                 textBox.Dock = DockStyle.Top;
                 textBox.Height = 40;
                 textBox.ReadOnly = true;
-                resultsTable.Controls.Add(textBox);
-                if (details.characters != "")
+                if (details.summons == "" && details.characters == "")
                 {
-                    CharacterSQLHelper characterSQL = new();
-                    string[] chars = details.characters.Split(",");
-                    FlowLayoutPanel panel = new FlowLayoutPanel();
-                    panel.AutoScroll = true;
-                    panel.Dock = DockStyle.Fill;
-                    panel.FlowDirection = FlowDirection.LeftToRight;
-                    foreach (string c in chars)
-                    {
-                        Debug.WriteLine($"{c}");
-                        Character character = characterSQL.QueriedCharacter(c);
-                        string link = character.link;
-                        PictureBox pictureBox = new PictureBox();
-                        pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-                        pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
-                        pictureBox.Load(character.image);
-                        pictureBox.Dock = DockStyle.Fill;
-                        pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
-                        panel.Controls.Add(pictureBox);
-
-                    }
-                    resultsTable.Controls.Add(panel);
+                    string caption = $"No SSR obtained from draw #{details.drawNumber}";
+                    RichTextBox tb = new RichTextBox();
+                    tb.Text = caption;
+                    tb.Dock = DockStyle.Top;
+                    tb.Height = 40;
+                    tb.ReadOnly = true;
+                    resultsTable.Controls.Add(tb);
                 }
-                if (details.summons != "")
+                else
                 {
-                    FlowLayoutPanel panel = new FlowLayoutPanel();
-                    panel.AutoScroll = true;
-                    panel.Dock = DockStyle.Fill;
-                    panel.FlowDirection = FlowDirection.LeftToRight;
-                    SummonSQLHelper summonSQL = new();
-                    string[] s = details.summons.Split(",");
-                    foreach (string c in s)
+                    resultsTable.Controls.Add(textBox);
+                    if (details.characters != "" && !string.IsNullOrEmpty(details.characters))
                     {
-                        Debug.WriteLine($"{c}");
-                        Summon summon = summonSQL.QueriedSummon(c);
-                        string link = summon.link;
-                        PictureBox pictureBox = new PictureBox();
-                        pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-                        pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
-                        pictureBox.Load(summon.image);
-                        pictureBox.Dock = DockStyle.Fill;
-                        pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
-                        panel.Controls.Add(pictureBox);
-                    }
-                    resultsTable.Controls.Add(panel);
-                }
+                        CharacterSQLClass characterSQL = new();
+                        string[] chars = details.characters.Split(",");
+                        FlowLayoutPanel panel = new FlowLayoutPanel();
+                        panel.AutoScroll = true;
+                        panel.Dock = DockStyle.Fill;
+                        panel.FlowDirection = FlowDirection.LeftToRight;
+                        foreach (string c in chars)
+                        {
+                            Debug.WriteLine($"Char: {c}");
+                            Character character = characterSQL.QueriedCharacter(c);
+                            string link = character.link;
+                            PictureBox pictureBox = new PictureBox();
+                            pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+                            pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+                            pictureBox.Load(character.image);
+                            pictureBox.Dock = DockStyle.Fill;
+                            pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
+                            pictureBox.MouseHover += (s, e) => { ImageHoverFunction(pictureBox, character.name); };
+                            panel.Controls.Add(pictureBox);
 
+
+                        }
+                        resultsTable.Controls.Add(panel);
+                    }
+                    if (details.summons != "")
+                    {   
+                        string sum = details.summons;   
+                        FlowLayoutPanel panel = new FlowLayoutPanel();
+                        panel.AutoScroll = true;
+                        panel.Dock = DockStyle.Fill;
+                        panel.FlowDirection = FlowDirection.LeftToRight;
+                        SummonSQLHelper summonSQL = new();
+                        foreach(string su in exceptionSummonsStrings)
+                        {
+                            Debug.WriteLine($"su:{su}, sum:{sum}");
+                            if(sum.Contains(su))
+                            {
+                                string target = su;
+                                sum = sum.Replace(su, "");
+                                Debug.WriteLine($"su:{su}, target:{target}");
+                                Summon summon = summonSQL.QueriedSummon(target);
+                                string link = summon.link;
+                                PictureBox pictureBox = new PictureBox();
+                                pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+                                pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+
+                                pictureBox.Load(summon.image);
+                                pictureBox.Dock = DockStyle.Fill;
+                                pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
+                                panel.Controls.Add(pictureBox);
+
+                            }
+                        }
+                        if(!string.IsNullOrEmpty(sum))
+                        {
+                            string[] s = sum.Split(",");
+                            foreach (string c in s)
+                            {
+                                Debug.WriteLine($"Summon: {c}");
+                                Summon summon = summonSQL.QueriedSummon(c);
+                                string link = summon.link;
+                                PictureBox pictureBox = new PictureBox();
+                                pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+                                pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+
+                                pictureBox.Load(summon.image);
+                                pictureBox.Dock = DockStyle.Fill;
+                                pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
+                                panel.Controls.Add(pictureBox);
+                            }
+                        }
+                      
+
+                        resultsTable.Controls.Add(panel);
+                    }
+                }
+            
+            
 
                 Debug.WriteLine($"id: {details.id} draw id: {details.drawId}, " +
                     $" Characters: {details.characters} Sum: {details.summons}" +
@@ -204,12 +259,20 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
             System.Diagnostics.Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
         }
 
+        private void ImageHoverFunction(PictureBox imageHolder, string name)
+        {
+            Debug.WriteLine("Hover");
+            System.Windows.Forms.ToolTip ToolTip1 = new System.Windows.Forms.ToolTip();
+            ToolTip1.SetToolTip(imageHolder, name);
+
+        }
+
         private void LoadNewDraw(object sender, EventArgs e)
         {
             gachaHandler.mode = Mode.Free;
             GachaForm gachaForm = new(gachaHandler);
-            gachaForm.ShowDialog(); 
-            
+            gachaForm.ShowDialog();
+
         }
 
         private void LoadRoulette(object sender, EventArgs e)
@@ -218,5 +281,6 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
             RouletteLog rouletteForm = new RouletteLog(gachaHandler);
             rouletteForm.Show();
         }
+
     }
 }

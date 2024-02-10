@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using static GBF_Never_Buddy.Classes.GameDataClasses;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace GBF_Never_Buddy.Classes.SQLClasses
 {
@@ -23,7 +24,7 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
         private string UpdateCharTableQueryString(GameDataClasses.Character character, int id)
         {
             string query = $"INSERT INTO [GachaCharacters] ([Id], [Name], [Element], [Series], [Image], [Link]) VALUES" +
-                $" ({id}, N'{character.name}', N'{character.element}', N'{character.series}', N'{character.image}', N'{character.link}')";
+                $" ({id}, N{character.name}, N{character.element}, N{character.series}, N'{character.image}', N'{character.link}')";
             return query;
         }
 
@@ -97,6 +98,119 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
             }
         }
 
+
+        public void UpdateDBFromXML()
+        {
+       
+            string? path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string? filePath = null;
+            if (path != null)
+            {
+                Debug.WriteLine(path);
+                filePath = Path.Combine(path, @"Database\SSRCharacters.xml");
+                Debug.WriteLine(filePath);
+                if (File.Exists(filePath))
+                {
+                    UpdateListFromXML(filePath);
+                }
+                if (!File.Exists(filePath))
+                {
+                    MBHelper mB = new MBHelper();
+                    string caption = $"Error Adding to DB";
+                    string msg = $"File doesn't exists at {Directory.GetCurrentDirectory()}";
+                    mB.ErrorMB(msg, caption);
+
+                }
+            }
+
+        }
+
+
+        private async void UpdateListFromXML(string path)
+        {
+            MBHelper helper = new MBHelper();
+            Stopwatch timer = Stopwatch.StartNew();
+            XmlDocument doc = new XmlDocument();
+            doc.PreserveWhitespace = true;
+            int addCount = 0;
+            try { doc.Load(path); }
+            catch (System.IO.FileNotFoundException)
+            {
+
+            }
+            XmlNode? root = doc.SelectSingleNode("characters");
+            List<Character> characters = CharacterList();
+            List<string> names = characters.Select(x => x.name).ToList();
+            if (root != null)
+            {
+                LockParent();
+                XmlNodeList docCharacters = doc.GetElementsByTagName("name");
+                List<string> xmlChars = new();
+                foreach (XmlNode node in docCharacters)
+                {
+                    xmlChars.Add(node.InnerText);
+                }
+                List<string> newChars = xmlChars.Except(names).ToList();
+
+                XmlNodeList? xnList = root.SelectNodes("character");
+                var document = XDocument.Load(path);
+                XElement? xmlTree = document.Root;
+
+                document.Descendants().Where(t => string.IsNullOrEmpty(t.Value)).Remove();
+                doc.Save(path);
+                int index = 1;
+                int newIndex = CharsCount();
+                int count = 0;
+
+                if (xmlTree != null && xnList != null)
+                {
+                
+                    foreach (XmlNode xn in xnList)
+                    {
+
+                        string series = xn.Attributes["series"].Value;
+                        string name = xn["name"].InnerText;
+                        string element = xn["element"].InnerText;
+                        string img = xn["image"].InnerText;
+                        string link = xn["link"].InnerText;
+                        var exists = newChars.Contains(name);
+                        if (!exists)
+                        {
+                            Debug.WriteLine($"Skipping {name}");
+                        }
+                        if (exists)
+                        {
+
+                            newIndex++;
+                            string nameCleaned = FormatSqlString(name);
+                            GameDataClasses.Character character = new(nameCleaned, element, series, img, link);
+                            string query = UpdateCharTableQueryString(character, newIndex);
+                            RunSQLQuery(query);
+                            await Task.Delay(65);
+                            
+                            addCount++;
+                            Debug.WriteLine($"Added character #{newIndex} {nameCleaned}, {element}, {img}");
+                        }
+                        index++;
+                    }
+
+                    UnlockParent();
+                }
+                timer.Stop();
+                TimeSpan timespan = timer.Elapsed;
+
+                string time = String.Format("{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
+                Debug.WriteLine($"Elapsed time for function loadXMLData(): {time}");
+                string msg = $"Added {addCount} characters in {time}";
+                string cap2 = $"Finished adding {addCount} characters into Gacha Character Database";
+                if (addCount > 0)
+                {
+                    helper.SuccessMB(msg, cap2);
+
+                }
+            }
+        }
+
         private async void UpdateCharDataFromXML(string path)
         {
             MBHelper helper = new MBHelper();
@@ -112,6 +226,7 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
 
             }
             XmlNode? root = doc.SelectSingleNode("characters");
+            //Reduce list
             try
             {
 
