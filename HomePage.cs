@@ -109,7 +109,7 @@ namespace GBF_Never_Buddy
             var openForm = Application.OpenForms["GBLog"];
             if (openForm == null)
             {
-                GBLog gB = new();
+                ItemDropLog gB = new();
                 gB.Show();
             }
 

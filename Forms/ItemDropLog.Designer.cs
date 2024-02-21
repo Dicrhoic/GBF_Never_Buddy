@@ -1,6 +1,6 @@
 ﻿namespace GBF_Never_Buddy.Forms
 {
-    partial class GBLog
+    partial class ItemDropLog
     {
         /// <summary>
         /// Required designer variable.
@@ -151,15 +151,15 @@
             raidImage.TabIndex = 0;
             raidImage.TabStop = false;
             // 
-            // GBLog
+            // ItemDropLog
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(760, 450);
             Controls.Add(panel2);
             Controls.Add(panel1);
-            Name = "GBLog";
-            Text = "GBLog";
+            Name = "ItemDropLog";
+            Text = "Raid Log";
             panel1.ResumeLayout(false);
             panel5.ResumeLayout(false);
             panel5.PerformLayout();

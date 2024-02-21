@@ -4,7 +4,7 @@ using GBF_Never_Buddy.Classes.SQLClasses;
 using GBF_Never_Buddy.Forms.GachaFroms;
 using GBF_Never_Buddy.GachaForms;
 using System.Diagnostics;
-using static GBF_Never_Buddy.Classes.RaidClasses;
+
 
 namespace GBF_Never_Buddy
 {

@@ -166,4 +166,94 @@
   <data name="40px-Icon_Blue_Chest" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\40px-Icon_Blue_Chest.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Abominable_Reminder_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Abominable_Reminder_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arbitration_Cloth_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Arbitration_Cloth_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Automagod_Plating_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Automagod_Plating_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Blue_Sky_Crystal_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Blue_Sky_Crystal_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Champion_Merit_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Champion_Merit_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Claw" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Claw.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Concordia" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Concordia.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Dragonslayer's_Edge_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Dragonslayer's_Edge_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eternity_Sand_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Eternity_Sand_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ExtiB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExtiB.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Extinction_Vestige_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Extinction_Vestige_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fang" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Fang.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Fo_Agastia" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Fo_Agastia.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="F_Agastia" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\F_Agastia.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GoldCert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoldCert.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Hollow_Key_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Hollow_Key_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Huanglong_Omega_Anima_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Huanglong_Omega_Anima_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Huanglong_summon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Huanglong_summon.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Blue_Chest" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Blue_Chest.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Gold_Chest" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Gold_Chest.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lagra" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lagra.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MortalB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MortalB.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Qilin_Omega_Anima_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Qilin_Omega_Anima_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Qilin_Summmon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Qilin_Summmon.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Remnants_of_the_Star-Sea's_Edge_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Remnants_of_the_Star-Sea's_Edge_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Schro" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Schro.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sette" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sette.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Spada" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Spada.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Symmetria" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Symmetria.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ultimate_Memory_square" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ultimate_Memory_square.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

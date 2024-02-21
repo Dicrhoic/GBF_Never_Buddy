@@ -20,6 +20,7 @@ namespace GBF_Never_Buddy.GachaForms
             crystalsLabel.Text = $"Crsytals Spent: {handler.crystalsSpent}";
 
         }
+         
 
         private void NewCharacterCheckImage(object sender, DragEventArgs e)
         {

@@ -36,7 +36,7 @@ namespace GBF_Never_Buddy.GachaForms
 
         private void TenDrawBtn_Click(object sender, EventArgs e)
         {
-            GachaResultAdder Adder = new(gachaHandler);
+            GachaResultAdder Adder = new(gachaHandler, this, counter);
             if (dataTabs.SelectedIndex == 0)
             {
                 if (counter.ValidGachaGP())
@@ -45,6 +45,7 @@ namespace GBF_Never_Buddy.GachaForms
                 }
                 if (!counter.ValidGachaGP())
                 {
+                    Debug.WriteLine("Mukku mode");
                     dataTabs.SelectedIndex = 1;
                 }
             }
@@ -97,20 +98,24 @@ namespace GBF_Never_Buddy.GachaForms
     {
         private int maxGP = 20;
         private int increment = 1;
-        public int currentCount = 0;
+        public int currentCount = 1;
         private int mukkuSRRCap = 5;
         public int mukkuSSRCount = 0;
+    
 
         public bool ValidGachaGP()
         {
-            int step = currentCount + increment;
-            if (step > maxGP)
+         
+            if (currentCount > maxGP)
             {
                 return false;
             }
-            currentCount = step;
+
             return true;
         }
+
+        public void IncreaseStep()
+        { currentCount += increment; }
 
         public bool ValidGacha(int count)
         {

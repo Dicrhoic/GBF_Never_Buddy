@@ -72,27 +72,27 @@
             // 
             createAllSSRCharacterListToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { updateDatabaseToolStripMenuItem, addDataToolStripMenuItem, editDataToolStripMenuItem });
             createAllSSRCharacterListToolStripMenuItem.Name = "createAllSSRCharacterListToolStripMenuItem";
-            createAllSSRCharacterListToolStripMenuItem.Size = new Size(180, 22);
+            createAllSSRCharacterListToolStripMenuItem.Size = new Size(122, 22);
             createAllSSRCharacterListToolStripMenuItem.Text = "Database";
             // 
             // updateDatabaseToolStripMenuItem
             // 
             updateDatabaseToolStripMenuItem.Name = "updateDatabaseToolStripMenuItem";
-            updateDatabaseToolStripMenuItem.Size = new Size(180, 22);
+            updateDatabaseToolStripMenuItem.Size = new Size(163, 22);
             updateDatabaseToolStripMenuItem.Text = "Update Database";
             updateDatabaseToolStripMenuItem.Click += LoadUpdateOptions;
             // 
             // addDataToolStripMenuItem
             // 
             addDataToolStripMenuItem.Name = "addDataToolStripMenuItem";
-            addDataToolStripMenuItem.Size = new Size(180, 22);
+            addDataToolStripMenuItem.Size = new Size(163, 22);
             addDataToolStripMenuItem.Text = "Add Data";
             addDataToolStripMenuItem.Click += AddData;
             // 
             // editDataToolStripMenuItem
             // 
             editDataToolStripMenuItem.Name = "editDataToolStripMenuItem";
-            editDataToolStripMenuItem.Size = new Size(180, 22);
+            editDataToolStripMenuItem.Size = new Size(163, 22);
             editDataToolStripMenuItem.Text = "Edit Data";
             editDataToolStripMenuItem.Click += OpenEditor;
             // 
@@ -174,8 +174,8 @@
             // goldBrickTallyToolStripMenuItem
             // 
             goldBrickTallyToolStripMenuItem.Name = "goldBrickTallyToolStripMenuItem";
-            goldBrickTallyToolStripMenuItem.Size = new Size(99, 20);
-            goldBrickTallyToolStripMenuItem.Text = "Gold Brick Tally";
+            goldBrickTallyToolStripMenuItem.Size = new Size(97, 20);
+            goldBrickTallyToolStripMenuItem.Text = "Raid Drop Tally";
             goldBrickTallyToolStripMenuItem.Click += LoadGBForm;
             // 
             // mainPanel

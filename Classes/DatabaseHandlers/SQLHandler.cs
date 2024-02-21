@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace GBF_Never_Buddy.Classes.DatabaseHandlers
 {
-    internal class SQLHandler : DatabaseHandler
+    public class SQLHandler : DatabaseHandler
     {
         string? exPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         string? dbPath = null;

@@ -1,6 +1,7 @@
 ﻿using GBF_Never_Buddy.Classes.GachaClasses;
 using GBF_Never_Buddy.Classes.SQLClasses;
 using GBF_Never_Buddy.GachaForms;
+using GBF_Never_Buddy.Screens;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,7 +24,7 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
         List<GachaTable> gachaTables;
         int drawID = -1;
         List<string> exceptionSummonsStrings = new List<string>();
-       
+     
         public FreebieLogForm()
         {
             InitializeComponent();
@@ -62,12 +63,11 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
             Debug.WriteLine($"Gacha count: {gachaDetails.Count}, DrawID: {drawID}");
             foreach (GachaDetails details in gachaDetails)
             {
-                RichTextBox textBox = new RichTextBox();
+               
                 string text = $"Draw Number: {details.drawNumber}\n";
-                textBox.Text = text;
-                textBox.Dock = DockStyle.Top;
-                textBox.Height = 40;
-                textBox.ReadOnly = true;
+                GachaData gachaData = new();
+                gachaData.UpdateCaption(text);
+               
                 if (details.summons == "" && details.characters == "")
                 {
                     string caption = $"No SSR obtained from draw #{details.drawNumber}";
@@ -77,10 +77,11 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
                     tb.Height = 40;
                     tb.ReadOnly = true;
                     resultsTable.Controls.Add(tb);
+          
                 }
                 else
                 {
-                    resultsTable.Controls.Add(textBox);
+  
                     if (details.characters != "" && !string.IsNullOrEmpty(details.characters))
                     {
                         CharacterSQLClass characterSQL = new();
@@ -101,11 +102,9 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
                             pictureBox.Dock = DockStyle.Fill;
                             pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
                             pictureBox.MouseHover += (s, e) => { ImageHoverFunction(pictureBox, character.name); };
-                            panel.Controls.Add(pictureBox);
-
-
+                            gachaData.InsertImage(pictureBox);
                         }
-                        resultsTable.Controls.Add(panel);
+                        resultsTable.Controls.Add(gachaData);
                     }
                     if (details.summons != "")
                     {   
@@ -132,6 +131,7 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
                                 pictureBox.Load(summon.image);
                                 pictureBox.Dock = DockStyle.Fill;
                                 pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
+                                pictureBox.MouseHover += (s, e) => { ImageHoverFunction(pictureBox, summon.name); };
                                 panel.Controls.Add(pictureBox);
 
                             }
@@ -151,12 +151,14 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
                                 pictureBox.Load(summon.image);
                                 pictureBox.Dock = DockStyle.Fill;
                                 pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
-                                panel.Controls.Add(pictureBox);
+                                pictureBox.MouseHover += (s, e) => { ImageHoverFunction(pictureBox, summon.name); };
+                                gachaData.InsertImage(pictureBox);
                             }
                         }
-                      
 
-                        resultsTable.Controls.Add(panel);
+                
+                        resultsTable.Controls.Add(gachaData);
+          
                     }
                 }
             

@@ -4,6 +4,7 @@ using GBF_Never_Buddy.Classes.SQLClasses;
 using GBF_Never_Buddy.GachaForms;
 using System.Data;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using static GBF_Never_Buddy.Classes.GameDataClasses;
 
 namespace GBF_Never_Buddy
@@ -23,12 +24,26 @@ namespace GBF_Never_Buddy
         int id;
         int drawNumber;
         int crystalsUsed;
+        Form origin;
+        RouletteCounter rouletteCounter;
 
         public GachaResultAdder(GachaHandler handler)
         {
             InitializeComponent();
             gachaHandler = handler;
             InitialiseHandler();
+      
+        }
+
+        public GachaResultAdder(GachaHandler handler, Form Parent, RouletteCounter counter)
+        {
+            InitializeComponent();
+            gachaHandler = handler;
+            InitialiseHandler();
+            Debug.WriteLine($"Called from {Parent.Name}");
+            origin = Parent;
+            rouletteCounter = counter;  
+
         }
 
         private void InitialiseHandler()
@@ -36,7 +51,7 @@ namespace GBF_Never_Buddy
             id = gachaHandler.drawID - 1;
             drawNumber = gachaHandler.drawNumber;
             crystalsUsed = gachaHandler.crystalsSpent;
-            if(gachaHandler.mode == Mode.Free || gachaHandler.mode == Mode.Roulette)
+            if (gachaHandler.mode == Mode.Free || gachaHandler.mode == Mode.Roulette)
             {
                 crystalsUsed = 0;
             }
@@ -63,7 +78,7 @@ namespace GBF_Never_Buddy
         }
 
         private void LoadDataSource()
-        {   
+        {
             if (characterList == null && summonsList == null)
             {
                 return;
@@ -291,16 +306,16 @@ namespace GBF_Never_Buddy
 
         private void AllocateData()
         {
-            switch(gachaHandler.mode)
+            switch (gachaHandler.mode)
             {
                 case Mode.Spark:
                     break;
-                case Mode.Normal: 
+                case Mode.Normal:
 
                     break;
-                case Mode.Free: 
+                case Mode.Free:
 
-                    break;  
+                    break;
             }
         }
 
@@ -460,7 +475,7 @@ namespace GBF_Never_Buddy
 
         private void AddResults(object sender, EventArgs e)
         {
-           switch(gachaHandler.mode)
+            switch (gachaHandler.mode)
             {
                 case Mode.Normal:
                     AddResultsNormal();
@@ -472,10 +487,42 @@ namespace GBF_Never_Buddy
                     AddResultsNormal();
                     break;
                 case Mode.Roulette:
-                    AddRouletteResults();   
+                    AddRouletteResults();
                     break;
             }
         }
 
+        private void ReturnCount(object sender, FormClosedEventArgs e)
+        {
+           
+            if(origin != null)
+            {
+                Debug.Write($"Closed {Name} from {origin.Name}");
+                rouletteCounter.IncreaseStep();
+            }
+
+
+        }
+
+        private void ValidateCount(object sender, FormClosingEventArgs e)
+        {   
+            if(origin != null)
+            {
+                string caption = $"These are the reuslts for draw {rouletteCounter.currentCount}?";
+                if (rouletteCounter.currentCount > 20)
+                {
+                    caption = $"These are the resuslts for Draw {rouletteCounter.currentCount} Mukku?";
+                }
+                DialogResult dg = MessageBox.Show(caption, "Closing", MessageBoxButtons.YesNoCancel);
+
+                if (dg == DialogResult.Yes)
+                {
+
+                }
+
+            }
+
+
+        }
     }
 }

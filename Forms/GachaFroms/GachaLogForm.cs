@@ -3,7 +3,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Windows.Forms;
 using static GBF_Never_Buddy.Classes.GameDataClasses;
-using static GBF_Never_Buddy.Classes.RaidClasses;
+
 
 namespace GBF_Never_Buddy.GachaForms
 {
