@@ -49,6 +49,7 @@
             goldBrickTallyToolStripMenuItem = new ToolStripMenuItem();
             mainPanel = new Panel();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            charactersToolStripMenuItem = new ToolStripMenuItem();
             MainMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -133,7 +134,7 @@
             // 
             // collectionTrackerToolStripMenuItem
             // 
-            collectionTrackerToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { eternalsToolStripMenuItem, evokersToolStripMenuItem });
+            collectionTrackerToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { eternalsToolStripMenuItem, evokersToolStripMenuItem, charactersToolStripMenuItem });
             collectionTrackerToolStripMenuItem.Name = "collectionTrackerToolStripMenuItem";
             collectionTrackerToolStripMenuItem.Size = new Size(113, 20);
             collectionTrackerToolStripMenuItem.Text = "Collection Tracker";
@@ -143,7 +144,7 @@
             eternalsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { recruitToolStripMenuItem, uncapToolStripMenuItem, transcendenceToolStripMenuItem });
             eternalsToolStripMenuItem.Enabled = false;
             eternalsToolStripMenuItem.Name = "eternalsToolStripMenuItem";
-            eternalsToolStripMenuItem.Size = new Size(115, 22);
+            eternalsToolStripMenuItem.Size = new Size(180, 22);
             eternalsToolStripMenuItem.Text = "Eternals";
             // 
             // recruitToolStripMenuItem
@@ -168,7 +169,7 @@
             // 
             evokersToolStripMenuItem.Enabled = false;
             evokersToolStripMenuItem.Name = "evokersToolStripMenuItem";
-            evokersToolStripMenuItem.Size = new Size(115, 22);
+            evokersToolStripMenuItem.Size = new Size(180, 22);
             evokersToolStripMenuItem.Text = "Evokers";
             // 
             // goldBrickTallyToolStripMenuItem
@@ -190,6 +191,13 @@
             // 
             backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.ProgressChanged += UpdateProgress;
+            // 
+            // charactersToolStripMenuItem
+            // 
+            charactersToolStripMenuItem.Name = "charactersToolStripMenuItem";
+            charactersToolStripMenuItem.Size = new Size(180, 22);
+            charactersToolStripMenuItem.Text = "Characters";
+            charactersToolStripMenuItem.Click += LoadCharacterCollection;
             // 
             // HomePage
             // 
@@ -230,5 +238,6 @@
         private ToolStripMenuItem logsToolStripMenuItem;
         private ToolStripMenuItem addDataToolStripMenuItem;
         private ToolStripMenuItem editDataToolStripMenuItem;
+        private ToolStripMenuItem charactersToolStripMenuItem;
     }
 }

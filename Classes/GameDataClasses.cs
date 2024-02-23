@@ -22,6 +22,33 @@ namespace GBF_Never_Buddy.Classes
                 this.link = link;
             }
         }
+
+        public class GachaCharacterDetails
+        {
+            int id;
+            public string name;
+            public string image;
+            public string link;
+            public int refId;
+            public string element;
+            public string series;
+            public string desc { get; set; }
+
+            public GachaCharacterDetails(int id, string name, string image, string link, int rid, string element, string series)
+            {   
+                this.id = id;   
+                this.name = name;
+                this.image = image;
+                this.link = link;
+                this.refId = rid;
+                this.element = element;
+                this.series = series;
+                desc = string.Empty;
+            }
+
+          
+        }
+
         public class WeaponList
         {
             public string weaponName;

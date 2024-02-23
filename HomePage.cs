@@ -167,5 +167,15 @@ namespace GBF_Never_Buddy
             //mainPanel.Controls.Clear(); 
             //mainPanel.Controls.Add(updateOptions); 
         }
+
+        private void LoadCharacterCollection(object sender, EventArgs e)
+        {
+            var openForm = Application.OpenForms["GachaCharacterCollection"];
+            if (openForm == null)
+            {
+                GachaCharacterCollection form = new();
+                form.Show();
+            }
+        }
     }
 }
