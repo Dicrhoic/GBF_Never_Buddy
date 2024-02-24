@@ -18,6 +18,21 @@ namespace GBF_Never_Buddy.Screens
         {
             InitializeComponent();
             LoadDetails(character);
+            panel2.Visible = false;
+            panel3.Visible = false;
+        }
+
+        private void ValidateDate(object? sender, EventArgs e)
+        {
+            DateTime temp;
+            if (DateTime.TryParse(textBox1.Text, out temp))
+            {
+
+            }
+            else
+            {
+                textBox1.Text = String.Empty;
+            }
         }
 
         private void LoadDetails(GachaCharacterDetails character)
@@ -26,8 +41,8 @@ namespace GBF_Never_Buddy.Screens
             {
                 pictureBox1.Load(character.image);
                 label1.Text = $"Name: {character.name}";
-                label2.Text = character.element;
-                label3.Text = character.series;
+                label2.Text = $"Element: {character.element}\t Series: {character.series}";
+                label3.Text = $"Date Acquired: ";
                 groupBox1.Text = $"{character.name}'s Details";
                 label4.Text = "Description";
             }
@@ -36,6 +51,19 @@ namespace GBF_Never_Buddy.Screens
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void UpdateCharacter(object sender, EventArgs e)
+        {
+            DateTime temp;
+            if (DateTime.TryParse(textBox1.Text, out temp))
+            {
+
+            }
+            else
+            {
+                textBox1.Text = String.Empty;
+            }
         }
     }
 }
