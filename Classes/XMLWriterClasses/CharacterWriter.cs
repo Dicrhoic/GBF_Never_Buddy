@@ -163,15 +163,19 @@ namespace GBF_Never_Buddy.Classes.XMLWriterClasses
             var tab2 = $"//body/div[@id='{body}']/div[@id='{bodyContent}']/div[@id='{contentFrame}']" +
                             $"/div[@class='{parserFrame}']/table[1]/tbody/tr[@data-type='c']";
             var tab3 = $"//body/div[@id='{body}']/div[@id='{bodyContent}']/div[@id='{contentFrame}']" +
-                            $"/div[@class='{parserFrame}']/table[1]/tbody/tr/td[1]/a/img";
+                            $"/div[@class='{parserFrame}']/table[1]/tbody/tr/td[1]/a[1]/img";
+
             var name = doc.DocumentNode.SelectNodes(tab1);
             var element = doc.DocumentNode.SelectNodes(tab2);
             var img = doc.DocumentNode.SelectNodes(tab3);
+            Debug.WriteLine(img);
+            
             var task = await CreatedCharacterDetails(name, element, img, "Premium", file);
             if (task)
             {
                 return true;
             }
+            
             return false;
         }
 
@@ -452,31 +456,52 @@ namespace GBF_Never_Buddy.Classes.XMLWriterClasses
         public async Task<bool> CreatedCharacterDetails(HtmlAgilityPack.HtmlNodeCollection name,
             HtmlAgilityPack.HtmlNodeCollection element, HtmlAgilityPack.HtmlNodeCollection img, string series, string fileName)
         {
-
+            //Unable to retrieve proper images
             if (name != null)
             {
+                for (int i = 0; i < name.Count; i++)
+                {
+                    Debug.WriteLine($"{name[i].InnerText}");
+                }
                 //Debug.WriteLine("passed");
                 if (name.Count == element.Count)
                 {
                     for (int i = 0; i < name.Count; i++)
                     {
-
+                       // Debug.WriteLine($"it:{i} of {name.Count()} img: {img.Count}");
                         HtmlAgilityPack.HtmlNode node = name[i];
                         //Debug.WriteLine(node.ChildNodes.Count);
                         HtmlAgilityPack.HtmlNode node1 = element[i];
                         HtmlAgilityPack.HtmlNode node2 = img[i];
+                        var att = node2.Attributes.ToList();
+                        /*
+                        foreach(var a in att)
+                        {
+                            Debug.WriteLine(a.Name);
+                        }
+                        */
                         string title = node.InnerText;
                         string nameLink = node.SelectSingleNode("a").Attributes["href"].Value.ToString();
                         string mainLink = mainUrl.Substring(0, mainUrl.Length - 1);
                         //Debug.WriteLine($"{mainLink}{nameLink}");
                         string link = $"{mainLink}{nameLink}";
                         string el = node1.Attributes["data-filter-element"].Value;
-                        string imgLink = mainUrl + node2.Attributes["src"].Value.ToString();
-                        //Debug.WriteLine($"Character {title}, el:{el}, link:{imgLink}, series: {series}, link: {link}");
+                        var imgsrc1 = node2.Attributes["src"];
+                        var imgsrc2 = node2.Attributes["srcset"];
+                        string imgLink = "";
+                        if(imgsrc1 == null && imgsrc2 != null)
+                        {
+                            imgLink = mainUrl + node2.Attributes["srcset"].Value.ToString();
+                        }
+                        if (imgsrc1 != null && imgsrc2 == null)
+                        {
+                            imgLink = mainUrl + node2.Attributes["src"].Value.ToString();
+                        }
+                        Debug.WriteLine($"Character {title}, el:{el}, link:{imgLink}, series: {series}, link: {link}");
                         var existsInList = characters.Contains(title);
                         if (existsInList)
                         {
-                            Debug.WriteLine($"Skipping {title}");
+                            //Debug.WriteLine($"Skipping {title}");
                         }
                         if(!existsInList)
                         {

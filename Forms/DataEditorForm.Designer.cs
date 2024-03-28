@@ -28,163 +28,160 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.imageTB = new System.Windows.Forms.TextBox();
-            this.linkTB = new System.Windows.Forms.TextBox();
-            this.nameTB = new System.Windows.Forms.TextBox();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.SuspendLayout();
+            panel1 = new Panel();
+            radioButton2 = new RadioButton();
+            radioButton1 = new RadioButton();
+            panel2 = new Panel();
+            groupBox1 = new GroupBox();
+            nameBox = new TextBox();
+            comboBox2 = new ComboBox();
+            comboBox1 = new ComboBox();
+            button1 = new Button();
+            imageTB = new TextBox();
+            linkTB = new TextBox();
+            nameTB = new TextBox();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            groupBox1.SuspendLayout();
+            SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.radioButton2);
-            this.panel1.Controls.Add(this.radioButton1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 38);
-            this.panel1.TabIndex = 2;
+            panel1.Controls.Add(radioButton2);
+            panel1.Controls.Add(radioButton1);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(800, 38);
+            panel1.TabIndex = 2;
             // 
             // radioButton2
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.radioButton2.Location = new System.Drawing.Point(76, 0);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(74, 38);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "Summon";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.EditMode);
+            radioButton2.AutoSize = true;
+            radioButton2.Dock = DockStyle.Left;
+            radioButton2.Location = new Point(76, 0);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(74, 38);
+            radioButton2.TabIndex = 1;
+            radioButton2.Text = "Summon";
+            radioButton2.UseVisualStyleBackColor = true;
+            radioButton2.CheckedChanged += EditMode;
             // 
             // radioButton1
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.radioButton1.Location = new System.Drawing.Point(0, 0);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(76, 38);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.Text = "Character";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.EditMode);
+            radioButton1.AutoSize = true;
+            radioButton1.Dock = DockStyle.Left;
+            radioButton1.Location = new Point(0, 0);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(76, 38);
+            radioButton1.TabIndex = 0;
+            radioButton1.Text = "Character";
+            radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.CheckedChanged += EditMode;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.groupBox1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(800, 263);
-            this.panel2.TabIndex = 3;
+            panel2.Controls.Add(groupBox1);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(0, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(800, 312);
+            panel2.TabIndex = 3;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.comboBox2);
-            this.groupBox1.Controls.Add(this.comboBox1);
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.imageTB);
-            this.groupBox1.Controls.Add(this.linkTB);
-            this.groupBox1.Controls.Add(this.nameTB);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(800, 263);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Edit Data";
+            groupBox1.Controls.Add(nameBox);
+            groupBox1.Controls.Add(comboBox2);
+            groupBox1.Controls.Add(comboBox1);
+            groupBox1.Controls.Add(button1);
+            groupBox1.Controls.Add(imageTB);
+            groupBox1.Controls.Add(linkTB);
+            groupBox1.Controls.Add(nameTB);
+            groupBox1.Dock = DockStyle.Fill;
+            groupBox1.Location = new Point(0, 0);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(800, 312);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Edit Data";
+            // 
+            // nameBox
+            // 
+            nameBox.Location = new Point(32, 73);
+            nameBox.Name = "nameBox";
+            nameBox.PlaceholderText = "Edit Name";
+            nameBox.Size = new Size(731, 23);
+            nameBox.TabIndex = 12;
             // 
             // comboBox2
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "wind",
-            "fire",
-            "water",
-            "earth",
-            "light",
-            "dark"});
-            this.comboBox2.Location = new System.Drawing.Point(32, 89);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(729, 23);
-            this.comboBox2.TabIndex = 11;
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Items.AddRange(new object[] { "wind", "fire", "water", "earth", "light", "dark" });
+            comboBox2.Location = new Point(32, 105);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new Size(729, 23);
+            comboBox2.TabIndex = 11;
             // 
             // comboBox1
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Wind",
-            "Fire",
-            "Water",
-            "Earth",
-            "Light",
-            "Dark"});
-            this.comboBox1.Location = new System.Drawing.Point(32, 118);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(729, 23);
-            this.comboBox1.TabIndex = 10;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "Wind", "Fire", "Water", "Earth", "Light", "Dark" });
+            comboBox1.Location = new Point(32, 134);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(729, 23);
+            comboBox1.TabIndex = 10;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(282, 213);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(207, 42);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Edit Data";
-            this.button1.UseVisualStyleBackColor = true;
+            button1.Location = new Point(273, 245);
+            button1.Name = "button1";
+            button1.Size = new Size(207, 42);
+            button1.TabIndex = 4;
+            button1.Text = "Edit Data";
+            button1.UseVisualStyleBackColor = true;
             // 
             // imageTB
             // 
-            this.imageTB.Location = new System.Drawing.Point(32, 146);
-            this.imageTB.Name = "imageTB";
-            this.imageTB.PlaceholderText = "Enter Image Link";
-            this.imageTB.Size = new System.Drawing.Size(731, 23);
-            this.imageTB.TabIndex = 2;
+            imageTB.Location = new Point(32, 162);
+            imageTB.Name = "imageTB";
+            imageTB.PlaceholderText = "Enter Image Link";
+            imageTB.Size = new Size(731, 23);
+            imageTB.TabIndex = 2;
             // 
             // linkTB
             // 
-            this.linkTB.Location = new System.Drawing.Point(32, 175);
-            this.linkTB.Name = "linkTB";
-            this.linkTB.PlaceholderText = "Enter Link";
-            this.linkTB.Size = new System.Drawing.Size(731, 23);
-            this.linkTB.TabIndex = 1;
+            linkTB.Location = new Point(32, 191);
+            linkTB.Name = "linkTB";
+            linkTB.PlaceholderText = "Enter Link";
+            linkTB.Size = new Size(731, 23);
+            linkTB.TabIndex = 1;
             // 
             // nameTB
             // 
-            this.nameTB.Location = new System.Drawing.Point(32, 60);
-            this.nameTB.Name = "nameTB";
-            this.nameTB.PlaceholderText = "Enter Name";
-            this.nameTB.Size = new System.Drawing.Size(731, 23);
-            this.nameTB.TabIndex = 0;
-            this.nameTB.TextChanged += new System.EventHandler(this.ValidateName);
+            nameTB.Location = new Point(32, 44);
+            nameTB.Name = "nameTB";
+            nameTB.PlaceholderText = "Enter Name";
+            nameTB.Size = new Size(731, 23);
+            nameTB.TabIndex = 0;
+            nameTB.TextChanged += ValidateName;
             // 
             // DataEditorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 263);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.panel2);
-            this.Name = "DataEditorForm";
-            this.Text = "DataEditorForm";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 312);
+            Controls.Add(panel1);
+            Controls.Add(panel2);
+            Name = "DataEditorForm";
+            Text = "DataEditorForm";
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
@@ -200,5 +197,6 @@
         private TextBox imageTB;
         private TextBox linkTB;
         private TextBox nameTB;
+        private TextBox nameBox;
     }
 }

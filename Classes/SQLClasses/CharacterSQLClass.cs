@@ -11,6 +11,7 @@ using System.Xml;
 using static GBF_Never_Buddy.Classes.GameDataClasses;
 using System.Data.SqlClient;
 using System.Data;
+using System.Collections;
 
 namespace GBF_Never_Buddy.Classes.SQLClasses
 {
@@ -43,7 +44,75 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
 
         }
 
-        private List<Character> CharacterList()
+        public List<string> CharactersAlreadyObtained()
+        {
+            List<string> list = new List<string>();
+            using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    SELECT GachaCharacters.Id, GachaCharacters.Name
+                    FROM GachaCharacters
+                    INNER JOIN ObtainedSSRCharacters
+                    ON GachaCharacters.Id = ObtainedSSRCharacters.CharacterID
+                ";
+                var reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        string name = reader.GetString(1);
+                        list.Add(name); 
+                    }
+
+                }
+
+            }
+            return list;
+        }
+
+        public Hashtable Characters()
+        {
+            Hashtable hashtable = new Hashtable();
+            using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    SELECT * FROM GachaCharacters
+                ";
+                var reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        string name = "";
+                        string element = "";
+                        string link = "";
+                        string series = "";
+                        string image = "";
+                        int id = reader.GetInt32(0);
+                        name = reader.GetString(1);
+                        element = reader.GetString(2);
+                        link = reader.GetString(3);
+                        series = reader.GetString(4);
+                        image = reader.GetString(5);
+                        CharacterDetail character = new(id, name, element, series, image, link);
+                        hashtable.Add(character.name, character);
+                    }
+
+                }
+
+            }
+            return hashtable;
+        }
+
+        public List<Character> CharacterList()
         {
             List<Character> list = new List<Character>();
             using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
@@ -202,8 +271,7 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
 
         public void AddCharacter(Character character)
         {
-            int count = CharsCount();
-            count++;
+            
             using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
             {
                 connection.Open();
@@ -212,19 +280,96 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                 command.CommandText =
                 @"
                     INSERT into GachaCharacters
-                    (Id, Name, Series, Element, Image, Link)
-                    VALUES ($Id, $name, $element, $series, $image, $link)
+                    (Name, Series, Element, Image, Link)
+                    VALUES ($name, $element, $series, $image, $link)
                 ";
-                command.Parameters.AddWithValue("Id", count);
                 command.Parameters.AddWithValue("$name", character.name);
-                command.Parameters.AddWithValue("series", character.series);
-                command.Parameters.AddWithValue("element", character.element);
-                command.Parameters.AddWithValue("image", character.image);
-                command.Parameters.AddWithValue("link", character.link) ;
+                command.Parameters.AddWithValue("$series", character.series);
+                command.Parameters.AddWithValue("$element", character.element);
+                command.Parameters.AddWithValue("$image", character.image);
+                command.Parameters.AddWithValue("$link", character.link) ;
              
                 command.ExecuteNonQuery();
                 connection.Close();
             }
+        }
+
+        public void AddAqcuiredCharacter(int id, string date) 
+        {
+            using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    INSERT into ObtainedSSRCharacters
+                    (CharacterID, Date)
+                    VALUES ($id, $date)
+                ";
+                command.Parameters.AddWithValue("$id", id);
+                command.Parameters.AddWithValue("$date", date);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        public int CharacterID(string name)
+        {
+            int id = 0;
+            using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    SELECT * FROM GachaCharacters
+                    WHERE Name=$name 
+                ";
+                command.Parameters.AddWithValue("$name", name);
+                var result = command.ExecuteReader();
+                if (result.HasRows)
+                {
+
+                    while (result.Read())
+                    {
+                        id = result.GetInt32(0);
+                    
+                    }
+            
+                }
+                connection.Close();
+
+            }
+            return id;
+        }
+
+        public int TotalCharacterNumber(string series)
+        {
+            int count = 0;
+            using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    SELECT COUNT(*)
+                    FROM GachaCharacters
+                    WHERE Series=$series
+                ";
+                command.Parameters.AddWithValue("$series", series);
+                var result = command.ExecuteReader();   
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        count = result.GetInt32(0); 
+                    }
+                }
+               connection.Close();
+            }
+            return count;
         }
 
         public Character QueriedCharacter(string name)
@@ -272,9 +417,29 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
             
         }
 
-        public void UpadteCharacter(Character character)
+        public void UpadteCharacter(Character character, int id)
         {
-
+            using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText =
+                    @"
+                                    UPDATE GachaCharacters 
+                                    SET name=$name, Element=$el, Series=$s, Image=$i, Link=$l
+                                    WHERE Id=$id
+                              ";
+                command.Parameters.AddWithValue("$name", character.name);
+                command.Parameters.AddWithValue("$el", character.element);
+                command.Parameters.AddWithValue("$s", character.series);
+                command.Parameters.AddWithValue("$i", character.image);
+                command.Parameters.AddWithValue("$l", character.link);
+                command.Parameters.AddWithValue("$id", id);
+               
+                command.ExecuteNonQuery();
+                connection.Close();
+                MessageBox.Show($"Updated {character.name} id: {id} details.\n");
+            }
         }
     }
 }

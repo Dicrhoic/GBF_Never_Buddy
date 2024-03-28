@@ -473,6 +473,26 @@ namespace GBF_Never_Buddy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap text_legendticket {
+            get {
+                object obj = ResourceManager.GetObject("text_legendticket", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap text_legendticket10 {
+            get {
+                object obj = ResourceManager.GetObject("text_legendticket10", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap text_stone {
             get {
                 object obj = ResourceManager.GetObject("text_stone", resourceCulture);

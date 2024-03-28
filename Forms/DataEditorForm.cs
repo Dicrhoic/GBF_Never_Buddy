@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using GBF_Never_Buddy.Classes.GachaClasses;
 using System.Diagnostics;
+using System.Collections;
 
 namespace GBF_Never_Buddy.Forms
 {
@@ -22,6 +23,7 @@ namespace GBF_Never_Buddy.Forms
         private System.Windows.Forms.ErrorProvider elementErrorProvider;
         private ErrorProvider imageErrorProvider;
         private ErrorProvider linkErrorProvider;
+        CharacterSQLClass characterSQLClass = new();
         CharacterSQLHelper characterSQLHelper = new();
         SummonSQLHelper summonSQLHelper = new();
         List<GameDataClasses.Character>? characterList;
@@ -29,6 +31,7 @@ namespace GBF_Never_Buddy.Forms
         List<string> seriesS = new List<string>();
         List<string> seriesC = new List<string>();
         List<string> names = new();
+        Hashtable characters;
 
         int mode = -1;
         public DataEditorForm()
@@ -70,6 +73,7 @@ namespace GBF_Never_Buddy.Forms
             linkErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.AlwaysBlink;
             linkTB.Validated += new System.EventHandler(link_validated);
 
+            characters = characterSQLClass.Characters();
 
             characterList = characterSQLHelper.CharacterList();
             summonsList = summonSQLHelper.SummonList();
@@ -80,6 +84,36 @@ namespace GBF_Never_Buddy.Forms
                     "Xeno", "Collaboration"};
             seriesC.AddRange(sc);
             seriesS.AddRange(ss);
+
+            button1.Click += AddData;
+        }
+
+        private void AddData(object? sender, EventArgs e)
+        {
+            if (!IsNameValid() || !LinksAreValid() || !IsElementSelected() || !IsSeriesSelected())
+            {
+                Debug.WriteLine("Error something is invalid");
+                return;
+            }
+            else
+            {
+                var c = characters.ContainsKey(nameTB.Text);
+                if (c)
+                {
+                    var data = (GameDataClasses.CharacterDetail)characters[nameTB.Text];
+                    string name = nameBox.Text;
+                    string el = comboBox1.Text;
+                    string sr = comboBox2.Text;
+                    string l = linkTB.Text;
+                    string i = imageTB.Text;
+                    int id = data.id;
+                    GameDataClasses.Character character = new(name, el, sr, i, l);
+                    characterSQLClass.UpadteCharacter(character, id);
+                }
+
+
+
+            }
         }
 
         private void name_validated(object sender, System.EventArgs e)
@@ -213,9 +247,12 @@ namespace GBF_Never_Buddy.Forms
             if (radioButton1.Checked)
             {
                 mode = 0;
-                names.AddRange(characterList.Select(x => x.name));
+                Debug.Write($"Hashtable size:{characters.Count} real size: {characterList.Count}\n");
+                List<GameDataClasses.CharacterDetail> c = characters.Values.Cast<GameDataClasses.CharacterDetail>().ToList();
+                Debug.WriteLine(c.Count);
+                names.AddRange(c.Select(x => x.name));
                 comboBox1.Items.AddRange(seriesC.ToArray());
-                source.AddRange(characterList.Select(x=>x.name).ToArray());
+                source.AddRange(c.Select(x=>x.name).ToArray());
                 nameTB.AutoCompleteCustomSource = source;
 
 
@@ -235,18 +272,7 @@ namespace GBF_Never_Buddy.Forms
             nameTB.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
-        private void AddData(object sender, EventArgs e)
-        {
-            if (!IsNameValid() || !LinksAreValid() || !IsElementSelected() || !IsSeriesSelected())
-            {
-                Debug.WriteLine("Error something is invalid");
-                return;
-            }
-            else
-            {
-              
-            }
-        }
+    
 
         private void ValidateName(object sender, EventArgs e)
         {
@@ -287,6 +313,7 @@ namespace GBF_Never_Buddy.Forms
             comboBox1.SelectedIndex = indexEl;
             linkTB.Text = c.link;
             imageTB.Text = c.image; 
+            nameBox.Text = c.name;
         }
         private void LoadData(GameDataClasses.Summon s)
         {

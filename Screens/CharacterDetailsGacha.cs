@@ -38,8 +38,15 @@ namespace GBF_Never_Buddy.Screens
         private void LoadDetails(GachaCharacterDetails character)
         {
             if (character != null)
-            {
-                pictureBox1.Load(character.image);
+            {   
+                try
+                {
+                    pictureBox1.Load(character.image);
+                }
+                catch 
+                {
+
+                }
                 label1.Text = $"Name: {character.name}";
                 label2.Text = $"Element: {character.element}\t Series: {character.series}";
                 label3.Text = $"Date Acquired: ";

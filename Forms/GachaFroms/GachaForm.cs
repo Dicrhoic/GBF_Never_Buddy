@@ -3,7 +3,9 @@ using GBF_Never_Buddy.Classes.GachaClasses;
 using GBF_Never_Buddy.Classes.SQLClasses;
 using GBF_Never_Buddy.Forms.GachaFroms;
 using GBF_Never_Buddy.GachaForms;
+using GBF_Never_Buddy.Properties;
 using System.Diagnostics;
+using static GBF_Never_Buddy.Classes.GameDataClasses;
 
 
 namespace GBF_Never_Buddy
@@ -11,36 +13,30 @@ namespace GBF_Never_Buddy
     public partial class GachaForm : Form
     {
         GachaHandler gachaHandler;
-        GameDataClasses.GachaTable gacha;
         GachaSQLHelper gachaHelper = new();
-
+        GachaInfo info;
         public GachaForm(GachaHandler gachaHandler)
         {
             InitializeComponent();
             this.gachaHandler = gachaHandler;
-            int drawId = gachaHelper.DrawCount();
-            string date = DateTime.Now.ToString("yyyy-MM-dd");
             int id = gachaHelper.Count();
             int crystals = gachaHandler.crystalsSpent;
             if (gachaHandler.mode == Mode.Free)
             {
                 crystals = 0;
             }
-            gacha = new GameDataClasses.GachaTable(id, id, crystals, date);
-            switch (gachaHandler.mode)
+            radioButton1.Checked = true;
+            comboBox1.Visible = false;
+            label1.Visible = false;
+            string mode = nameof(GachaHandler.mode);
+            info = new(id, mode, gachaHandler);
+            var form = Application.OpenForms["FreebieLogForm"];
+            if (form != null)
             {
-                case Mode.Free:
-                    gachaHelper.InsertDataFree(gacha);
-                    break;
-                case Mode.Normal:
-                    gachaHelper.InsertData(gacha);
-                    break;
+                panel1.Visible = false;
+                costLabel.Visible = false;
+                label1.Visible = false;
             }
-
-
-
-            gachaHandler.drawID = id;
-
 
         }
 
@@ -62,11 +58,28 @@ namespace GBF_Never_Buddy
 
         private void TenDrawBtn_Click(object sender, EventArgs e)
         {
-
-            gachaHandler.UpdateCrystalsUsed(costLabel, DrawType.Multi);
-            gachaHandler.drawNumber++;
+            var form = Application.OpenForms["FreebieLogForm"];
+            if (form != null)
+            {               
+                info.NewDraw((int)DrawType.Free);
+            }
+            else
+            {
+                if (radioButton1.Checked)
+                {
+                    gachaHandler.UpdateCost(costLabel, DrawType.Multi);
+                    info.NewDraw((int)DrawType.Multi);
+                }
+                else
+                {
+                    gachaHandler.UpdateCost(label1, DrawType.Tickets);
+                    info.NewDraw((int)DrawType.Tickets);
+                }
+            }
+          
             GachaResultAdder Adder = new(gachaHandler);
             Adder.ShowDialog();
+            gachaHandler.drawNumber++;
         }
 
         private void OpenResults(object sender, EventArgs e)
@@ -85,6 +98,56 @@ namespace GBF_Never_Buddy
                 parent.Refresh();
                 //parent.LoadList();
             }
+        }
+
+        private void UpdateCostSource(object sender, EventArgs e)
+        {
+            if (radioButton1.Checked)
+            {
+                comboBox1.Visible = false;
+                tenDrawBtn.Image = Resources.text_stone10;
+                tenDrawBtn.BackColor = Color.IndianRed;
+                singleDrawBtn.BackColor = Color.IndianRed;
+                singleDrawBtn.Image = Resources.text_stone;
+            }
+            if (radioButton2.Checked)
+            {
+                comboBox1.Visible = true;
+                tenDrawBtn.Image = Resources.text_legendticket10;
+                tenDrawBtn.BackColor = Color.SkyBlue;
+                singleDrawBtn.BackColor = Color.SkyBlue;
+                singleDrawBtn.Image = Resources.text_legendticket;
+                label1.Visible = true;
+                comboBox1.SelectedIndex = 0;
+            }
+        }
+
+        private void SingleDraw(object sender, EventArgs e)
+        {
+            var form = Application.OpenForms["FreebieLogForm"];
+            if (form != null)
+            {
+                info.NewDraw((int)DrawType.Free);
+            }
+            else
+            {
+                if (radioButton1.Checked)
+                {
+                    gachaHandler.UpdateCost(costLabel, DrawType.Single);
+                    info.NewDraw((int)DrawType.Single);
+                }
+
+                if (radioButton2.Checked)
+                {
+                    int tickets = comboBox1.SelectedIndex + 1;
+                    gachaHandler.UpdateCost(label1, DrawType.Ticket, tickets);
+                    info.NewDraw(comboBox1.SelectedIndex + 1);
+                }
+            }
+        
+           
+            GachaResultAdder Adder = new(gachaHandler);
+            Adder.ShowDialog();
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using GBF_Never_Buddy.Classes.GachaClasses;
+﻿using GBF_Never_Buddy.Classes;
+using GBF_Never_Buddy.Classes.GachaClasses;
 using GBF_Never_Buddy.Classes.SQLClasses;
 using GBF_Never_Buddy.GachaForms;
 using GBF_Never_Buddy.Screens;
+using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static GBF_Never_Buddy.Classes.GameDataClasses;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace GBF_Never_Buddy.Forms.GachaFroms
 {
@@ -26,23 +29,18 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
         List<string> exceptionSummonsStrings = new List<string>();
      
         public FreebieLogForm()
-        {
+        {   
             InitializeComponent();
+            comparer = new ItemComparer();
+            listView1.ListViewItemSorter = comparer;
+            gachaTables = gachaSQL.FreeGachas();
             LoadList();
             exceptionSummonsStrings.Add("Poseidon, the Tide Father");
         }
 
         public void LoadList()
         {
-            if(gachaTables != null) {
-                gachaTables.Clear();
-            }
-           
-            comparer = new ItemComparer();
-            listView1.ListViewItemSorter = comparer;
-            gachaTables = gachaSQL.FreeGachas();
-            listView1.ListViewItemSorter = comparer;
-            listView1.ColumnClick += SortListView;
+          
             InitialiseListView();
             listView1.ItemSelectionChanged += LoadDetailsSide;
             listView1.SelectedIndexChanged += LoadGachaData;
@@ -51,7 +49,165 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
 
         private void LoadGachaData(object? sender, EventArgs e)
         {
-            DisplayPanel();
+            //DisplayPanel();
+            DisplayDetails();   
+        }
+
+        private void DisplayDetails()
+        {
+            resultsTable.Controls.Clear();
+            resultsTable.Visible = true;
+            resultsTable.AutoScroll = true;
+            int size = DrawCount(drawID);
+            GameDataClasses.GachaResults results = new(drawID,size);
+            List<GachaYield> yields = results.GachaYields;
+            Debug.WriteLine($"Gacha count: {yields.Count + 1}, DrawID: {drawID}");
+            PopulateData(yields, size);
+        }
+
+        void PrintYields(List<GachaYield> yields)
+        {
+            foreach (GachaYield yield in yields)
+            {
+                Debug.WriteLine($"{yield.DrawNumber}, {yield.Summon}, {yield.Character}");
+            }
+        }
+
+
+        private void PopulateData(List<GachaYield> yields, int size)
+        {
+
+            for (int i = 0; i < size; i++)
+            {
+                int index = i + 1;
+                string text = $"Draw Number: {index}\n";
+                GachaData gachaData = new();
+                var collection = yields.Where(x => x.DrawNumber == index);
+                gachaData.UpdateCaption(text);
+                foreach (var item in collection)
+                {
+                    Debug.WriteLine($"{index}. {item.Summon}, {item.Character}");
+                    
+                }
+            }         
+        }
+
+        private void LoadSummonData(string summon)
+        {
+
+        }
+
+        private void GenerateDrawNumberYield(IEnumerable<GachaYield> collection, GachaData gachaData)
+        {
+            foreach (var item in collection)
+            {
+                GachaYield yield = (GachaYield)item;
+                Debug.WriteLine($"S: {yield.Summon} C: {yield.Character}");
+                if (string.IsNullOrEmpty(yield.Character) && !string.IsNullOrEmpty(yield.Summon))
+                {
+                    string caption = $"No SSR obtained from draw #{yield.DrawNumber}";
+                    RichTextBox tb = new RichTextBox();
+                    tb.Text = caption;
+                    tb.Dock = DockStyle.Top;
+                    tb.Height = 40;
+                    tb.ReadOnly = true;
+                    resultsTable.Controls.Add(tb);
+
+                }
+                else
+                {
+
+                    if (!string.IsNullOrEmpty(yield.Character))
+                    {
+                        CharacterSQLClass characterSQL = new();
+
+                        FlowLayoutPanel panel = new FlowLayoutPanel();
+                        panel.AutoScroll = true;
+                        panel.Dock = DockStyle.Fill;
+                        panel.FlowDirection = FlowDirection.LeftToRight;
+                        Character character = characterSQL.QueriedCharacter(yield.Character);
+                        string link = character.link;
+                        PictureBox pictureBox = new PictureBox();
+                        pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+                        pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+                        pictureBox.Load(character.image);
+                        pictureBox.Dock = DockStyle.Fill;
+                        pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
+                        pictureBox.MouseHover += (s, e) => { ImageHoverFunction(pictureBox, character.name); };
+                        gachaData.InsertImage(pictureBox);
+
+                    }
+                    if (!string.IsNullOrEmpty(yield.Summon))
+                    {
+                        bool load = true;
+                        string sum = yield.Summon;
+                        FlowLayoutPanel panel = new FlowLayoutPanel();
+                        panel.AutoScroll = true;
+                        panel.Dock = DockStyle.Fill;
+                        panel.FlowDirection = FlowDirection.LeftToRight;
+                        SummonSQLClass summonSQL = new();
+                        Summon summon = summonSQL.QueriedData(sum);
+                        string link = summon.link;
+                        PictureBox pictureBox = new PictureBox();
+                        pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+                        pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+                        try
+                        {
+                            pictureBox.Load(summon.image);
+
+                            pictureBox.Dock = DockStyle.Fill;
+                            pictureBox.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
+                            pictureBox.MouseHover += (s, e) => { ImageHoverFunction(pictureBox, summon.name); };
+                            panel.Controls.Add(pictureBox);
+                            gachaData.InsertImage(pictureBox);
+                        }
+                        catch (Exception ex)
+                        {
+                            load = false;
+                            Debug.WriteLine($"{load} :{ex.Message}");
+
+                        }
+                        if (!load)
+                        {
+                            Label label = new Label();
+                            label.Text = summon.name;
+                            label.Dock = DockStyle.Bottom;
+                            label.MouseClick += (s, e) => { ImageClickFunction(pictureBox, link); };
+                            label.MouseHover += (s, e) => { ImageHoverFunction(pictureBox, summon.name); };
+                            Debug.WriteLine("Added label");
+                            resultsTable.Controls.Add(label);
+                        }
+
+                    }
+                    resultsTable.Controls.Add(gachaData);
+                }
+            }
+        }
+
+        private int DrawCount(int id)
+        {
+            int count = 0;
+            using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+            {
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                    @"  
+                        SELECT DrawCount
+                        FROM DrawInfo
+                        WHERE DrawInfo.ID = $id
+                    ";
+                command.Parameters.AddWithValue("$id", id);
+                connection.Open();  
+                var reader = command.ExecuteReader();
+                while(reader.Read())
+                {
+                    count = reader.GetInt32(0);
+                }
+                connection.Close();
+             }
+            return count; 
+
         }
 
         private void DisplayPanel()
@@ -272,6 +428,8 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
         private void LoadNewDraw(object sender, EventArgs e)
         {
             gachaHandler.mode = Mode.Free;
+            gachaHandler.CreateData();
+            Debug.WriteLine($"Mode: {gachaHandler.mode}");
             GachaForm gachaForm = new(gachaHandler);
             gachaForm.ShowDialog();
 
@@ -280,6 +438,7 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
         private void LoadRoulette(object sender, EventArgs e)
         {
             gachaHandler.mode = Mode.Roulette;
+            gachaHandler.CreateData();
             RouletteLog rouletteForm = new RouletteLog(gachaHandler);
             rouletteForm.Show();
         }

@@ -1,5 +1,9 @@
 ﻿using System.Collections;
+using System.Data;
 using System.Diagnostics;
+using GBF_Never_Buddy.Classes.GachaClasses;
+using Microsoft.Data.Sqlite;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GBF_Never_Buddy.Classes
 {
@@ -22,6 +26,25 @@ namespace GBF_Never_Buddy.Classes
                 this.link = link;
             }
         }
+        public class CharacterDetail
+        {
+            public int id;
+            public string name;
+            public string series;
+            public string element;
+            public string image;
+            public string link;
+
+            public CharacterDetail(int id, string name, string element, string series, string image, string link)
+            {
+                this.id = id;
+                this.name = name;
+                this.element = element;
+                this.series = series;
+                this.image = image;
+                this.link = link;
+            }
+        }
 
         public class GachaCharacterDetails
         {
@@ -35,8 +58,8 @@ namespace GBF_Never_Buddy.Classes
             public string desc { get; set; }
 
             public GachaCharacterDetails(int id, string name, string image, string link, int rid, string element, string series)
-            {   
-                this.id = id;   
+            {
+                this.id = id;
                 this.name = name;
                 this.image = image;
                 this.link = link;
@@ -46,7 +69,7 @@ namespace GBF_Never_Buddy.Classes
                 desc = string.Empty;
             }
 
-          
+
         }
 
         public class WeaponList
@@ -68,7 +91,7 @@ namespace GBF_Never_Buddy.Classes
             }
         }
 
-    
+
         public class Summon
         {
             public string name;
@@ -87,6 +110,192 @@ namespace GBF_Never_Buddy.Classes
             }
         }
 
+        public class GachaInfo
+        {
+            public GachaHandler handler;
+            int drawNumber = 1;
+            public int id;
+            public string type;
+            public List<Character> Characters;
+            public List<Summon> Summons;
+            public List<GachaDetail> details;
+
+            public GachaInfo(int id, string type, GachaHandler gachaHandler)
+            {
+                this.id = id;
+                this.type = type;
+                Characters = new();
+                Summons = new();
+                details = new();
+                handler = gachaHandler;
+                LoadData();
+            }
+
+            private void LoadData()
+            {
+                Characters = handler.characters;
+                Summons = handler.summons;  
+            }
+
+            public void InsertResults()
+            {
+                int drawID = DrawIDFK();
+                Debug.WriteLine("Draw ID:" + drawID);
+                foreach (var c in Characters)
+                {
+                    InsertCharacter(drawID, c.name);
+                    Debug.WriteLine($"Inserted: {c.name} to {id}");
+                }
+                foreach(var s in Summons)
+                {
+                    InsertSummon(drawID, s.name);
+                    Debug.WriteLine($"Inserted: {s.name} to {id}");
+                }
+            }
+
+            private int DrawIDFK()
+            {
+                int FK = -1;
+                int idSearch = id - 1;
+                Debug.WriteLine($"Searching for FK with ID: {idSearch}");
+                using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+                {
+
+                    var command = connection.CreateCommand();
+                    command.CommandText =
+                    @"
+                            SELECT ID, DrawID
+                            FROM DrawCost
+                            WHERE DrawID=$id
+                        ";
+            
+                    connection.Open();
+                    command.Parameters.AddWithValue("$id", idSearch);
+                    var reader = command.ExecuteReader();
+                    while(reader.Read())
+                    {
+                      
+                        FK = reader.GetInt32(0);    
+                    }
+                    connection.Close();
+                }
+                Debug.Assert(FK == -1);
+                return FK;
+            }
+
+            public void NewDraw(int cost)
+            {
+                Debug.WriteLine($"NewDraw() ID: {id}, DrawNum: {drawNumber}, Cost: {cost}");
+                AddDrawCost(cost);
+                UpdateDrawCount();
+                drawNumber++; 
+                
+            }
+
+            private void AddDrawCost(int cost)
+            {
+
+                using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+                {
+                    
+                    var command = connection.CreateCommand();
+                    command.CommandText =
+                    @"
+                            INSERT into DrawCost
+                            (DrawID, DrawNumber, Cost)
+                            VALUES (@d, @n, @c)
+                        ";
+                    command.Parameters.AddWithValue("@d", id);
+                    command.Parameters.AddWithValue("@n", drawNumber);
+                    command.Parameters.AddWithValue("@c", cost);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+
+            private void UpdateDrawCount()
+            {
+        
+                using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+                {
+                   
+                    var command = connection.CreateCommand();
+                    command.CommandText =
+                    @"
+                            UPDATE DrawInfo
+                            SET DrawCount = @count
+                            WHERE ID=@i
+                        ";
+                    command.Parameters.AddWithValue("@i", id);
+                    command.Parameters.AddWithValue("@count", drawNumber);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+
+            private void InsertCharacter(int id, string name)
+            {
+
+                using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+                {
+                    Debug.WriteLine($"Insert drawID {id}");
+                    var command = connection.CreateCommand();
+                    command.CommandText =
+                    @"
+                            INSERT into DrawYield
+                            (ID, Character)
+                            VALUES (@id, @character)
+                        ";
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@character", name);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+
+
+            }
+
+            private void InsertSummon(int id, string name)
+            {
+
+                using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+                {
+                 
+                    var command = connection.CreateCommand();
+                    command.CommandText =
+                    @"
+                            INSERT into DrawYield
+                            (ID, Summon)
+                            VALUES (@id, @summon)
+                        ";
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@summon", name);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+
+
+            }
+        }
+
+        public class GachaDetail 
+        {
+            int drawNumber;
+            int costValue;
+    
+            public GachaDetail(int drawNumber, int costValue)
+            {
+                this.drawNumber = drawNumber;
+                this.costValue = costValue;
+
+            }
+        }
+        
+
         public class GachaTable
         {
             public int id;
@@ -100,6 +309,74 @@ namespace GBF_Never_Buddy.Classes
                 this.drawId = drawId;
                 this.crystalsUsed = crystalsUsed;
                 this.date = date;
+            }
+        }
+
+        public class GachaResults
+        {
+            public int id;
+            private List<GachaYield> gachaYields;
+
+            public GachaResults(int id, int size)
+            {
+                this.id = id;
+                gachaYields = new List<GachaYield>(size);
+                PopulateYields();
+            }
+
+            private void PopulateYields()
+            {
+                using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+                {
+
+                    var command = connection.CreateCommand();
+                    command.CommandText =
+                    @"
+                           SELECT DrawYield.Character, DrawYield.Summon, DrawCost.DrawNumber FROM DrawYield
+                           INNER JOIN DrawCost ON DrawCost.ID = DrawYield.ID
+                           INNER  JOIN DrawInfo ON DrawCost.DrawID=DrawInfo.ID 
+                           WHERE DrawID=@i
+                        ";
+                    command.Parameters.AddWithValue("@i", id);
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while(reader.Read())
+                    {
+                        if(reader.HasRows)
+                        {
+                            foreach(var row in reader)
+                            {
+                                var c = reader.IsDBNull(0) ? "Empty" : reader.GetString(0);
+                                var s = reader.IsDBNull(1) ? "Empty" : reader.GetString(1); 
+                                int number = reader.GetInt32(2);
+                                Debug.WriteLine(reader.IsDBNull(1) ? null : reader.GetString(1));   
+                                GachaYield yield = new(c, s, number);
+                                Debug.WriteLine($"Added:{c},Summon:{s} to {number}");
+                                gachaYields.Add(yield); 
+                            }
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+
+            public List<GachaYield> GachaYields
+            {
+                get { return gachaYields; }
+            }
+        }
+
+        public class GachaYield
+        {
+            public string Character { get; }
+            public string Summon { get; }
+            public int DrawNumber { get; }
+
+            public GachaYield(string character, string summon, int DrawNumber)
+            {
+                Character = character;
+                Summon = summon;
+                this.DrawNumber = DrawNumber;
             }
         }
 

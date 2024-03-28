@@ -16,10 +16,13 @@ namespace GBF_Never_Buddy
     public partial class HomePage : Form
     {
         NetHelper netHelper;
+        string dir;
         public HomePage()
         {
             InitializeComponent();
             netHelper = new();
+            dir = Directory.GetCurrentDirectory();
+
         }
 
         private void InitializeContent(object sender, EventArgs e)
@@ -93,15 +96,11 @@ namespace GBF_Never_Buddy
             sparkForm.Show();
         }
 
-        private void LoadRouletteDay(object sender, EventArgs e)
-        {
-
-        }
-
         private void OpenLogs(object sender, EventArgs e)
         {
             GachaLogForm logData = new();
-            logData.ShowDialog();
+            logData.MdiParent = this;
+            logData.Show();
         }
 
         private void LoadGBForm(object sender, EventArgs e)
@@ -110,6 +109,7 @@ namespace GBF_Never_Buddy
             if (openForm == null)
             {
                 ItemDropLog gB = new();
+                gB.MdiParent = this;
                 gB.Show();
             }
 
@@ -122,6 +122,7 @@ namespace GBF_Never_Buddy
             if (openForm == null)
             {
                 FreebieLogForm form = new();
+                form.MdiParent = this;
                 form.Show();
             }
         }
@@ -148,21 +149,30 @@ namespace GBF_Never_Buddy
 
         private async void LoadUpdateOptions(object sender, EventArgs e)
         {
-            /*
+
             CharacterWriter characterWriter = new CharacterWriter();
-            characterWriter.ValidateXMLFile();
-            CharacterSQLClass characterSQLClass = new CharacterSQLClass();
-            characterSQLClass.UpdateDBFromXML();
-            */
+            var a = await characterWriter.CreateCharacterList();
+            if (a)
+            {
+                CharacterSQLClass characterSQLClass = new CharacterSQLClass();
+                characterSQLClass.UpdateDBFromXML();
+
+            }
+
+
 
             /*
             SummonWriter summonWriter = new SummonWriter();
             summonWriter.ValidateSummonFile();
-            summonWriter.CreateSummonsList();
+            var b = await summonWriter.CreateSummonsList();
+            if (b)
+            {
+                SummonSQLClass summonSQLClass = new SummonSQLClass();
+                summonSQLClass.UpdateDBFromXML();
+            }
             */
 
-            SummonSQLClass summonSQLClass = new SummonSQLClass();
-            summonSQLClass.UpdateDBFromXML();
+
             //UpdateOptions updateOptions = new UpdateOptions(this);
             //mainPanel.Controls.Clear(); 
             //mainPanel.Controls.Add(updateOptions); 
@@ -173,7 +183,52 @@ namespace GBF_Never_Buddy
             var openForm = Application.OpenForms["GachaCharacterCollection"];
             if (openForm == null)
             {
-                GachaCharacterCollection form = new();
+                Test form = new();
+                form.MdiParent = this;
+                form.Show();
+            }
+        }
+
+   
+
+        private void DeleteCachedFiles(object sender, FormClosedEventArgs e)
+        {
+            Directory.SetCurrentDirectory(dir);
+            string target_dir = "Assets";
+            Debug.WriteLine(Directory.Exists(target_dir));
+            if (Directory.Exists(target_dir))
+            {
+                string[] files = Directory.GetFiles(target_dir);
+                try
+                {
+                    foreach (string file in files)
+                    {
+                        File.SetAttributes(file, FileAttributes.Normal);
+                        File.Delete(file);
+                    }
+
+
+                    Directory.Delete("Assets", false);
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void gachaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void targetListToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            var openForm = Application.OpenForms["CharacterWishlist"];
+            if (openForm == null)
+            {
+                CharacterWishlist form = new();
+                form.MdiParent = this;
                 form.Show();
             }
         }

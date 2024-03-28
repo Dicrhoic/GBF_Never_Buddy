@@ -13,7 +13,7 @@ namespace GBF_Never_Buddy.Classes.XMLWriterClasses
     public class SummonWriter : XMLWriter
     {   
         List<string> names = new List<string>();    
-        public async void CreateSummonsList()
+        public async Task<bool> CreateSummonsList()
         {
             Debug.WriteLine("Running");
             Encoding utf8 = new UTF8Encoding(true);
@@ -53,6 +53,7 @@ namespace GBF_Never_Buddy.Classes.XMLWriterClasses
                     await CreateSummonDetailList(doc, body, bodyContent, contentFrame, parserFrame, summonsFN, "19", "Arcarum: The World Beyond");
                 }
             }
+            return true;
         }
 
         public async Task<bool> GetNames()

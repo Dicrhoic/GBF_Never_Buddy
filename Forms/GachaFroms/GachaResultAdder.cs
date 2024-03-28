@@ -2,6 +2,7 @@
 using GBF_Never_Buddy.Classes.GachaClasses;
 using GBF_Never_Buddy.Classes.SQLClasses;
 using GBF_Never_Buddy.GachaForms;
+using System.Collections;
 using System.Data;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -11,28 +12,34 @@ namespace GBF_Never_Buddy
 {
     public partial class GachaResultAdder : Form
     {
+        CharacterSQLClass characterSQL;
+        SummonSQLClass summonSQL;   
         CharacterSQLHelper characterSQLHelper = new();
         SummonSQLHelper summonSQLHelper = new();
         GachaHandler gachaHandler;
         GachaSQLHelper gacha = new();
-        List<GameDataClasses.Character>? characterList;
-        List<GameDataClasses.Summon>? summonsList;
+        List<GameDataClasses.Character> characterList = new();
+        List<GameDataClasses.Summon> summonsList = new();
         List<Tuple<int, GameDataClasses.Character>> obtainedCharList = new();
         List<Tuple<int, GameDataClasses.Summon>> obtainedSummonsList = new();
         int charIndex = 0;
         int summonIndex = 0;
         int id;
-        int drawNumber;
         int crystalsUsed;
-        Form origin;
-        RouletteCounter rouletteCounter;
+        Form? origin;
+        RouletteCounter? rouletteCounter;
+        List<string> charactersHave;
 
         public GachaResultAdder(GachaHandler handler)
         {
             InitializeComponent();
             gachaHandler = handler;
             InitialiseHandler();
-      
+            characterSQL = new CharacterSQLClass();
+            charactersHave = characterSQL.CharactersAlreadyObtained();
+            summonSQL = new SummonSQLClass();
+
+
         }
 
         public GachaResultAdder(GachaHandler handler, Form Parent, RouletteCounter counter)
@@ -42,27 +49,30 @@ namespace GBF_Never_Buddy
             InitialiseHandler();
             Debug.WriteLine($"Called from {Parent.Name}");
             origin = Parent;
-            rouletteCounter = counter;  
+            rouletteCounter = counter;
+            characterSQL = new CharacterSQLClass();
+            charactersHave = characterSQL.CharactersAlreadyObtained();
+            summonSQL = new SummonSQLClass();
 
         }
 
         private void InitialiseHandler()
         {
-            id = gachaHandler.drawID - 1;
-            drawNumber = gachaHandler.drawNumber;
+ 
+            id = gachaHandler.drawID() + 1;
+            Debug.WriteLine($"DrawID: {id}");
             crystalsUsed = gachaHandler.crystalsSpent;
             if (gachaHandler.mode == Mode.Free || gachaHandler.mode == Mode.Roulette)
             {
                 crystalsUsed = 0;
             }
-            Debug.WriteLine($"ID: {id}, '\t' mode: {gachaHandler.mode}");
-            Debug.WriteLine($"Crystals Spent: {gachaHandler.crystalsSpent}. Draw Number {gachaHandler.drawNumber}");
+            //Debug.WriteLine($"ID: {id},\tmode: {gachaHandler.mode}");
+           
         }
 
         private void LoadFormData()
         {
             Cursor = Cursors.WaitCursor;
-            characterSQLHelper.ValidateDB();
             Cursor = Cursors.Default;
         }
 
@@ -70,24 +80,15 @@ namespace GBF_Never_Buddy
         {
             LoadFormData();
 
-            characterList = characterSQLHelper.CharacterList();
-            summonsList = summonSQLHelper.SummonList();
-            Debug.WriteLine($"Adding db {characterList.Count} contents");
-            //Debug.WriteLine($"Adding db {summonsList.Count} contents");
+            characterList = characterSQL.CharacterList();
+            summonsList = summonSQL.List();          
             LoadDataSource();
         }
 
         private void LoadDataSource()
         {
-            if (characterList == null && summonsList == null)
-            {
-                return;
-            }
-            if (characterList.Count == 0 && summonsList.Count == 0)
-            {
-                Debug.WriteLine("Something went wrong db is null");
-            }
-            if (characterList.Count != 0 && charRB.Checked)
+           
+            if (characterList != null && charRB.Checked)
             {
                 searchTB.PlaceholderText = "Enter character name";
                 Debug.WriteLine($"Adding db {characterList.Count} contents");
@@ -124,7 +125,16 @@ namespace GBF_Never_Buddy
                 PictureBox pictureBox = ObtainedItem(character);
                 pictureBox.Name = $"character{charIndex}";
                 Tuple<int, GameDataClasses.Character> tuple = new Tuple<int, GameDataClasses.Character>(charIndex, character);
-                resultsPanel.Controls.Add(pictureBox);
+                try
+                {
+                    resultsPanel.Controls.Add(pictureBox);
+
+                }
+                catch
+                (Exception ex)
+                {
+
+                }
                 obtainedCharList.Add(tuple);
                 charIndex++;
 
@@ -135,7 +145,16 @@ namespace GBF_Never_Buddy
                 PictureBox pictureBox = ObtainedItem(summon);
                 pictureBox.Name = $"summon{summonIndex}";
                 Tuple<int, GameDataClasses.Summon> tuple = new Tuple<int, GameDataClasses.Summon>(summonIndex, summon);
-                resultsPanel.Controls.Add(pictureBox);
+                try
+                {
+                    resultsPanel.Controls.Add(pictureBox);
+
+                }
+                catch
+                (Exception ex)
+                {
+
+                }
                 obtainedSummonsList.Add(tuple);
                 summonIndex++;
 
@@ -155,7 +174,21 @@ namespace GBF_Never_Buddy
             string link = character.link;
             //Debug.WriteLine(image);
             obtainedChar.Name = name;
-            obtainedChar.Load(image);
+            try
+            {
+                obtainedChar.Load(image);
+            }
+            catch
+            {
+                Bitmap bitmap = new Bitmap(168, 99);
+                using (Graphics graph = Graphics.FromImage(bitmap))
+                {
+                    Rectangle ImageSize = new Rectangle(0, 0, 168, 99);
+                    graph.FillRectangle(Brushes.White, ImageSize);
+                }
+                obtainedChar.Image = bitmap;
+
+            }
             obtainedChar.MouseClick += (s, e) => { ImageClickFunction(obtainedChar, link); };
             obtainedChar.AllowDrop = true;
             obtainedChar.DragEnter += (s, e) => { ImageDragEnter(e); };
@@ -173,9 +206,22 @@ namespace GBF_Never_Buddy
             string image = summon.image;
             string name = summon.name;
             string link = summon.link;
-            //Debug.WriteLine(image);
             obtainedChar.Name = name;
-            obtainedChar.Load(image);
+            try
+            {
+                obtainedChar.Load(image);
+            }
+            catch 
+            {
+                Bitmap bitmap = new Bitmap(168, 99);
+                using (Graphics graph = Graphics.FromImage(bitmap))
+                {
+                    Rectangle ImageSize = new Rectangle(0, 0, 168, 99);
+                    graph.FillRectangle(Brushes.White, ImageSize);
+                }
+                obtainedChar.Image = bitmap;    
+
+            }
             obtainedChar.MouseClick += (s, e) => { ImageClickFunction(obtainedChar, link); };
             obtainedChar.AllowDrop = true;
             obtainedChar.DragEnter += (s, e) => { ImageDragEnter(e); };
@@ -188,7 +234,7 @@ namespace GBF_Never_Buddy
         {
             Debug.WriteLine("Click");
             string url = link;
-            Form form = Application.OpenForms["GachaResultAdder"];
+            Form? form = Application.OpenForms["GachaResultAdder"];
             if (form != null)
             {
                 Debug.WriteLine("Deleting image");
@@ -223,7 +269,7 @@ namespace GBF_Never_Buddy
             {
                 Debug.WriteLine("Click");
                 string url = link;
-                Form form = Application.OpenForms["GachaResultAdder"];
+                Form? form = Application.OpenForms["GachaResultAdder"];
                 if (form != null)
                 {
                     Debug.WriteLine("Deleting image");
@@ -261,23 +307,13 @@ namespace GBF_Never_Buddy
             int idNum = int.Parse(id);
             if (summon)
             {
-                foreach (var summons in obtainedSummonsList)
-                {
-                    if (summons.Item1 == idNum)
-                    {
-                        obtainedSummonsList.Remove(summons);
-                    }
-                }
+                var item = obtainedSummonsList[idNum];
+                obtainedSummonsList.Remove(item);             
             }
             if (!summon)
             {
-                foreach (var characters in obtainedCharList)
-                {
-                    if (characters.Item1 == idNum)
-                    {
-                        obtainedCharList.Remove(characters);
-                    }
-                }
+                var item = obtainedCharList[idNum];
+                obtainedCharList.Remove(item);  
             }
         }
 
@@ -304,24 +340,10 @@ namespace GBF_Never_Buddy
             return strip;
         }
 
-        private void AllocateData()
-        {
-            switch (gachaHandler.mode)
-            {
-                case Mode.Spark:
-                    break;
-                case Mode.Normal:
-
-                    break;
-                case Mode.Free:
-
-                    break;
-            }
-        }
-
+    
         private void AddSparkResults()
         {
-            Form form = Application.OpenForms["SparkForm"];
+            Form? form = Application.OpenForms["SparkForm"];
             if (form != null)
             {
                 GachaForm parent = (GachaForm)form;
@@ -363,10 +385,10 @@ namespace GBF_Never_Buddy
                     }
                 }
                 id++;
-                GachaDetails results = new GachaDetails(id, id, chars, sums, drawNumber, crystalsUsed);
+                GachaDetails results = new GachaDetails(id, id, chars, sums, gachaHandler.drawNumber, crystalsUsed);
                 try
                 {
-                    gacha.InsertResults(results);
+                   
                 }
                 catch (Exception ex)
                 {
@@ -380,7 +402,7 @@ namespace GBF_Never_Buddy
 
         private void AddRouletteResults()
         {
-            Form form = Application.OpenForms["RouletteLog"];
+            Form? form = Application.OpenForms["RouletteLog"];
             if (form != null)
             {
                 RouletteLog parent = (RouletteLog)form;
@@ -390,7 +412,7 @@ namespace GBF_Never_Buddy
                 int width = 0;
                 if (tab.SelectedIndex == 0)
                 {
-                    var table = tab.Controls["gachapinTab"].Controls["resultsTableGP"];
+                    Control table = tab.Controls["gachapinTab"].Controls["resultsTableGP"];
                     width = table.Width;
                     panel.Width = width;
                     panel.AutoSize = true;
@@ -415,7 +437,7 @@ namespace GBF_Never_Buddy
 
         private void AddResultsNormal()
         {
-            Form form = Application.OpenForms["GachaForm"];
+            Form? form = Application.OpenForms["GachaForm"];
             if (form != null)
             {
                 GachaForm parent = (GachaForm)form;
@@ -440,7 +462,7 @@ namespace GBF_Never_Buddy
                     }
                     if (i < obtainedCharList.Count - 1)
                     {
-                        chars += $"{obtainedCharList[i].Item2.name},";
+                        chars += $"{obtainedCharList[i].Item2.name},"; 
                     }
                 }
                 string sums = "";
@@ -456,11 +478,12 @@ namespace GBF_Never_Buddy
                         sums += $"{obtainedSummonsList[i].Item2.name}, ";
                     }
                 }
-                id++;
-                GachaDetails results = new GachaDetails(id, id, chars, sums, drawNumber, crystalsUsed);
+           
+                //GachaDetails results = new GachaDetails(id, id, chars, sums, gachaHandler.drawNumber, crystalsUsed);
+                GachaInfo info = new(id, nameof(gachaHandler.mode) ,gachaHandler);
                 try
                 {
-                    gacha.InsertResults(results);
+                    info.InsertResults();
                 }
                 catch (Exception ex)
                 {
@@ -468,7 +491,7 @@ namespace GBF_Never_Buddy
                 }
                 Debug.WriteLine(chars);
                 this.Close();
-
+                id++;
             }
         }
 
@@ -495,7 +518,7 @@ namespace GBF_Never_Buddy
         private void ReturnCount(object sender, FormClosedEventArgs e)
         {
            
-            if(origin != null)
+            if(origin != null && rouletteCounter != null)
             {
                 Debug.Write($"Closed {Name} from {origin.Name}");
                 rouletteCounter.IncreaseStep();
@@ -503,10 +526,24 @@ namespace GBF_Never_Buddy
 
 
         }
+        private void UpdateObtainedData(object sender, FormClosingEventArgs e)
+        {
+            if(obtainedCharList.Count > 0) 
+            {
+                List<string> alreadyHaveCharacters = characterSQL.CharactersAlreadyObtained();
+                List<string> names = obtainedCharList.Select(x => x.Item2.name.ToString()).ToList();
+                var newChars = names.Except(alreadyHaveCharacters); 
+                foreach(string name in newChars)
+                {
+                    int characerID = characterSQL.CharacterID(name);
+                    characterSQL.AddAqcuiredCharacter (characerID, gachaHandler.date);
+                }
 
+            }
+        }
         private void ValidateCount(object sender, FormClosingEventArgs e)
         {   
-            if(origin != null)
+            if(origin != null && rouletteCounter != null)
             {
                 string caption = $"These are the reuslts for draw {rouletteCounter.currentCount}?";
                 if (rouletteCounter.currentCount > 20)

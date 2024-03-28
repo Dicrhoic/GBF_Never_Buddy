@@ -9,176 +9,7 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
 {
     internal class GachaSQLHelper : SQLHandler
     {
-
-        private string InsertStringDataFree(GameDataClasses.GachaTable table)
-        {
-            string query = $"INSERT INTO [DrawData] ([Id], [DrawID], [Date], [Freebie]) VALUES" +
-            $" ({table.id}, '{table.drawId}', '{table.date}', 'Y')";
-            return query;
-        }
-
-        private string InsertStringDrawData(GameDataClasses.GachaTable table)
-        {
-            string query = $"INSERT INTO [DrawData] ([Id], [DrawID], [Date]) VALUES" +
-                $" ({table.id}, '{table.drawId}', '{table.date}')";
-            return query;
-        }
-
-        private string InsertData()
-        {
-            string query = $"INSERT INTO [DrawData] ([Id], [DrawID], [Date], [Spark], [Freebie]) VALUES" +
-               $" (@id, @drawID, @date, @spark, @freebie)";
-            return query;
-        }
-
-        private string InsertStringDrawDataSpark(GameDataClasses.GachaTable table)
-        {
-            string query = $"INSERT INTO [DrawData] ([Id], [DrawID], [Date], [Spark]) VALUES" +
-                $" ({table.id}, '{table.drawId}', '{table.date}', 'Y')";
-            return query;
-        }
-
-        private string InsertStringResultData(GameDataClasses.GachaDetails details)
-        {
-            string query = $"INSERT INTO [DrawResults] ([DrawID], [CharacterString], [SummonString], [DrawNumber], [CrystalsUsed]) VALUES" +
-                $" ( '{details.drawId}', '{details.characters}', '{details.summons}', '{details.drawNumber}', '{details.crystalsUsed}')";
-            return query;
-        }
-
-
-        public void InsertDrawData(GameDataClasses.GachaTable table)
-        {
-            MBHelper mB = new MBHelper();
-            string query = InsertData();
-            try
-            {
-                using (SqliteConnection connection = new SqliteConnection(
-                        GetConnectionString()))
-                {
-
-                    Debug.WriteLine(connection.Database);
-                    Debug.WriteLine(query);
-                    SqliteCommand command = new SqliteCommand(
-                    query, connection);
-                    command.Parameters.AddWithValue("@id", table.id);
-                    command.Parameters.AddWithValue("@drawID", table.drawId);
-                    command.Parameters.AddWithValue("@date", table.date);
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                    string message = $"Succesfully added {table.drawId}" +
-                        $" to database.";
-                    string caption = $"Added to database";
-                    mB.SuccessMB(message, caption);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error: {ex.Message}");
-                string caption = $"Error Adding to DB";
-                mB.ErrorMB(ex.Message, caption);
-            }
-
-        }
-
-        public void InsertDrawDataSpark(GameDataClasses.GachaTable table)
-        {
-            MBHelper mB = new MBHelper();
-            string query = InsertData();
-            try
-            {
-                using (SqliteConnection connection = new SqliteConnection(
-                        GetConnectionString()))
-                {
-
-                    Debug.WriteLine(connection.Database);
-                    Debug.WriteLine(query);
-                    SqliteCommand command = new SqliteCommand(
-                    query, connection);
-                    command.Parameters.AddWithValue("@id", table.id);
-                    command.Parameters.AddWithValue("@drawID", table.drawId);
-                    command.Parameters.AddWithValue("@date", table.date);
-                    command.Parameters.AddWithValue("@spark", "Y");
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                    string message = $"Succesfully added {table.drawId}" +
-                        $" to database.";
-                    string caption = $"Added to database";
-                    mB.SuccessMB(message, caption);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error: {ex.Message}");
-                string caption = $"Error Adding to DB";
-                mB.ErrorMB(ex.Message, caption);
-            }
-
-        }
-
-        public void InsertDrawDataFree(GameDataClasses.GachaTable table)
-        {
-            MBHelper mB = new MBHelper();
-            string query = InsertData();
-            try
-            {
-                using (SqliteConnection connection = new SqliteConnection(
-                        GetConnectionString()))
-                {
-
-                    Debug.WriteLine(connection.Database);
-                    Debug.WriteLine(query);
-                    SqliteCommand command = new SqliteCommand(
-                    query, connection);
-                    command.Parameters.AddWithValue("@id", table.id);
-                    command.Parameters.AddWithValue("@drawID", table.drawId);
-                    command.Parameters.AddWithValue("@date", table.date);
-                    command.Parameters.AddWithValue("@freebie", "Y");
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                    string message = $"Succesfully added {table.drawId}" +
-                        $" to database.";
-                    string caption = $"Added to database";
-                    mB.SuccessMB(message, caption);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error: {ex.Message}");
-                string caption = $"Error Adding to DB";
-                mB.ErrorMB(ex.Message, caption);
-            }
-
-        }
-
-        public void InsertResults(GameDataClasses.GachaDetails details)
-        {
-            string query = InsertStringResultData(details);
-            RunSQLQuery(query);
-        }
-
-        public void InsertData(GameDataClasses.GachaTable table)
-        {
-            string query = InsertStringDrawData(table);
-            RunSQLQuery(query);
-        }
-
-        public void InsertDataSpark(GameDataClasses.GachaTable table)
-        {
-            string query = InsertStringDrawDataSpark(table);
-            RunSQLQuery(query);
-        }
-
-        public void InsertDataFree(GameDataClasses.GachaTable table)
-        {
-            string query = InsertStringDataFree(table);
-            RunSQLQuery(query);
-        }
+                
         public List<GameDataClasses.GachaDetails> GachaDetails(int id)
         {
             List<GachaDetails> gachaDetails = new List<GachaDetails>();
@@ -216,7 +47,7 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
         {
             List<GachaTable> gachas = new();
             string queryString =
-            $"SELECT * FROM DrawData WHERE Freebie='Y' OR Roulette='Y';";
+            $"SELECT * FROM DrawInfo WHERE Type='F';";
             try
             {
                 gachas = GachaTableData(queryString);
@@ -283,10 +114,10 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
 
             if (dataRecord[1] is not null && dataRecord[2] != null)
             {
-                int id = (int)(long)dataRecord[0];
-                int drawID = (int)(long)dataRecord[1];
-                string date = (string)dataRecord[2];
-                GachaTable gachaTable = new(id, drawID, 0, date);
+          
+                int drawID = (int)(long)dataRecord[0];
+                string date = (string)dataRecord[1];
+                GachaTable gachaTable = new(drawID, drawID, 0, date);
                 data.Add(gachaTable);
             }
 
@@ -309,39 +140,7 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
 
         }
 
-        public int DrawCount()
-        {
-            int count = 0;
-            string queryString =
-            "SELECT * FROM DrawResults";
-            try
-            {
-                using (SqliteConnection connection = new SqliteConnection(
-                        GetConnectionString()))
-                {
-
-                    Debug.WriteLine(connection.Database);
-                    Debug.WriteLine(queryString);
-                    SqliteCommand command = new SqliteCommand(
-                    queryString, connection);
-                    connection.Open();
-                    SqliteDataReader reader;
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        count++;
-                    }
-                    connection.Close();
-                    return count;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error: {ex.Message}");
-
-            }
-            return -1;
-        }
+       
 
 
 
@@ -349,29 +148,24 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
         public int Count()
         {
             int count = 0;
-            string queryString =
-            "SELECT * FROM DrawData";
             try
             {
-                using (SqliteConnection connection = new SqliteConnection(
-                        GetConnectionString()))
+                
+                using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
                 {
-
-                    Debug.WriteLine(connection.Database);
-                    Debug.WriteLine(queryString);
-                    SqliteCommand command = new SqliteCommand(
-                    queryString, connection);
                     connection.Open();
-                    SqliteDataReader reader;
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        count++;
-                    }
-                    connection.Close();
-                    return count;
+                    var command = connection.CreateCommand();
+                    command.CommandText =
+                    @"
+                    SELECT MAX(ID) FROM DrawInfo
+                    ";
+                    Int64 res = (Int64)command.ExecuteScalar();
+                    count = (Int32)res;
+
                 }
-            }
+                Debug.WriteLine($"Drawinfo ID:" + count);
+                return count;
+            }  
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error: {ex.Message}");
@@ -381,8 +175,4 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
         }
     }
 
-    public class GachaLogData
-    {
-
-    }
 }

@@ -31,7 +31,7 @@ namespace GBF_Never_Buddy.Screens
         public void InsertImage(PictureBox pb)
         {
             flowLayoutPanel1.Controls.Add(pb);
-            Debug.WriteLine("Added pb");
+
         }
         
         private void GachaData_Load(object sender, EventArgs e)

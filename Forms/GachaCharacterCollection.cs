@@ -29,22 +29,22 @@ namespace GBF_Never_Buddy.Forms
             panel2.AutoSize = true;
             this.AutoScroll = true;
             LoadAll();
-        
+
 
         }
 
         private void UpdateFilters(object sender, EventArgs e)
-        {   
-       
+        {
+
             panel2.Controls.Clear();
             List<CheckBox> filters = CheckBoxes();
-            if(filters.Count == 0)
+            if (filters.Count == 0)
             {
                 LoadAll();
             }
             else
             {
-                foreach(CheckBox cb in filters)
+                foreach (CheckBox cb in filters)
                 {
                     CreateTable(cb.Text);
                 }
@@ -86,7 +86,7 @@ namespace GBF_Never_Buddy.Forms
         }
 
         private List<CheckBox> CheckBoxes()
-        {   
+        {
             List<CheckBox> list = new List<CheckBox>();
             foreach (Control control in panel1.Controls)
             {
@@ -95,14 +95,13 @@ namespace GBF_Never_Buddy.Forms
                     CheckBox checkBox = (CheckBox)control;
                     if (checkBox.Checked)
                     {
-
                         list.Add(checkBox);
                     }
                 }
             }
-         
-    
-            return list;    
+
+
+            return list;
         }
 
         private void CreateTable(string series)
@@ -205,7 +204,7 @@ namespace GBF_Never_Buddy.Forms
             listView.Columns.Add("Element", -2, HorizontalAlignment.Left);
             listView.ItemActivate += (s, e) => ListView1_ItemActivate(listView);
             groupBox.Text = $"{series}";
-            
+
             //groupBox.Controls.Add(listView);
             groupBox.Dock = DockStyle.Top;
             Panel panel = new();
@@ -265,17 +264,17 @@ namespace GBF_Never_Buddy.Forms
                             string element = reader.GetString(4);
                             int refId = reader.GetInt32(5);
                             string series = reader.GetString(6);
-                            GachaCharacterDetails details = new(Cid, name, image, link, refId, element,series);
+                            GachaCharacterDetails details = new(Cid, name, image, link, refId, element, series);
                             CharacterDetailsGacha characterDetailsGacha = new(details);
                             panel3.Controls.Clear();
                             characterDetailsGacha.Dock = DockStyle.Fill;
                             characterDetailsGacha.AutoSize = true;
-                            panel3.Dock = DockStyle.Fill;            
+                            panel3.Dock = DockStyle.Fill;
                             panel3.Controls.Add(characterDetailsGacha);
                         }
                     }
                     connection.Close();
-               
+
                 }
 
             }
@@ -283,7 +282,7 @@ namespace GBF_Never_Buddy.Forms
 
         }
 
-    
+
         private List<ListViewItem> CharacterData(string series)
         {
             List<ListViewItem> list = new List<ListViewItem>();
@@ -311,14 +310,14 @@ namespace GBF_Never_Buddy.Forms
                         string image = reader.GetString(2);
                         string link = reader.GetString(3);
                         string element = reader.GetString(4);
-                        int refId = reader.GetInt32(5);    
+                        int refId = reader.GetInt32(5);
                         Debug.WriteLine($"Creating Charcter: {name}");
                         ListViewItem listViewItem = new ListViewItem(name);
                         listViewItem.SubItems.Add(element);
                         listViewItem.SubItems.Add(refId.ToString());
                         Debug.WriteLine($"Created Charcter: {name}");
                         list.Add(listViewItem);
-                    
+
                     }
                 }
             }
@@ -389,6 +388,9 @@ namespace GBF_Never_Buddy.Forms
             }
         }
 
-    
+        private void panel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

@@ -46,10 +46,10 @@
             uncapToolStripMenuItem = new ToolStripMenuItem();
             transcendenceToolStripMenuItem = new ToolStripMenuItem();
             evokersToolStripMenuItem = new ToolStripMenuItem();
-            goldBrickTallyToolStripMenuItem = new ToolStripMenuItem();
-            mainPanel = new Panel();
-            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             charactersToolStripMenuItem = new ToolStripMenuItem();
+            targetListToolStripMenuItem = new ToolStripMenuItem();
+            goldBrickTallyToolStripMenuItem = new ToolStripMenuItem();
+            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             MainMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -103,38 +103,39 @@
             gachaToolStripMenuItem.Name = "gachaToolStripMenuItem";
             gachaToolStripMenuItem.Size = new Size(52, 20);
             gachaToolStripMenuItem.Text = "Gacha";
+            gachaToolStripMenuItem.Click += gachaToolStripMenuItem_Click;
             // 
             // logsToolStripMenuItem
             // 
             logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            logsToolStripMenuItem.Size = new Size(135, 22);
+            logsToolStripMenuItem.Size = new Size(180, 22);
             logsToolStripMenuItem.Text = "Logs";
             logsToolStripMenuItem.Click += OpenLogs;
             // 
             // yoloLogToolStripMenuItem
             // 
             yoloLogToolStripMenuItem.Name = "yoloLogToolStripMenuItem";
-            yoloLogToolStripMenuItem.Size = new Size(135, 22);
+            yoloLogToolStripMenuItem.Size = new Size(180, 22);
             yoloLogToolStripMenuItem.Text = "Yolo";
             yoloLogToolStripMenuItem.Click += LoadYoloLog;
             // 
             // sparkLogToolStripMenuItem
             // 
             sparkLogToolStripMenuItem.Name = "sparkLogToolStripMenuItem";
-            sparkLogToolStripMenuItem.Size = new Size(135, 22);
+            sparkLogToolStripMenuItem.Size = new Size(180, 22);
             sparkLogToolStripMenuItem.Text = "Spark";
             sparkLogToolStripMenuItem.Click += LoadSparkForm;
             // 
             // freebieLogToolStripMenuItem
             // 
             freebieLogToolStripMenuItem.Name = "freebieLogToolStripMenuItem";
-            freebieLogToolStripMenuItem.Size = new Size(135, 22);
+            freebieLogToolStripMenuItem.Size = new Size(180, 22);
             freebieLogToolStripMenuItem.Text = "Freebie Log";
             freebieLogToolStripMenuItem.Click += LoadFreeLog;
             // 
             // collectionTrackerToolStripMenuItem
             // 
-            collectionTrackerToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { eternalsToolStripMenuItem, evokersToolStripMenuItem, charactersToolStripMenuItem });
+            collectionTrackerToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { eternalsToolStripMenuItem, evokersToolStripMenuItem, charactersToolStripMenuItem, targetListToolStripMenuItem });
             collectionTrackerToolStripMenuItem.Name = "collectionTrackerToolStripMenuItem";
             collectionTrackerToolStripMenuItem.Size = new Size(113, 20);
             collectionTrackerToolStripMenuItem.Text = "Collection Tracker";
@@ -144,7 +145,7 @@
             eternalsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { recruitToolStripMenuItem, uncapToolStripMenuItem, transcendenceToolStripMenuItem });
             eternalsToolStripMenuItem.Enabled = false;
             eternalsToolStripMenuItem.Name = "eternalsToolStripMenuItem";
-            eternalsToolStripMenuItem.Size = new Size(180, 22);
+            eternalsToolStripMenuItem.Size = new Size(181, 22);
             eternalsToolStripMenuItem.Text = "Eternals";
             // 
             // recruitToolStripMenuItem
@@ -169,8 +170,22 @@
             // 
             evokersToolStripMenuItem.Enabled = false;
             evokersToolStripMenuItem.Name = "evokersToolStripMenuItem";
-            evokersToolStripMenuItem.Size = new Size(180, 22);
+            evokersToolStripMenuItem.Size = new Size(181, 22);
             evokersToolStripMenuItem.Text = "Evokers";
+            // 
+            // charactersToolStripMenuItem
+            // 
+            charactersToolStripMenuItem.Name = "charactersToolStripMenuItem";
+            charactersToolStripMenuItem.Size = new Size(181, 22);
+            charactersToolStripMenuItem.Text = "Acquired Characters";
+            charactersToolStripMenuItem.Click += LoadCharacterCollection;
+            // 
+            // targetListToolStripMenuItem
+            // 
+            targetListToolStripMenuItem.Name = "targetListToolStripMenuItem";
+            targetListToolStripMenuItem.Size = new Size(181, 22);
+            targetListToolStripMenuItem.Text = "Wanted Characters";
+            targetListToolStripMenuItem.Click += targetListToolStripMenuItem_Click_1;
             // 
             // goldBrickTallyToolStripMenuItem
             // 
@@ -179,36 +194,22 @@
             goldBrickTallyToolStripMenuItem.Text = "Raid Drop Tally";
             goldBrickTallyToolStripMenuItem.Click += LoadGBForm;
             // 
-            // mainPanel
-            // 
-            mainPanel.Dock = DockStyle.Fill;
-            mainPanel.Location = new Point(0, 24);
-            mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(1071, 472);
-            mainPanel.TabIndex = 2;
-            // 
             // backgroundWorker1
             // 
             backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.ProgressChanged += UpdateProgress;
-            // 
-            // charactersToolStripMenuItem
-            // 
-            charactersToolStripMenuItem.Name = "charactersToolStripMenuItem";
-            charactersToolStripMenuItem.Size = new Size(180, 22);
-            charactersToolStripMenuItem.Text = "Characters";
-            charactersToolStripMenuItem.Click += LoadCharacterCollection;
             // 
             // HomePage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1071, 496);
-            Controls.Add(mainPanel);
             Controls.Add(MainMenuStrip);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            IsMdiContainer = true;
             Name = "HomePage";
             Text = "Never Crew Buddy";
+            FormClosed += DeleteCachedFiles;
             Load += InitializeContent;
             MainMenuStrip.ResumeLayout(false);
             MainMenuStrip.PerformLayout();
@@ -232,12 +233,12 @@
         private ToolStripMenuItem transcendenceToolStripMenuItem;
         private ToolStripMenuItem evokersToolStripMenuItem;
         private ToolStripMenuItem goldBrickTallyToolStripMenuItem;
-        private Panel mainPanel;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private ToolStripMenuItem updateDatabaseToolStripMenuItem;
         private ToolStripMenuItem logsToolStripMenuItem;
         private ToolStripMenuItem addDataToolStripMenuItem;
         private ToolStripMenuItem editDataToolStripMenuItem;
         private ToolStripMenuItem charactersToolStripMenuItem;
+        private ToolStripMenuItem targetListToolStripMenuItem;
     }
 }

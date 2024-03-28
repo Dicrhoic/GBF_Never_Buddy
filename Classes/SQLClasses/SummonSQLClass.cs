@@ -41,7 +41,7 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
 
         }
 
-        private List<Summon> List()
+        public List<Summon> List()
         {
             List<Summon> list = new List<Summon>();
             using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))

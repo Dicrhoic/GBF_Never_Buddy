@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
@@ -485,7 +486,8 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                 Debug.WriteLine($"RaidID: {data.RaidID()} chest: {data.Chest()} attempts: {parent.attempts}");
                 List<string> ratesStrings = new();
                 List<int> ids = new();
-                List<int> values = new List<int>();   
+                List<int> values = new List<int>();
+                List<Tuple<int, int>> itemRatio = new List<Tuple<int, int>>();
                 using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
                 {
                     connection.Open();
@@ -493,7 +495,7 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                     command.CommandText =
                         @"
                             SELECT DropItem.Id, DropItem.ChestType, ItemDropRates.Acquired, 
-                                    ItemDropRates.ItemID
+                                    ItemDropRates.ItemID, DropItem.DropQuantity
                             FROM DropItem
                             INNER JOIN ItemDropRates 
                             ON DropItem.Id=ItemDropRates.ItemID
@@ -506,26 +508,22 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                     {
                        while (reader.Read()) 
                         {
-                            Debug.WriteLine($"Chest Type: {reader.GetInt32(1)} " +
+                            Debug.WriteLine($"Chest Type:  {reader.GetInt32(1)} " +
                                 $"ItemID: {reader.GetInt32(3)} Have: {reader.GetInt32(2)}");
                             int i = reader.GetInt32(2);
                             //Debug.WriteLine($"ItemID: {i} adding");
-                            values.Add(i);  
                             int id = reader.GetInt32(3);
-                            ids.Add(id);    
+                            values.Add(i);
+                            int runs = reader.GetInt32(4);
+                            Tuple<int, int> tuple = new(i, runs);
+                            itemRatio.Add(tuple);
+                            ids.Add(id);
                         }
                     }
-                    foreach(var item in values)
-                    {
-                      
-                        Decimal r = Decimal.Divide(item, parent.attempts);
-                        Debug.WriteLine($"Rate for item {item} is {r}");
-                        string rs = $"{Math.Round(r, 4)}%";
-                        ratesStrings.Add(rs);   
-                    }
-                    //Debug.WriteLine($"{count} items for {data.RaidID()}");
+                    ratesStrings = BalancedRates(itemRatio, values);
                 }
-                switch(data.Chest())
+
+                switch (data.Chest())
                 {
                     case 0:
                         UpdateNumRateLabels(ratesStrings, ids);
@@ -562,6 +560,32 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                     connection.Close();
                 }
             }
+
+            private List<string> BalancedRates(List<Tuple<int,int>> itemRatio, List<int> values)
+            {
+                decimal sum = 0;
+                List<string> ratesStrings = new();
+                for (int i = 0; i < itemRatio.Count; i++)
+                {
+                    Debug.WriteLine($"Attempts: {parent.attempts}");
+                    var item = values[i];
+                    int itemCount = itemRatio[i].Item1;
+                    int itemDropCount = itemRatio[i].Item2;
+                    Decimal a = Decimal.Divide(itemCount, itemDropCount);
+                    int dropTimes = Convert.ToInt32(a);
+                    decimal r = Decimal.Divide(dropTimes, parent.attempts);
+                    Debug.WriteLine($"Rate for item {item} is {r}");
+                    string rs = $"{Math.Round(r, 4)}%";
+                    sum += r;
+                    Debug.WriteLine($"Sum of rates for chest: {sum}");
+                    ratesStrings.Add(rs);
+
+                }
+                return ratesStrings;
+            }
+
+        
+
 
             private void UpdateHostRateLabels(List<string> rates, List<int> ids)
             {
@@ -619,7 +643,9 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                     var command = connection.CreateCommand();
                     command.CommandText =
                         @"
-                            SELECT * FROM ItemDropRates 
+                            SELECT DropItem.DropQuantity, ItemDropRates.Acquired
+                            FROM ItemDropRates
+                            INNER JOIN DropItem ON DropItem.Id=ItemDropRates.ItemID
                             WHERE ItemID=$id
                         ";
                     command.Parameters.AddWithValue("$id", id);
@@ -628,8 +654,10 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                     {
                         foreach (var item in reader)
                         {
-                            int have = reader.GetInt32(3);
-                            string inv = $"{have}";
+                            int quantityPerDrop = reader.GetInt32(0);
+                            int have = reader.GetInt32(1);
+                            int acquired = (have/quantityPerDrop);
+                            string inv = $"{acquired}";
                             value = inv;
                         }
                     }
@@ -707,8 +735,30 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                                 command.Parameters.AddWithValue("$value", updated);
                                 command.Parameters.AddWithValue("$id", chest.ItemID());
                                 command.ExecuteNonQuery();
+                                var command1 = connection.CreateCommand();
+                                command1.CommandText =
+                                    @"
+                                        SELECT DropItem.DropQuantity, ItemDropRates.Acquired
+                                        FROM ItemDropRates
+                                        INNER JOIN DropItem ON DropItem.Id=ItemDropRates.ItemID
+                                        WHERE ItemID=$id
+                                    ";
+                                command1.Parameters.AddWithValue("$id", chest.ItemID());
+                                var reader = command1.ExecuteReader();
+                                string inv = "";
+                                if (reader.HasRows)
+                                {
+                                    foreach (var item in reader)
+                                    {
+                                        int quantityPerDrop = reader.GetInt32(0);
+              
+                                        int acquired = (updated / quantityPerDrop);
+                                        inv = $"{acquired}";
+
+                                    }
+                                }
                                 connection.Close();
-                                tag.Item1.Text = $"{updated}";
+                                tag.Item1.Text = $"{inv}";
                                 Debug.WriteLine($"Incremented itemID {chest.ItemID()} value {updated}");
                             }
                             UpdateRate(chest);
@@ -725,6 +775,7 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                 List<Decimal> rates = new();
                 List<int> ids = new();
                 List<int> values = new List<int>();
+                List<Tuple<int,int>> itemRatio = new List<Tuple<int,int>>();
                 using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
                 {
                     connection.Open();
@@ -732,7 +783,7 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                     command.CommandText =
                         @"
                             SELECT DropItem.Id, DropItem.ChestType, ItemDropRates.Acquired, 
-                                    ItemDropRates.ItemID
+                                    ItemDropRates.ItemID, DropItem.DropQuantity
                             FROM DropItem
                             INNER JOIN ItemDropRates 
                             ON DropItem.Id=ItemDropRates.ItemID
@@ -754,21 +805,43 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                             }
                             //Debug.WriteLine($"ItemID: {i} adding");
                             values.Add(i);
+                            int runs = reader.GetInt32(4);
+                            Tuple<int, int> tuple = new(i, runs);
+                            itemRatio.Add(tuple);   
                             int id = reader.GetInt32(3);
                             ids.Add(id);
                         }
                     }
+                    for(int i = 0; i < itemRatio.Count; i++)
+                    {
+                        int itemCount = itemRatio[i].Item1;
+                        int itemDropCount = itemRatio[i].Item2;
+                        Decimal a = Decimal.Divide(itemCount, itemDropCount);
+                        int dropTimes = Convert.ToInt32(a);
+                        //we know how much runs we've recieved this item
+                        int possibleItems = itemRatio.Count;
+                        decimal r = Decimal.Divide(dropTimes, parent.attempts);
+                        Debug.WriteLine($"Rate: {r} from {dropTimes}/{parent.attempts}");
+                        Debug.WriteLine($"Inc:{i}/{itemRatio.Count}");
+                        rates.Add(r);
+                        if(rates.Sum() > 1)
+                        {
+                            return false;
+                        }
+
+                    }
+                    /*
                     foreach (var item in values)
                     {
-
-                        Decimal r = Decimal.Divide(item, parent.attempts);                      
+                        //instead of item acquired count-> item 1...
+                        Decimal r = Decimal.Divide(1, parent.attempts);                      
                         rates.Add(r);
                         if(rates.Sum() > 1)
                         {
                             return false;
                         }
                     }
-      
+                    */
                 }
                 return true;
 
@@ -836,11 +909,13 @@ namespace GBF_Never_Buddy.Classes.RaidClass
             }
 
             public void CreateRows()
-            {   
+            {
                 CreateHostRow();
-                CreateExtraRow();
                 CreateMVPRow();
+                CreateExtraRow();
                 CreateBlueRow();
+            
+     
             }
 
             public void LoadChestData(Panel panel1)
@@ -861,12 +936,15 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                 /*
                  We can probably slim the data more
                  */
+                panel1.AutoSize = true;
+                panel1.AutoSizeMode = AutoSizeMode.GrowOnly;
                 if (h)
                 {
-             
+                    Debug.WriteLine("Adding host");
                     host.Width = panel1.Width;
                     host.AutoSize = true;
                     host.AutoSizeMode = AutoSizeMode.GrowOnly;
+                    host.Dock = DockStyle.Top;
                     CreateHostPanel();
                     panel1.Controls.Add(host);  
                 }
@@ -888,24 +966,21 @@ namespace GBF_Never_Buddy.Classes.RaidClass
                 }
                 if (b)
                 {
-                    Debug.Write("Adding bluye");
+                    Debug.WriteLine("Adding blue");
                     blue.Width = panel1.Width;
                     blue.AutoSize = true;
                     blue.AutoSizeMode = AutoSizeMode.GrowOnly;
+                    blue.Dock = DockStyle.Top;
                     CreateBluePanel();
                     panel1.Controls.Add(blue);  
                 }
-                if(h && n)
+                if(b && h)
                 {
-                    host.Dock = DockStyle.Top;
-                    extra.Dock = DockStyle.Fill;
+                    panel1.Controls.Remove(host);
+                    panel1.Controls.Add(host);
                 }
-                if (h && b)
-                {
-                    Debug.WriteLine("Host and Blue");
-                    host.Dock = DockStyle.Top;
-                    blue.Dock = DockStyle.Bottom;
-                }
+                
+             
                 Debug.WriteLine(panel1.Controls.Count);
             }
 
