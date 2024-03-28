@@ -62,6 +62,9 @@ namespace GBF_Never_Buddy.Screens
             int halfPot = 75;
             int maxAP = 999;
             int honours { get; set; }
+            double worstTime {  get; set; }
+            double bestTime { get; set; }
+
 
             public int meat { get; set; }
             public int farmOption = 1;
@@ -111,6 +114,24 @@ namespace GBF_Never_Buddy.Screens
             int RunsMade(int honour)
             {
                 return honour/this.honours;
+            }
+
+            List<TimeSpan> timeSpans (int runs)
+            {
+                List<TimeSpan> list = new();
+                Random random = new Random();
+                TimeSpan start = TimeSpan.FromMinutes(bestTime);
+                TimeSpan end = TimeSpan.FromMinutes(worstTime);
+                int maxMinutes = (int)((end - start).TotalSeconds);
+
+                for (int i = 0; i < runs; i++)
+                {
+                    int minutes = random.Next(maxMinutes + 1);
+                    TimeSpan t = start.Add(TimeSpan.FromMinutes(minutes));
+                    list.Add(t);    
+                }
+
+                return list;
             }
         }
     }
