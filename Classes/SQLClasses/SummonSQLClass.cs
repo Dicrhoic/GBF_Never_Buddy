@@ -41,6 +41,82 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
 
         }
 
+        public List<Summon> GachaList()
+        {
+            List<Summon> list = new List<Summon>();
+            using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    SELECT * FROM SSRSummons
+                    WHERE Series='Premium' OR Series='Classic' OR Series='Summer/Yukata' OR Series='Holiday'
+                ";
+                var reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        string name = "";
+                        string element = "";
+                        string link = "";
+                        string series = "";
+                        string image = "";
+                        name = reader.GetString(1);
+                        element = reader.GetString(3);
+                        link = reader.GetString(5);
+                        series = reader.GetString(2);
+                        image = reader.GetString(4);
+                        Summon summon = new(name, series, element, image, link);
+                        list.Add(summon);
+                    }
+
+                }
+
+            }
+            return list;
+        }
+
+        public SortedList<string, Summon> LookupList()
+        {
+            SortedList<string, Summon> list = new();
+            using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    SELECT * FROM SSRSummons
+                    WHERE Series='Premium' OR Series='Classic' OR Series='Summer/Yukata' OR Series='Holiday'
+                ";
+                var reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        string name = "";
+                        string element = "";
+                        string link = "";
+                        string series = "";
+                        string image = "";
+                        name = reader.GetString(1);
+                        element = reader.GetString(3);
+                        link = reader.GetString(5);
+                        series = reader.GetString(2);
+                        image = reader.GetString(4);
+                        Summon summon = new(name, series, element, image, link);
+                        list.Add(name, summon);
+                    }
+
+                }
+
+            }
+            return list;
+        }
+
         public List<Summon> List()
         {
             List<Summon> list = new List<Summon>();

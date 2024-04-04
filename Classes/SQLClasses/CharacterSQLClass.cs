@@ -144,7 +144,44 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                     }
                     
                 }
+                connection.Close();
+            }
+            return list;
+        }
 
+        public SortedList<string, Character> CharacterLookUpList()
+        {
+            SortedList<string, Character> list = new();
+            using (var connection = new SqliteConnection("Data Source=\"Database\\\\localDB.db\""))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText =
+                @"
+                    SELECT * FROM GachaCharacters
+                ";
+                var reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        string name = "";
+                        string element = "";
+                        string link = "";
+                        string series = "";
+                        string image = "";
+                        name = reader.GetString(1);
+                        element = reader.GetString(2);
+                        link = reader.GetString(3);
+                        series = reader.GetString(4);
+                        image = reader.GetString(5);
+                        Character character = new(name, element, series, image, link);
+                        list.Add(name, character);
+                    }
+
+                }
+                connection.Close();
             }
             return list;
         }
@@ -162,7 +199,7 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                 ";
                 Int64 res = (Int64)command.ExecuteScalar();
                 count = (Int32)res;
-
+                connection.Close();
             }
             return count;   
         }

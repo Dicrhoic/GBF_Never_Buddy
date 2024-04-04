@@ -189,7 +189,7 @@ namespace GBF_Never_Buddy
             }
         }
 
-   
+
 
         private void DeleteCachedFiles(object sender, FormClosedEventArgs e)
         {
@@ -228,6 +228,17 @@ namespace GBF_Never_Buddy
             if (openForm == null)
             {
                 CharacterWishlist form = new();
+                form.MdiParent = this;
+                form.Show();
+            }
+        }
+
+        private void updateLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var openForm = Application.OpenForms["UpdateGachaLog"];
+            if (openForm == null)
+            {
+                UpdateGachaLog form = new();
                 form.MdiParent = this;
                 form.Show();
             }

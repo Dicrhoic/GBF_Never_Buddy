@@ -50,6 +50,7 @@
             targetListToolStripMenuItem = new ToolStripMenuItem();
             goldBrickTallyToolStripMenuItem = new ToolStripMenuItem();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            updateLogToolStripMenuItem = new ToolStripMenuItem();
             MainMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -99,7 +100,7 @@
             // 
             // gachaToolStripMenuItem
             // 
-            gachaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { logsToolStripMenuItem, yoloLogToolStripMenuItem, sparkLogToolStripMenuItem, freebieLogToolStripMenuItem });
+            gachaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { logsToolStripMenuItem, yoloLogToolStripMenuItem, sparkLogToolStripMenuItem, freebieLogToolStripMenuItem, updateLogToolStripMenuItem });
             gachaToolStripMenuItem.Name = "gachaToolStripMenuItem";
             gachaToolStripMenuItem.Size = new Size(52, 20);
             gachaToolStripMenuItem.Text = "Gacha";
@@ -199,6 +200,13 @@
             backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.ProgressChanged += UpdateProgress;
             // 
+            // updateLogToolStripMenuItem
+            // 
+            updateLogToolStripMenuItem.Name = "updateLogToolStripMenuItem";
+            updateLogToolStripMenuItem.Size = new Size(180, 22);
+            updateLogToolStripMenuItem.Text = "Update Log";
+            updateLogToolStripMenuItem.Click += updateLogToolStripMenuItem_Click;
+            // 
             // HomePage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -240,5 +248,6 @@
         private ToolStripMenuItem editDataToolStripMenuItem;
         private ToolStripMenuItem charactersToolStripMenuItem;
         private ToolStripMenuItem targetListToolStripMenuItem;
+        private ToolStripMenuItem updateLogToolStripMenuItem;
     }
 }

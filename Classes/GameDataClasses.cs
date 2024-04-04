@@ -379,6 +379,41 @@ namespace GBF_Never_Buddy.Classes
                 this.DrawNumber = DrawNumber;
             }
         }
+        public class GachaYieldData
+        {
+            public List<string> Characters { get; }
+            public List<string> Summons { get; }
+            public int DrawNumber { get; }
+
+            public char type { get; }
+
+            public GachaYieldData(List<string> character, List<string> summon, int DrawNumber, char type)
+            {
+                Characters = character;
+                Summons = summon;
+                this.DrawNumber = DrawNumber;
+                this.type = type;
+            }
+        }
+        public class GachaLogData
+        {
+            public int id { get; }
+            public string date { get; set; }
+            public char typeChar { get; set; }
+
+            public int drawCount { get; set; }
+
+            public GachaLogData(int id, string date, char typeChar, int drawCount)
+            {
+                this.id = id;
+                this.date = date;
+                this.typeChar = typeChar;
+                this.drawCount = drawCount;
+         
+            }
+        }
+
+      
 
         public class GachaDetails
         {

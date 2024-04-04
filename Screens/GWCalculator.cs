@@ -64,7 +64,7 @@ namespace GBF_Never_Buddy.Screens
             int honours { get; set; }
             double worstTime {  get; set; }
             double bestTime { get; set; }
-
+         
 
             public int meat { get; set; }
             public int farmOption = 1;
@@ -104,7 +104,8 @@ namespace GBF_Never_Buddy.Screens
                 int maxValue = int.MinValue;
                 for (int i = meat; i < 0; i--)
                 {
-                    var maxHon = honours + HonoursEarned(i, this.honours);
+                    //reduce by cost of raid
+                    var maxHon = honours + HonoursEarned(i - meat, this.honours);
                     maxValue = Math.Max(maxValue, maxHon);
                 }
                 return maxValue;
