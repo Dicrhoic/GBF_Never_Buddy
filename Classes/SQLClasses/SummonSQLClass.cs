@@ -108,7 +108,11 @@ namespace GBF_Never_Buddy.Classes.SQLClasses
                         series = reader.GetString(2);
                         image = reader.GetString(4);
                         Summon summon = new(name, series, element, image, link);
-                        list.Add(name, summon);
+                        if(!list.ContainsKey(name))
+                        {
+                            list.Add(name, summon);
+                        }
+     
                     }
 
                 }

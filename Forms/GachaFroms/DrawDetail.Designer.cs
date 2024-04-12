@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            groupBox1 = new GroupBox();
             groupBox2 = new GroupBox();
+            groupBox1 = new GroupBox();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -44,6 +44,17 @@
             panel1.Size = new Size(857, 431);
             panel1.TabIndex = 1;
             // 
+            // groupBox2
+            // 
+            groupBox2.AutoSize = true;
+            groupBox2.Dock = DockStyle.Top;
+            groupBox2.Location = new Point(0, 22);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(857, 22);
+            groupBox2.TabIndex = 1;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "groupBox2";
+            // 
             // groupBox1
             // 
             groupBox1.AutoSize = true;
@@ -54,17 +65,6 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "groupBox1";
-            // 
-            // groupBox2
-            // 
-            groupBox2.AutoSize = true;
-            groupBox2.Dock = DockStyle.Top;
-            groupBox2.Location = new Point(0, 22);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(857, 5);
-            groupBox2.TabIndex = 1;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "groupBox2";
             // 
             // DrawDetail
             // 

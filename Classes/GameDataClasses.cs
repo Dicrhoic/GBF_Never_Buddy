@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using GBF_Never_Buddy.Classes.GachaClasses;
 using Microsoft.Data.Sqlite;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -107,6 +108,70 @@ namespace GBF_Never_Buddy.Classes
                 this.element = element;
                 this.image = image;
                 this.link = link;
+            }
+        }
+
+        public class SummonComparer : IEqualityComparer<Summon>
+        {
+            public bool Equals(Summon x, Summon y)
+            {
+
+                //Check whether the compared objects reference the same data.
+                if (System.Object.ReferenceEquals(x, y)) return true;
+
+                //Check whether any of the compared objects is null.
+                if (System.Object.ReferenceEquals(x, null) || System.Object.ReferenceEquals(y, null))
+                    return false;
+
+                //Check whether the products' properties are equal.
+                return x.series == y.series && x.name == y.name;
+            }
+
+            public int GetHashCode(Summon obj)
+            {
+                //Check whether the object is null
+                if (System.Object.ReferenceEquals(obj, null)) return 0;
+
+                //Get hash code for the Name field if it is not null.
+                int hashProductName = obj.name == null ? 0 : obj.name.GetHashCode();
+
+                //Get hash code for the Code field.
+                int hashProductCode = obj.series.GetHashCode();
+
+                //Calculate the hash code for the product.
+                return hashProductName ^ hashProductCode;
+            }
+        }
+
+        public class CharacterComparer : IEqualityComparer<Character>
+        {
+            public bool Equals(Character x, Character y)
+            {
+
+                //Check whether the compared objects reference the same data.
+                if (System.Object.ReferenceEquals(x, y)) return true;
+
+                //Check whether any of the compared objects is null.
+                if (System.Object.ReferenceEquals(x, null) || System.Object.ReferenceEquals(y, null))
+                    return false;
+
+                //Check whether the products' properties are equal.
+                return x.series == y.series && x.name == y.name;
+            }
+
+            public int GetHashCode(Character obj)
+            {
+                //Check whether the object is null
+                if (System.Object.ReferenceEquals(obj, null)) return 0;
+
+                //Get hash code for the Name field if it is not null.
+                int hashProductName = obj.name == null ? 0 : obj.name.GetHashCode();
+
+                //Get hash code for the Code field.
+                int hashProductCode = obj.series.GetHashCode();
+
+                //Calculate the hash code for the product.
+                return hashProductName ^ hashProductCode;
             }
         }
 

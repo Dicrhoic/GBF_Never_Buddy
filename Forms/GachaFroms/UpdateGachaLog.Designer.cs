@@ -41,13 +41,15 @@
             drawNumCB = new ComboBox();
             button1 = new Button();
             resultsPanel = new Panel();
-            panel6 = new Panel();
+            inputPanel = new Panel();
             summonRes = new TextBox();
             label4 = new Label();
             panel7 = new Panel();
             resultsBox = new TextBox();
             label3 = new Label();
-            panel5 = new Panel();
+            checkListPanel = new Panel();
+            checkedListBox2 = new CheckedListBox();
+            panel8 = new Panel();
             checkedListBox1 = new CheckedListBox();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1.SuspendLayout();
@@ -55,8 +57,8 @@
             editPanel.SuspendLayout();
             panel4.SuspendLayout();
             resultsPanel.SuspendLayout();
-            panel6.SuspendLayout();
-            panel5.SuspendLayout();
+            inputPanel.SuspendLayout();
+            checkListPanel.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -121,7 +123,7 @@
             button3.Name = "button3";
             button3.Size = new Size(103, 23);
             button3.TabIndex = 6;
-            button3.Text = "Remove Row";
+            button3.Text = "Remove Record";
             button3.UseVisualStyleBackColor = true;
             button3.Click += RemoveRow;
             // 
@@ -131,7 +133,7 @@
             button2.Name = "button2";
             button2.Size = new Size(103, 23);
             button2.TabIndex = 5;
-            button2.Text = "Add Row";
+            button2.Text = "Add Record";
             button2.UseVisualStyleBackColor = true;
             // 
             // panel4
@@ -176,35 +178,35 @@
             // 
             // resultsPanel
             // 
-            resultsPanel.Controls.Add(panel6);
-            resultsPanel.Controls.Add(panel5);
+            resultsPanel.Controls.Add(inputPanel);
+            resultsPanel.Controls.Add(checkListPanel);
             resultsPanel.Dock = DockStyle.Top;
             resultsPanel.Location = new Point(0, 247);
             resultsPanel.Name = "resultsPanel";
             resultsPanel.Padding = new Padding(0, 5, 0, 0);
-            resultsPanel.Size = new Size(999, 43);
+            resultsPanel.Size = new Size(999, 88);
             resultsPanel.TabIndex = 4;
+            resultsPanel.Paint += resultsPanel_Paint;
             // 
-            // panel6
+            // inputPanel
             // 
-            panel6.Controls.Add(summonRes);
-            panel6.Controls.Add(label4);
-            panel6.Controls.Add(panel7);
-            panel6.Controls.Add(resultsBox);
-            panel6.Controls.Add(label3);
-            panel6.Dock = DockStyle.Top;
-            panel6.Location = new Point(0, 5);
-            panel6.Name = "panel6";
-            panel6.Size = new Size(999, 31);
-            panel6.TabIndex = 3;
+            inputPanel.Controls.Add(summonRes);
+            inputPanel.Controls.Add(label4);
+            inputPanel.Controls.Add(panel7);
+            inputPanel.Controls.Add(resultsBox);
+            inputPanel.Controls.Add(label3);
+            inputPanel.Dock = DockStyle.Top;
+            inputPanel.Location = new Point(0, 5);
+            inputPanel.Name = "inputPanel";
+            inputPanel.Size = new Size(999, 34);
+            inputPanel.TabIndex = 3;
             // 
             // summonRes
             // 
-            summonRes.Dock = DockStyle.Left;
             summonRes.Location = new Point(554, 0);
             summonRes.Name = "summonRes";
             summonRes.Size = new Size(268, 23);
-            summonRes.TabIndex = 6;
+            summonRes.TabIndex = 7;
             summonRes.Tag = "summon";
             summonRes.KeyDown += ValidateText;
             // 
@@ -223,12 +225,13 @@
             panel7.Dock = DockStyle.Left;
             panel7.Location = new Point(380, 0);
             panel7.Name = "panel7";
-            panel7.Size = new Size(64, 31);
+            panel7.Size = new Size(64, 34);
             panel7.TabIndex = 4;
             // 
             // resultsBox
             // 
             resultsBox.Dock = DockStyle.Left;
+            resultsBox.ForeColor = SystemColors.WindowText;
             resultsBox.Location = new Point(112, 0);
             resultsBox.Name = "resultsBox";
             resultsBox.Size = new Size(268, 23);
@@ -246,25 +249,51 @@
             label3.TabIndex = 2;
             label3.Text = "Acquired Character:";
             // 
-            // panel5
+            // checkListPanel
             // 
-            panel5.AutoSize = true;
-            panel5.Controls.Add(checkedListBox1);
-            panel5.Dock = DockStyle.Bottom;
-            panel5.Location = new Point(0, 38);
-            panel5.Name = "panel5";
-            panel5.Padding = new Padding(0, 5, 0, 0);
-            panel5.Size = new Size(999, 5);
-            panel5.TabIndex = 2;
+            checkListPanel.Controls.Add(checkedListBox2);
+            checkListPanel.Controls.Add(panel8);
+            checkListPanel.Controls.Add(checkedListBox1);
+            checkListPanel.Dock = DockStyle.Bottom;
+            checkListPanel.Location = new Point(0, 45);
+            checkListPanel.Name = "checkListPanel";
+            checkListPanel.Padding = new Padding(115, 5, 0, 0);
+            checkListPanel.Size = new Size(999, 43);
+            checkListPanel.TabIndex = 2;
+            checkListPanel.Paint += checkListPanel_Paint;
+            // 
+            // checkedListBox2
+            // 
+            checkedListBox2.Dock = DockStyle.Left;
+            checkedListBox2.FormattingEnabled = true;
+            checkedListBox2.Location = new Point(554, 5);
+            checkedListBox2.Name = "checkedListBox2";
+            checkedListBox2.Size = new Size(268, 38);
+            checkedListBox2.TabIndex = 2;
+            checkedListBox2.Tag = "summon";
+            checkedListBox2.ItemCheck += UpdateCheckedList;
+            checkedListBox2.KeyDown += RemoveInput;
+            // 
+            // panel8
+            // 
+            panel8.Dock = DockStyle.Left;
+            panel8.Location = new Point(383, 5);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(171, 38);
+            panel8.TabIndex = 1;
+            panel8.Paint += panel8_Paint;
             // 
             // checkedListBox1
             // 
             checkedListBox1.Dock = DockStyle.Left;
             checkedListBox1.FormattingEnabled = true;
-            checkedListBox1.Location = new Point(0, 5);
+            checkedListBox1.Location = new Point(115, 5);
             checkedListBox1.Name = "checkedListBox1";
-            checkedListBox1.Size = new Size(268, 0);
+            checkedListBox1.Size = new Size(268, 38);
             checkedListBox1.TabIndex = 0;
+            checkedListBox1.Tag = "character";
+            checkedListBox1.ItemCheck += UpdateCheckedList;
+            checkedListBox1.KeyDown += RemoveInput;
             // 
             // tableLayoutPanel1
             // 
@@ -273,7 +302,7 @@
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel1.Dock = DockStyle.Top;
-            tableLayoutPanel1.Location = new Point(0, 290);
+            tableLayoutPanel1.Location = new Point(0, 335);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
@@ -302,10 +331,9 @@
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             resultsPanel.ResumeLayout(false);
-            resultsPanel.PerformLayout();
-            panel6.ResumeLayout(false);
-            panel6.PerformLayout();
-            panel5.ResumeLayout(false);
+            inputPanel.ResumeLayout(false);
+            inputPanel.PerformLayout();
+            checkListPanel.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -326,13 +354,15 @@
         private Button button2;
         private Panel resultsPanel;
         private TableLayoutPanel tableLayoutPanel1;
-        private Panel panel5;
+        private Panel checkListPanel;
         private CheckedListBox checkedListBox1;
-        private Panel panel6;
-        private TextBox summonRes;
+        private Panel inputPanel;
         private Label label4;
         private Panel panel7;
         private TextBox resultsBox;
         private Label label3;
+        private CheckedListBox checkedListBox2;
+        private Panel panel8;
+        private TextBox summonRes;
     }
 }

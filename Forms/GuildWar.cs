@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GBF_Never_Buddy.Screens;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,18 @@ namespace GBF_Never_Buddy.Forms
         public GuildWar()
         {
             InitializeComponent();
+        }
+
+        private void LoadCalculator(object sender, EventArgs e)
+        {
+            panel1.Controls.Clear();
+            GWCalculator gWCalculator = new GWCalculator();
+            panel1.Controls.Add(gWCalculator);
+        }
+
+        private void honourRecordsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

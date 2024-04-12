@@ -20,7 +20,10 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
         List<SummonRow> summonRows = new();
         List<CharacterRow> characterRows = new();
         bool editPanelOn = false;
-
+        List<Summon> summonInputs = new();
+        List<Character> characterInput = new();
+        List<Summon> summonOutputs = new();
+        List<Character> characterOutputs = new();
         public UpdateGachaLog()
         {
             InitializeComponent();
@@ -111,6 +114,10 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
             resultsPanel.Visible = false;
             resultsPanel.Enabled = false;
             tableLayoutPanel1.Controls.Clear();
+            characterInput.Clear();
+            summonInputs.Clear();
+            checkedListBox1.Items.Clear();
+            checkedListBox2.Items.Clear();
             int id = gachas[comboBox1.SelectedIndex].id;
             int drawNumber = drawNumCB.SelectedIndex + 1;
             bool exists = ExistsInDataBase(id, drawNumber);
@@ -272,30 +279,16 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
 
         }
 
-        private void ValidateText(object sender, KeyPressEventArgs e)
+        void PopulateCheckList(string s, List<Character> list)
         {
-            TextBox tb = (TextBox)sender;
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                string s = tb.Text;
-                if (s.Length > 0)
-                {   
-                    if (s.Contains(','))
-                    {
-                        PopulateCheckList(SplitStrings(s));
-                    }
-                    else
-                    {
-                        PopulateCheckList(s);
-                    }
-                }
-            
-            }
+            var res = ValidatedResult(list, s);
+            checkedListBox1.Items.AddRange(res.Select(x => x.name).ToArray());
         }
 
-        void PopulateCheckList(string s)
+        void PopulateCheckList(string s, List<Summon> list)
         {
-            checkedListBox1.Items.Add(s);
+            var res = ValidatedResult(list, s);
+            checkedListBox1.Items.AddRange(res.Select(x => x.name).ToArray());
         }
         void PopulateCheckList(List<string> s)
         {
@@ -307,40 +300,280 @@ namespace GBF_Never_Buddy.Forms.GachaFroms
             }
         }
 
+        void PopulateCheckList(List<string> s, List<Character> list)
+        {
+
+            List<Character> results = ValidatedResullts(list, s);
+            Debug.WriteLine($"\n");
+
+            Debug.WriteLine($"List Count: {characterInput.Count}");
+            if (characterInput.Count > 0)
+            {
+                var newAdditions = characterInput.Except(characterInput).ToList();
+                checkedListBox1.Items.AddRange(newAdditions.Select(x => x.name).ToArray());
+            }
+            else
+            {
+                characterInput.AddRange(results);
+                Debug.WriteLine($"List Count: {characterInput.Count}");
+                characterInput = characterInput.Distinct(new CharacterComparer()).ToList();
+                checkedListBox1.Items.AddRange(characterInput.Select(x => x.name).ToArray());
+            }
+            resultsBox.Text = "";
+        }
+
+        void PopulateCheckList(List<string> s, List<Summon> list)
+        {
+            PrintList(s);
+            List<Summon> results = ValidatedResullts(list, s);
+
+            if (summonInputs.Count > 0)
+            {
+                var newAdditions = summonInputs.Except(summonInputs).ToList();
+                checkedListBox2.Items.AddRange(newAdditions.Select(x => x.name).ToArray());
+            }
+            else
+            {
+                summonInputs.AddRange(results);
+                summonInputs = summonInputs.Distinct(new SummonComparer()).ToList();
+                checkedListBox2.Items.AddRange(summonInputs.Select(x => x.name).ToArray());
+            }
+            summonRes.Text = "";
+        }
+
+
+        void PrintList(List<string> list)
+        {
+            foreach (string s in list)
+            {
+                Debug.WriteLine($"{s}");
+            }
+        }
+
+
+        List<Character> ValidatedResult(List<Character> list, string query)
+        {
+            List<Character> results = new List<Character>();
+
+            var index = list.Where(x => x.name == query);
+
+            if (index.Count() > 0)
+            {
+                Character c = index.First();
+                results.Add(c);
+            }
+
+            return results;
+        }
+
+        List<Summon> ValidatedResult(List<Summon> list, string query)
+        {
+            List<Summon> results = new List<Summon>();
+
+            var index = list.Where(x => x.name == query);
+
+            if (index.Count() > 0)
+            {
+                Summon c = index.First();
+                results.Add(c);
+            }
+
+            return results;
+        }
+
+        List<Character> ValidatedResullts(List<Character> list, List<string> queries)
+        {
+            List<Character> results = new List<Character>();
+
+            foreach (string str in queries)
+            {
+                var index = list.Where(x => x.name == str);
+
+                if (index.Count() > 0)
+                {
+                    Character c = index.First();
+                    results.Add(c);
+                }
+            }
+            return results;
+        }
+        List<Summon> ValidatedResullts(List<Summon> list, List<string> queries)
+        {
+            List<Summon> results = new List<Summon>();
+            foreach (string str in queries)
+            {
+                var index = list.Where(x => x.name == str);
+
+                Debug.Write($"Index of {str}: {index}");
+                if (index.Count() > 0)
+                {
+                    Summon c = index.First();
+                    results.Add(c);
+                }
+            }
+            return results;
+        }
+
+
+        //Change binary search to SortedList<>;
+        int index(List<Summon> list, string str)
+        {
+            int min = 0;
+            int max = list.Count - 1;
+            while (min <= max)
+            {
+                int mid = (max + min) / 2;
+                Debug.WriteLine(list[mid].name);
+                if (list[mid].name != str)
+                {
+                    min = mid + 1;
+                }
+                else
+                    max = mid - 1;
+                if (list[mid].name == str)
+                {
+                    return mid;
+                }
+            }
+
+            return -1;
+        }
+
+        int index(List<Character> list, string str)
+        {
+            int min = 0;
+            int max = list.Count - 1;
+            Debug.WriteLine(list.Count);
+            while (min <= max)
+            {
+                int mid = (max + min) / 2;
+                Debug.WriteLine(list[mid].name);
+                if (list[mid].name == str)
+                {
+                    Debug.WriteLine($"Found {str} at {mid}");
+                    return mid;
+                }
+                else if (list[mid].name != str)
+                {
+                    min = mid + 1;
+                }
+                else
+                    max = mid - 1;
+
+            }
+
+            return -1;
+        }
 
         List<string> SplitStrings(string s)
         {
             List<string> strings = new List<string>();
             string[] splits = s.Split(',');
-            strings.AddRange(splits);
+            foreach (string str in splits)
+            {
+                string str1 = str;
+                str1 = str.Trim();
+                strings.Add(str1);
+            }
             return strings;
         }
 
         private void ValidateText(object sender, KeyEventArgs e)
         {
+            CharacterSQLClass characterSQLClass = new CharacterSQLClass();
+            SummonSQLClass summonSQLClass = new SummonSQLClass();
+            List<Character> characters = characterSQLClass.CharacterList();
+            List<Summon> summons = summonSQLClass.GachaList();
 
-            Dictionary<string, object> keyValuePairs = new Dictionary<string, object>
-            {
-                { "character", SortedList<string, Character> },
-                { "summon", SortedList<string, Summon>  }
-            };
-            TextBox tb = (TextBox)sender ;
+            TextBox tb = (TextBox)sender;
             string type = tb.Tag.ToString();
-            if(tb.Text.Length > 0 && e.KeyCode == Keys.Enter)
-            {   
-                CharacterSQLClass characterSQLClass = new CharacterSQLClass();  
-                SummonSQLClass summonSQLClass = new SummonSQLClass();
+            if (tb.Text.Length > 0 && e.KeyCode == Keys.Enter)
+            {
+
                 string s = tb.Text;
                 if (s.Contains(','))
                 {
-                    PopulateCheckList(SplitStrings(s));
+                    var l = SplitStrings(s);
+
+                    switch (type)
+                    {
+                        case "character":
+                            PopulateCheckList(l, characters);
+                            break;
+                        case "summon":
+                            PopulateCheckList(l, summons);
+                            break;
+                    }
                 }
                 else
                 {
-                    PopulateCheckList(s);
+                    switch (type)
+                    {
+                        case "character":
+                            PopulateCheckList(s, characters);
+                            break;
+                        case "summon":
+                            PopulateCheckList(s, summons);
+                            break;
+                    }
+                }
+            }
+
+        }
+
+
+
+        private void resultsPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel8_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void checkListPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void RemoveInput(object sender, KeyEventArgs e)
+        {
+            CheckedListBox listBox = (CheckedListBox)sender;
+            if (e.KeyCode == Keys.Delete && listBox.Items.Count > 0)
+            {
+                var selectedItem = listBox.SelectedIndex;
+                if (selectedItem != -1)
+                {
+                    listBox.Items.Remove(selectedItem);
                 }
             }
         }
+
+        private void UpdateCheckedList(object sender, ItemCheckEventArgs e)
+        {
+            CheckedListBox listBox = (CheckedListBox)sender;
+            if(listBox.Tag != null)
+            {
+                string type = listBox.Tag.ToString();
+                switch (type)
+                {
+                    case "character":
+                        characterOutputs.Clear();
+                        List<Character> characters = listBox.CheckedItems.OfType<Character>().ToList();
+                        characterOutputs = characters;
+                        break;
+                    case "summon":
+                        summonOutputs.Clear();
+                        List<Summon> summons = listBox.CheckedItems.OfType<Summon>().ToList();
+                        summonOutputs = summons;    
+                        break;
+                }
+            }
+        }
+
+      
     }
 
 

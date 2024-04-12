@@ -243,5 +243,16 @@ namespace GBF_Never_Buddy
                 form.Show();
             }
         }
+
+        private void LoadGW(object sender, EventArgs e)
+        {
+            var openForm = Application.OpenForms["GuildWar"];
+            if (openForm == null)
+            {
+                GuildWar form = new();
+                form.MdiParent = this;
+                form.Show();
+            }
+        }
     }
 }

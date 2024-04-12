@@ -40,6 +40,7 @@
             yoloLogToolStripMenuItem = new ToolStripMenuItem();
             sparkLogToolStripMenuItem = new ToolStripMenuItem();
             freebieLogToolStripMenuItem = new ToolStripMenuItem();
+            updateLogToolStripMenuItem = new ToolStripMenuItem();
             collectionTrackerToolStripMenuItem = new ToolStripMenuItem();
             eternalsToolStripMenuItem = new ToolStripMenuItem();
             recruitToolStripMenuItem = new ToolStripMenuItem();
@@ -50,13 +51,13 @@
             targetListToolStripMenuItem = new ToolStripMenuItem();
             goldBrickTallyToolStripMenuItem = new ToolStripMenuItem();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            updateLogToolStripMenuItem = new ToolStripMenuItem();
+            gWToolStripMenuItem = new ToolStripMenuItem();
             MainMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
             // MainMenuStrip
             // 
-            MainMenuStrip.Items.AddRange(new ToolStripItem[] { menuToolStripMenuItem, gachaToolStripMenuItem, collectionTrackerToolStripMenuItem, goldBrickTallyToolStripMenuItem });
+            MainMenuStrip.Items.AddRange(new ToolStripItem[] { menuToolStripMenuItem, gachaToolStripMenuItem, collectionTrackerToolStripMenuItem, goldBrickTallyToolStripMenuItem, gWToolStripMenuItem });
             MainMenuStrip.Location = new Point(0, 0);
             MainMenuStrip.Name = "MainMenuStrip";
             MainMenuStrip.Size = new Size(1071, 24);
@@ -109,30 +110,37 @@
             // logsToolStripMenuItem
             // 
             logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            logsToolStripMenuItem.Size = new Size(180, 22);
+            logsToolStripMenuItem.Size = new Size(135, 22);
             logsToolStripMenuItem.Text = "Logs";
             logsToolStripMenuItem.Click += OpenLogs;
             // 
             // yoloLogToolStripMenuItem
             // 
             yoloLogToolStripMenuItem.Name = "yoloLogToolStripMenuItem";
-            yoloLogToolStripMenuItem.Size = new Size(180, 22);
+            yoloLogToolStripMenuItem.Size = new Size(135, 22);
             yoloLogToolStripMenuItem.Text = "Yolo";
             yoloLogToolStripMenuItem.Click += LoadYoloLog;
             // 
             // sparkLogToolStripMenuItem
             // 
             sparkLogToolStripMenuItem.Name = "sparkLogToolStripMenuItem";
-            sparkLogToolStripMenuItem.Size = new Size(180, 22);
+            sparkLogToolStripMenuItem.Size = new Size(135, 22);
             sparkLogToolStripMenuItem.Text = "Spark";
             sparkLogToolStripMenuItem.Click += LoadSparkForm;
             // 
             // freebieLogToolStripMenuItem
             // 
             freebieLogToolStripMenuItem.Name = "freebieLogToolStripMenuItem";
-            freebieLogToolStripMenuItem.Size = new Size(180, 22);
+            freebieLogToolStripMenuItem.Size = new Size(135, 22);
             freebieLogToolStripMenuItem.Text = "Freebie Log";
             freebieLogToolStripMenuItem.Click += LoadFreeLog;
+            // 
+            // updateLogToolStripMenuItem
+            // 
+            updateLogToolStripMenuItem.Name = "updateLogToolStripMenuItem";
+            updateLogToolStripMenuItem.Size = new Size(135, 22);
+            updateLogToolStripMenuItem.Text = "Update Log";
+            updateLogToolStripMenuItem.Click += updateLogToolStripMenuItem_Click;
             // 
             // collectionTrackerToolStripMenuItem
             // 
@@ -200,12 +208,12 @@
             backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.ProgressChanged += UpdateProgress;
             // 
-            // updateLogToolStripMenuItem
+            // gWToolStripMenuItem
             // 
-            updateLogToolStripMenuItem.Name = "updateLogToolStripMenuItem";
-            updateLogToolStripMenuItem.Size = new Size(180, 22);
-            updateLogToolStripMenuItem.Text = "Update Log";
-            updateLogToolStripMenuItem.Click += updateLogToolStripMenuItem_Click;
+            gWToolStripMenuItem.Name = "gWToolStripMenuItem";
+            gWToolStripMenuItem.Size = new Size(38, 20);
+            gWToolStripMenuItem.Text = "GW";
+            gWToolStripMenuItem.Click += LoadGW;
             // 
             // HomePage
             // 
@@ -249,5 +257,6 @@
         private ToolStripMenuItem charactersToolStripMenuItem;
         private ToolStripMenuItem targetListToolStripMenuItem;
         private ToolStripMenuItem updateLogToolStripMenuItem;
+        private ToolStripMenuItem gWToolStripMenuItem;
     }
 }

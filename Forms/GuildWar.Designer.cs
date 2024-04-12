@@ -36,6 +36,8 @@
             gWResultsToolStripMenuItem = new ToolStripMenuItem();
             calculatorToolStripMenuItem = new ToolStripMenuItem();
             targetCalculatorToolStripMenuItem = new ToolStripMenuItem();
+            panel1 = new Panel();
+            honourRecordsToolStripMenuItem = new ToolStripMenuItem();
             menuStrip2.SuspendLayout();
             SuspendLayout();
             // 
@@ -64,7 +66,7 @@
             // 
             // recordsToolStripMenuItem
             // 
-            recordsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { pastSetupsToolStripMenuItem, gWResultsToolStripMenuItem });
+            recordsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { pastSetupsToolStripMenuItem, gWResultsToolStripMenuItem, honourRecordsToolStripMenuItem });
             recordsToolStripMenuItem.Name = "recordsToolStripMenuItem";
             recordsToolStripMenuItem.Size = new Size(61, 20);
             recordsToolStripMenuItem.Text = "Records";
@@ -91,14 +93,31 @@
             // targetCalculatorToolStripMenuItem
             // 
             targetCalculatorToolStripMenuItem.Name = "targetCalculatorToolStripMenuItem";
-            targetCalculatorToolStripMenuItem.Size = new Size(180, 22);
+            targetCalculatorToolStripMenuItem.Size = new Size(163, 22);
             targetCalculatorToolStripMenuItem.Text = "Target Calculator";
+            targetCalculatorToolStripMenuItem.Click += LoadCalculator;
+            // 
+            // panel1
+            // 
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(0, 48);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1014, 456);
+            panel1.TabIndex = 2;
+            // 
+            // honourRecordsToolStripMenuItem
+            // 
+            honourRecordsToolStripMenuItem.Name = "honourRecordsToolStripMenuItem";
+            honourRecordsToolStripMenuItem.Size = new Size(180, 22);
+            honourRecordsToolStripMenuItem.Text = "Honour Records";
+            honourRecordsToolStripMenuItem.Click += honourRecordsToolStripMenuItem_Click;
             // 
             // GuildWar
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1014, 504);
+            Controls.Add(panel1);
             Controls.Add(menuStrip1);
             Controls.Add(menuStrip2);
             MainMenuStrip = menuStrip1;
@@ -120,5 +139,7 @@
         private ToolStripMenuItem gWResultsToolStripMenuItem;
         private ToolStripMenuItem calculatorToolStripMenuItem;
         private ToolStripMenuItem targetCalculatorToolStripMenuItem;
+        private Panel panel1;
+        private ToolStripMenuItem honourRecordsToolStripMenuItem;
     }
 }
